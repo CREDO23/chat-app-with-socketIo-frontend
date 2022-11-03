@@ -1,0 +1,33 @@
+{
+    "name": "chat-app-frontend",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "start": "vite",
+        "build": "tsc && vite build",
+        "preview": "vite preview",
+        "prepare": "husky install",
+        "prettier": "prettier src/**/*.{tsx,ts} --write",
+        "lint": "eslint src/**/*.{tsx,ts}",
+        "lint-fix": "eslint . src/**/*.{tsx,ts} --fix",
+        "precommit": "yarn lint-fix && yarn prettier",
+        "prepush": "yarn lint"
+    },
+    "dependencies": {
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0"
+    },
+    "devDependencies": {
+        "@types/react": "^18.0.22",
+        "@types/react-dom": "^18.0.7",
+        "@typescript-eslint/eslint-plugin": "^5.42.0",
+        "@typescript-eslint/parser": "^5.42.0",
+        "@vitejs/plugin-react": "^2.2.0",
+        "eslint": "^8.26.0",
+        "husky": "^8.0.1",
+        "prettier": "^2.7.1",
+        "typescript": "^4.6.4",
+        "vite": "^3.2.0"
+    }
+}

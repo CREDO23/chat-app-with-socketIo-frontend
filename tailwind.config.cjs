@@ -1,8 +1,21 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: ['./index.html', './src/*.tsx'],
+    content: ['./index.html', './src/**/*.tsx', './src/*.tsx'],
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                bleu: '#263A96',
+                jaune: '#F8CF33',
+                textbleu: '#000F55',
+                'bleu-4': 'rgba(0,15,85,.6)',
+            },
+            backgroundImage: {
+                bgApp: "url('./src/assets/background-chat.jpg')",
+            },
+            fontFamily: {
+                Poppins: ['Poppins', 'sans-serif'],
+            },
+        },
     },
-    plugins: [],
+    plugins: [require('@tailwindcss/forms')],
 };

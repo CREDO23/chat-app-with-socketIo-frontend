@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 
-// type Props = {
-//     setForm(form: string): React.SetStateAction<string>;
-// };
+type Form = 'singin' | 'singup';
+type Props = {
+    setForm: React.Dispatch<React.SetStateAction<Form>>;
+};
 
-export default function (): JSX.Element {
+export default function ({ setForm }: Props): JSX.Element {
     const [singupForm, setSingupForm] = useState({
         userName: '',
         firstName: '',
@@ -15,7 +16,13 @@ export default function (): JSX.Element {
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement>,
-        input: string,
+        input:
+            | 'userName'
+            | 'email'
+            | 'firstName'
+            | 'lastName'
+            | 'password'
+            | 'confirmPassword',
     ): void => {
         setSingupForm({
             ...singupForm,
@@ -95,19 +102,24 @@ export default function (): JSX.Element {
                 />
             </div>
 
-            <div className=" my-3 mx-4 flex items-center justify-end">
+            <div className=" my-3 font-light text-xs mx-2 flex items-center justify-end">
                 <span className=" text-slate-900">
                     Already have an account ?
                 </span>
-                <span className=" ml-2 text-slate-50">Sing in</span>
+                <span
+                    onClick={() => setForm('singin')}
+                    className=" font-medium ml-2 cursor-pointer text-slate-50"
+                >
+                    Sing in
+                </span>
             </div>
 
-            <div className="w-full">
+            <div>
                 <button
                     type="submit"
-                    className='className=" w-1/2 px-2 py-4 text-white bg-sky-900 rounded-md hover:bg-sky-800  focus:bg-sky-700 focus:outline-none"'
+                    className="w-full px-2 py-4 text-white bg-sky-900 rounded-md hover:bg-sky-800  focus:bg-sky-700 focus:outline-none"
                 >
-                    Sing Up
+                    SING UP
                 </button>
             </div>
         </form>

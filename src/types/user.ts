@@ -1,11 +1,9 @@
 interface USER {
-    userName: string,
-    firstName?: string,
-    lastName?: string,
-    password: string,
-    email: string
+    userName: string;
+    firstName?: string;
+    lastName?: string;
+    password: string;
+    email: string;
 }
 
-
-
-export default USER
+export default USER;

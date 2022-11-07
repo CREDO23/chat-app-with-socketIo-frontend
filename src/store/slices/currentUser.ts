@@ -1,50 +1,107 @@
-import { createSlice , PayloadAction , createAsyncThunk  } from '@reduxjs/toolkit'
-import USER from '../../types/user'
-import axios from 'axios'
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import USER from '../../types/user';
+import axios, { AxiosResponse } from 'axios';
 
 type CurrentUser = {
-    loading: boolean,
-    user: USER | null,
-    error : unknown,
-}
+    loading: boolean;
+    user: USER | null;
+    accessToken : unknown
+    error: unknown;
+};
 
-const initialState : CurrentUser = {
+const initialState: CurrentUser = {
     loading: false,
     user: null,
-    error : null
+    accessToken: localStorage.getItem('accessToken'),
+    error: null,
+};
+
+type SigninResponse = {
+    accessToken: string,
+    user : USER
 }
 
+export const singup = createAsyncThunk<AxiosResponse, USER>(
+    'user/singup',
+    async (user, { rejectWithValue }) => {
+        try {
+            const result: AxiosResponse = await axios({
+                method: 'POST',
+                url: `${import.meta.env.VITE_BACKEND_URL}/api/users/singup`,
+                data: user,
+            });
+            return result;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            return rejectWithValue(error?.response?.data?.message);
+        }
+    },
+);
 
-export const setCurrentUser = createAsyncThunk<USER , USER>('user/setUser',  (user) => {
-    return axios({
-        method : 'POST',
-        url: `${import.meta.env.VITE_BACKEND_URL}/api/users/register`,
-        data : user
-    })
-})
-
+export const singin = createAsyncThunk<AxiosResponse, USER>(
+    'user/singin',
+    async (user, { rejectWithValue }) => {
+        try {
+            const result: AxiosResponse = await axios({
+                method: 'POST',
+                url: `${import.meta.env.VITE_BACKEND_URL}/api/users/login`,
+                data: user,
+            });
+            return result;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            return rejectWithValue(error?.response?.data?.message);
+        }
+    },
+);
 
 export const currentUserSlice = createSlice({
     name: 'currentUser',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(setCurrentUser.pending, state => {
+        builder.addCase(singup.pending, (state) => {
             state.loading = true;
-        })
+        });
 
-        builder.addCase(setCurrentUser.fulfilled, (state, action : PayloadAction<USER>) => {
+        builder.addCase(
+            singup.fulfilled,
+            (state, action: PayloadAction<AxiosResponse<USER>>) => {
+                state.loading = false;
+                state.user = action.payload.data;
+                state.error = null;
+            },
+        );
+
+        builder.addCase(singup.rejected, (state, action) => {
             state.loading = false;
-            state.user = action.payload
-        })
+            state.user = null;
+            state.error = action.payload || {
+                message: 'Something went wrong',
+            };
+        });
 
-        builder.addCase(setCurrentUser.rejected, (state, action) => { 
+        builder.addCase(singin.pending, (state) => {
+            state.loading = true;
+        });
+
+        builder.addCase(
+            singin.fulfilled,
+            (state, action: PayloadAction<AxiosResponse<SigninResponse>>) => {
+                state.loading = false;
+                state.user = action.payload.data.user;
+                state.accessToken = action.payload.data.accessToken
+            },
+        );
+
+        builder.addCase(singin.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.error || {message : 'Something went wrong'}
-        }) 
-    }
-    
-})
+            state.user = null;
+            state.error = action.payload || {
+                message: 'Something went wrong',
+            };
+        });
+    },
+});
 
-export default currentUserSlice.reducer
-
+export default currentUserSlice.reducer;

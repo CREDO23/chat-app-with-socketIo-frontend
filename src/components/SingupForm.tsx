@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { setCurrentUser } from '../store/slices/currentUser';
+import { singup } from '../store/slices/currentUser';
 
 type Form = 'singin' | 'singup';
 type Props = {
@@ -30,7 +30,7 @@ export default function ({ setForm }: Props): JSX.Element {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        dispatch(setCurrentUser(singupForm));
+        dispatch(singup(singupForm));
     };
 
     return (

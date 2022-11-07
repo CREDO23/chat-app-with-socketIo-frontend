@@ -1,25 +1,19 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import USER from '../../types/user';
 import axios, { AxiosResponse } from 'axios';
-
-type CurrentUser = {
-    loading: boolean;
-    user: USER | null;
-    accessToken : unknown
-    error: unknown;
-};
+import type {
+    SigninResponse,
+    SingupResponse,
+    CurrentUser,
+} from '../../types/user';
 
 const initialState: CurrentUser = {
+    successMessage: '',
     loading: false,
+    errorMessage: null,
     user: null,
     accessToken: localStorage.getItem('accessToken'),
-    error: null,
 };
-
-type SigninResponse = {
-    accessToken: string,
-    user : USER
-}
 
 export const singup = createAsyncThunk<AxiosResponse, USER>(
     'user/singup',
@@ -44,7 +38,7 @@ export const singin = createAsyncThunk<AxiosResponse, USER>(
         try {
             const result: AxiosResponse = await axios({
                 method: 'POST',
-                url: `${import.meta.env.VITE_BACKEND_URL}/api/users/login`,
+                url: `${import.meta.env.VITE_BACKEND_URL}/api/users/singin`,
                 data: user,
             });
             return result;
@@ -66,19 +60,19 @@ export const currentUserSlice = createSlice({
 
         builder.addCase(
             singup.fulfilled,
-            (state, action: PayloadAction<AxiosResponse<USER>>) => {
+            (state, action: PayloadAction<AxiosResponse<SingupResponse>>) => {
                 state.loading = false;
-                state.user = action.payload.data;
-                state.error = null;
+                state.errorMessage = null;
+                state.successMessage = action.payload.data.message;
+                state.user = action.payload.data.data;
             },
         );
 
         builder.addCase(singup.rejected, (state, action) => {
             state.loading = false;
+            state.errorMessage = action.payload || 'Something went wrong';
+            state.successMessage = null;
             state.user = null;
-            state.error = action.payload || {
-                message: 'Something went wrong',
-            };
         });
 
         builder.addCase(singin.pending, (state) => {
@@ -89,17 +83,19 @@ export const currentUserSlice = createSlice({
             singin.fulfilled,
             (state, action: PayloadAction<AxiosResponse<SigninResponse>>) => {
                 state.loading = false;
-                state.user = action.payload.data.user;
-                state.accessToken = action.payload.data.accessToken
+                state.errorMessage = null;
+                state.successMessage = action.payload.data.message;
+                state.user = action.payload.data.data.user;
+                state.accessToken = action.payload.data.data.accessToken;
             },
         );
 
         builder.addCase(singin.rejected, (state, action) => {
             state.loading = false;
+            state.errorMessage = action.payload || 'Something went wrong';
+            state.successMessage = null;
             state.user = null;
-            state.error = action.payload || {
-                message: 'Something went wrong',
-            };
+            state.accessToken = null;
         });
     },
 });

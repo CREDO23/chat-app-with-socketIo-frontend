@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { singin } from '../store/slices/currentUser';
+import { useAppDispatch, useAppSelector } from '../store/hooks/index';
 
 type Form = 'singin' | 'singup';
 type Props = {
@@ -6,6 +8,8 @@ type Props = {
 };
 
 export default function ({ setForm }: Props): JSX.Element {
+    const isloading = useAppSelector((state) => state.currentUser.loading);
+    const dispatch = useAppDispatch();
     const [signinForm, setSinginForm] = useState({
         userName: '',
         password: '',
@@ -23,8 +27,7 @@ export default function ({ setForm }: Props): JSX.Element {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        console.log(signinForm);
+        dispatch(singin(signinForm));
     };
 
     return (
@@ -77,6 +80,7 @@ export default function ({ setForm }: Props): JSX.Element {
                     type="submit"
                     className=" w-full px-2 py-4 text-white bg-sky-900 rounded-md hover:bg-sky-800  focus:bg-sky-700 focus:outline-none"
                 >
+                    {isloading ? 'Loading...' : 'SING IN'}
                     SING IN
                 </button>
             </div>

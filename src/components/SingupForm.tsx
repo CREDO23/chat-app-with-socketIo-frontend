@@ -105,7 +105,7 @@ export default function ({ setForm }: Props): JSX.Element {
                 </span>
                 <span
                     onClick={() => setForm('singin')}
-                    className=" font-medium ml-2 cursor-pointer text-slate-50"
+                    className=" font-medium ml-2 cursor-pointer text-[rgba(253,216,45,1)]"
                 >
                     Sing in
                 </span>

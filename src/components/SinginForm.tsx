@@ -69,7 +69,7 @@ export default function ({ setForm }: Props): JSX.Element {
                 <span className=" text-slate-900">Don't have an account ?</span>
                 <span
                     onClick={() => setForm('singup')}
-                    className=" font-medium ml-2 cursor-pointer text-slate-50"
+                    className=" font-medium ml-2 cursor-pointer text-[rgba(253,216,45,1)]"
                 >
                     Sing up
                 </span>
@@ -81,7 +81,6 @@ export default function ({ setForm }: Props): JSX.Element {
                     className=" w-full px-2 py-4 text-white bg-sky-900 rounded-md hover:bg-sky-800  focus:bg-sky-700 focus:outline-none"
                 >
                     {isloading ? 'Loading...' : 'SING IN'}
-                    SING IN
                 </button>
             </div>
         </form>

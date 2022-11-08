@@ -11,6 +11,7 @@ module.exports = {
             },
             backgroundImage: {
                 bgApp: "url('./src/assets/background-chat.jpg')",
+                bgLogin: "url('./src/assets/backgroundLogin.jpg')",
             },
             fontFamily: {
                 Poppins: ['Poppins', 'sans-serif'],

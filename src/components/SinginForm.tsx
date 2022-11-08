@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { singin } from '../store/slices/currentUser';
 import { useAppDispatch, useAppSelector } from '../store/hooks/index';
+import toast from '../utils/toasty/index';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { isFill } from '../utils/validation';
 
 type Form = 'singin' | 'singup';
 type Props = {
@@ -25,9 +29,15 @@ export default function ({ setForm }: Props): JSX.Element {
         });
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch(singin(signinForm));
+        try {
+            await isFill(signinForm);
+
+            dispatch(singin(signinForm));
+        } catch (error) {
+            toast.error(error as string);
+        }
     };
 
     return (
@@ -56,7 +66,7 @@ export default function ({ setForm }: Props): JSX.Element {
                     Password
                 </label>
                 <input
-                    type="email"
+                    type="password"
                     id="password"
                     placeholder="********************"
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -83,6 +93,7 @@ export default function ({ setForm }: Props): JSX.Element {
                     {isloading ? 'Loading...' : 'SING IN'}
                 </button>
             </div>
+            <ToastContainer />
         </form>
     );
 }

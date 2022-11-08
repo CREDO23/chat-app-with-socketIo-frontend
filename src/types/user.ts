@@ -3,14 +3,12 @@ interface USER {
     firstName?: string;
     lastName?: string;
     password: string;
+    confirmPassword?: string;
     email?: string;
 }
 
 type CurrentUser = {
-    successMessage: string | null;
     loading: boolean;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    errorMessage: any;
     user: USER | null;
     accessToken: unknown;
 };

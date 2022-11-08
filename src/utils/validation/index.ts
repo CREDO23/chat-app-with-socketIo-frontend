@@ -1,18 +1,30 @@
 import validator from 'validator';
 import USER from '../../types/user';
 
-export const isFill = (form: USER): Promise<boolean | string> => {
-    return new Promise((reject, resolve) => {
-        let fieldsLength = 0;
+export const isFill = (form: USER): Promise<void> => {
+    return new Promise((resolve, reject) => {
+        let countFieds = 0;
+
         for (const input of Object.values(form)) {
             if (validator.isEmpty(input)) {
-                reject(false);
+                reject('Please , Fill in all required fields');
             } else {
-                fieldsLength += 1;
+                countFieds += 1;
             }
-            if (Object.values(form).length == fieldsLength) {
+
+            if (countFieds == Object.values(form).length) {
                 resolve();
             }
+        }
+    });
+};
+
+export const isMatch = (arg1: string, arg2: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+        if (arg1 === arg2) {
+            resolve();
+        } else {
+            reject('Passowrd does not match');
         }
     });
 };

@@ -4,7 +4,9 @@ import { singup } from '../store/slices/currentUser';
 import toast from '../utils/toasty/index';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { isFill } from '../utils/validation';
+import { isFill, isMatch } from '../utils/validation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 type Form = 'singin' | 'singup';
 type Props = {
@@ -12,20 +14,19 @@ type Props = {
 };
 
 export default function ({ setForm }: Props): JSX.Element {
-    const currentUser = useAppSelector(
-        (state) => state.currentUser.errorMessage,
-    );
+    const isLoading = useAppSelector((state) => state.currentUser.loading);
     const dispatch = useAppDispatch();
 
     const [singupForm, setSingupForm] = useState({
         userName: '',
         password: '',
         email: '',
+        confirmPassword: '',
     });
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement>,
-        input: 'userName' | 'email' | 'firstName' | 'lastName' | 'password',
+        input: 'userName' | 'email' | 'confirmPassword' | 'password',
     ): void => {
         setSingupForm({
             ...singupForm,
@@ -37,23 +38,19 @@ export default function ({ setForm }: Props): JSX.Element {
         e.preventDefault();
 
         try {
-            const isFilled = await isFill(singupForm);
+            await isFill(singupForm);
 
-            console.log(isFilled);
+            await isMatch(singupForm.confirmPassword, singupForm.password);
 
-            // if (!isFilled) {
-            //     toast.error('Please , fill in all fields');
-            // } else {
-            //     dispatch(singup(singupForm));
-            // }
-
-            dispatch(singup(singupForm));
+            dispatch(
+                singup({
+                    userName: singupForm.userName,
+                    password: singupForm.password,
+                    email: singupForm.email,
+                }),
+            );
         } catch (error) {
             toast.error(error as string);
-
-            if (currentUser) {
-                toast.error(currentUser);
-            }
         }
     };
 
@@ -116,9 +113,9 @@ export default function ({ setForm }: Props): JSX.Element {
                     type="password"
                     id="confirmPassword"
                     placeholder="***************"
-                    // onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    //     handleChange(e, 'confirmPassword')
-                    // }
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        handleChange(e, 'confirmPassword')
+                    }
                     className="w-full px-3 py-2 text-slate-900 placeholder-gray-300 border border-gray-300 rounded-md  focus:outline-none  focus:ring-indigo-100 focus:border-indigo-200"
                 />
             </div>
@@ -140,8 +137,14 @@ export default function ({ setForm }: Props): JSX.Element {
                     type="submit"
                     className="w-full px-2 py-4 text-white bg-sky-900 rounded-md hover:bg-sky-800  focus:bg-sky-700 focus:outline-none"
                 >
-                    {/* {currentUser.loading ? 'Loading...' : 'SING UP'} */}
-                    SINGUP
+                    {isLoading ? (
+                        <FontAwesomeIcon
+                            className=" animate-spin"
+                            icon={faSpinner}
+                        />
+                    ) : (
+                        'SING UP'
+                    )}
                 </button>
             </div>
             <ToastContainer />

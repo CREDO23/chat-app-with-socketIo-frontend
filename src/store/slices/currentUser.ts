@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import toast from '../../utils/toasty/index';
 import USER from '../../types/user';
 import axios, { AxiosResponse } from 'axios';
 import type {
@@ -8,9 +9,7 @@ import type {
 } from '../../types/user';
 
 const initialState: CurrentUser = {
-    successMessage: '',
     loading: false,
-    errorMessage: null,
     user: null,
     accessToken: localStorage.getItem('accessToken'),
 };
@@ -62,16 +61,14 @@ export const currentUserSlice = createSlice({
             singup.fulfilled,
             (state, action: PayloadAction<AxiosResponse<SingupResponse>>) => {
                 state.loading = false;
-                state.errorMessage = null;
-                state.successMessage = action.payload.data.message;
+                toast.susscess(action.payload.data.message);
                 state.user = action.payload.data.data;
             },
         );
 
         builder.addCase(singup.rejected, (state, action) => {
             state.loading = false;
-            state.errorMessage = action.payload || 'Something went wrong';
-            state.successMessage = null;
+            toast.error(action.payload as string);
             state.user = null;
         });
 
@@ -83,10 +80,9 @@ export const currentUserSlice = createSlice({
             singin.fulfilled,
             (state, action: PayloadAction<AxiosResponse<SigninResponse>>) => {
                 state.loading = false;
-                state.errorMessage = null;
-                state.successMessage = action.payload.data.message;
                 state.user = action.payload.data.data.user;
                 state.accessToken = action.payload.data.data.accessToken;
+                toast.susscess(action.payload.data.message);
                 localStorage.setItem(
                     'accessToken',
                     action.payload.data.data.accessToken,
@@ -96,10 +92,9 @@ export const currentUserSlice = createSlice({
 
         builder.addCase(singin.rejected, (state, action) => {
             state.loading = false;
-            state.errorMessage = action.payload || 'Something went wrong';
-            state.successMessage = null;
             state.user = null;
             state.accessToken = null;
+            toast.error(action.payload as string);
         });
     },
 });

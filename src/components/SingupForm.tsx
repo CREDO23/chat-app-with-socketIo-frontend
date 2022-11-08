@@ -5,6 +5,8 @@ import toast from '../utils/toasty/index';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { isFill, isMatch } from '../utils/validation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 type Form = 'singin' | 'singup';
 type Props = {
@@ -135,7 +137,14 @@ export default function ({ setForm }: Props): JSX.Element {
                     type="submit"
                     className="w-full px-2 py-4 text-white bg-sky-900 rounded-md hover:bg-sky-800  focus:bg-sky-700 focus:outline-none"
                 >
-                    {isLoading ? 'Loading...' : 'SING UP'}
+                    {isLoading ? (
+                        <FontAwesomeIcon
+                            className=" animate-spin"
+                            icon={faSpinner}
+                        />
+                    ) : (
+                        'SING UP'
+                    )}
                 </button>
             </div>
             <ToastContainer />

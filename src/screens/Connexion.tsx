@@ -17,7 +17,7 @@ export default function (): JSX.Element {
                             <span className=" font-extralight">
                                 Welcome to{' '}
                             </span>
-                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[rgba(12,74,130,1)] to-[rgba(253,216,45,1)] font-bold">
+                            <span className="bg-clip-text  text-transparent bg-gradient-to-r from-[rgba(12,74,130,1)] to-[rgba(253,216,45,1)] font-bold">
                                 Chataw
                             </span>
                         </h2>
@@ -82,9 +82,9 @@ export default function (): JSX.Element {
             </div>
             <div className="h-full w-full md:w-3/5 flex items-center justify-center bg-white">
                 {form == 'singin' ? (
-                    <div className="flex items-center justify-center flex-col w-8/10 md:w-2/5">
+                    <div className="flex items-center justify-center flex-col w-8/10 md:w-1/2">
                         <img
-                            className=" h-[100px] w-[100px] md:w-[200px] md:h-[200px] "
+                            className=" h-[100px] w-[100px] md:w-[160px] md:h-[160px] "
                             src={logo}
                             alt=""
                         />
@@ -92,9 +92,9 @@ export default function (): JSX.Element {
                         <SinginForm setForm={setForm} />
                     </div>
                 ) : form == 'singup' ? (
-                    <div className="flex items-center justify-center flex-col w-8/10 md:w-2/5">
+                    <div className="flex items-center justify-center flex-col w-8/10 md:w-1/2">
                         <img
-                            className=" h-[100px] w-[100px] md:w-[200px] md:h-[200px]"
+                            className=" h-[100px] w-[100px] md:w-[160px] md:h-[160px]"
                             src={logo}
                             alt=""
                         />

@@ -87,6 +87,10 @@ export const currentUserSlice = createSlice({
                 state.successMessage = action.payload.data.message;
                 state.user = action.payload.data.data.user;
                 state.accessToken = action.payload.data.data.accessToken;
+                localStorage.setItem(
+                    'accessToken',
+                    action.payload.data.data.accessToken,
+                );
             },
         );
 

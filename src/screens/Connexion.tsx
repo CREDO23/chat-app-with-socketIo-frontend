@@ -10,8 +10,8 @@ export default function (): JSX.Element {
 
     return (
         <div className="w-full h-full flex items-center justify-center">
-            <div className="h-full bg-bgLogin bg-no-repeat bg-cover w-2/5 flex items-center justify-end">
-                <div className="h-full w-4/5 flex flex-col items-center">
+            <div className="hidden h-full bg-bgLogin bg-no-repeat bg-cover w-2/5 md:flex items-center justify-end">
+                <div className="md:h-full md:w-4/5 md:flex md:flex-col md:items-center">
                     <div className=" border-red-50 flex flex-col justify-end ml-5 h-2/3">
                         <h2 className=" my-10 text-white text-4xl">
                             <span className=" font-extralight">
@@ -30,14 +30,14 @@ export default function (): JSX.Element {
                                 nesciunt perferendis enim tempora obcaecati
                                 facere maxime!
                             </p>
-                            <button className=" transition my-3 w-1/4 py-2 text-[rgba(253,216,45,1)] bg-sky-900 rounded-md hover:bg-white  hover:text-sky-900 focus:bg-sky-700 focus:outline-none">
+                            <button className=" transition my-3 w-2/5  py-2 text-[rgba(253,216,45,1)] bg-sky-900 rounded-md hover:bg-white  hover:text-sky-900 focus:bg-sky-700 focus:outline-none">
                                 Find out more
                             </button>
                         </div>
                     </div>
                     <div className="h-1/3 flex items-center flex-col py-3 justify-end">
                         <a
-                            className="text-white font-extralight"
+                            className="text-white text-xs font-extralight"
                             href="http://copyright.be"
                             target="_blank"
                         >
@@ -80,22 +80,21 @@ export default function (): JSX.Element {
                     </div>
                 </div>
             </div>
-            <div className="h-full w-3/5 flex items-center justify-center bg-white">
+            <div className="h-full w-full md:w-3/5 flex items-center justify-center bg-white">
                 {form == 'singin' ? (
-                    <div className="flex items-center justify-center flex-col w-2/5">
-                        <div>
-                            <img
-                                className=" h-[200px] w-[200px] "
-                                src={logo}
-                                alt=""
-                            />
-                        </div>
+                    <div className="flex items-center justify-center flex-col w-8/10 md:w-2/5">
+                        <img
+                            className=" h-[100px] w-[100px] md:w-[200px] md:h-[200px] "
+                            src={logo}
+                            alt=""
+                        />
+
                         <SinginForm setForm={setForm} />
                     </div>
                 ) : form == 'singup' ? (
-                    <div className="flex items-center justify-center flex-col w-2/5">
+                    <div className="flex items-center justify-center flex-col w-8/10 md:w-2/5">
                         <img
-                            className=" h-[200px] w-[200px] "
+                            className=" h-[100px] w-[100px] md:w-[200px] md:h-[200px]"
                             src={logo}
                             alt=""
                         />

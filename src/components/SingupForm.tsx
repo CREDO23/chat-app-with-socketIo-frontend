@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { singup } from '../store/slices/currentUser';
+import toast from '../utils/toasty/index';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { isFill } from '../utils/validation';
 
 type Form = 'singin' | 'singup';
 type Props = {
@@ -8,7 +12,9 @@ type Props = {
 };
 
 export default function ({ setForm }: Props): JSX.Element {
-    const isloading = useAppSelector((state) => state.currentUser.loading);
+    const currentUser = useAppSelector(
+        (state) => state.currentUser.errorMessage,
+    );
     const dispatch = useAppDispatch();
 
     const [singupForm, setSingupForm] = useState({
@@ -27,10 +33,28 @@ export default function ({ setForm }: Props): JSX.Element {
         });
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        dispatch(singup(singupForm));
+        try {
+            const isFilled = await isFill(singupForm);
+
+            console.log(isFilled);
+
+            // if (!isFilled) {
+            //     toast.error('Please , fill in all fields');
+            // } else {
+            //     dispatch(singup(singupForm));
+            // }
+
+            dispatch(singup(singupForm));
+        } catch (error) {
+            toast.error(error as string);
+
+            if (currentUser) {
+                toast.error(currentUser);
+            }
+        }
     };
 
     return (
@@ -116,9 +140,11 @@ export default function ({ setForm }: Props): JSX.Element {
                     type="submit"
                     className="w-full px-2 py-4 text-white bg-sky-900 rounded-md hover:bg-sky-800  focus:bg-sky-700 focus:outline-none"
                 >
-                    {isloading ? 'Loading...' : 'SING UP'}
+                    {/* {currentUser.loading ? 'Loading...' : 'SING UP'} */}
+                    SINGUP
                 </button>
             </div>
+            <ToastContainer />
         </form>
     );
 }

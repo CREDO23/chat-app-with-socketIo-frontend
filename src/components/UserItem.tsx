@@ -4,15 +4,19 @@ import { parseContent } from '../utils/parser/index';
 
 export default function ({ online, userName }: UserItem): JSX.Element {
     return (
-        <div className="w-[23rem] bg-gray-400 px-2 h-[3rem] rounded flex items-center">
+        <div className="w-[23rem] my-0.5 bg-white px-2 h-[3rem] rounded flex items-center">
             <img
                 className="h-[3rem]  w-[3rem]  rounded-full"
                 src={logo}
                 alt=""
             />
             <div className=" w-[18rem] ml-auto flex items-center justify-between">
-                <p>{parseContent(userName)}</p>
-                <p className="text-xs text-green-900">{online && 'online'}</p>
+                <p className="text-sm  text-slate-900">
+                    {parseContent(userName)}
+                </p>
+                <p className="text-xs font-medium text-green-900">
+                    {online && 'online'}
+                </p>
             </div>
         </div>
     );

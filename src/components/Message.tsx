@@ -1,12 +1,5 @@
 import { parseDate } from '../utils/parser/index';
-
-type Props = {
-    isForeign: boolean;
-    isPrivate: boolean;
-    time: Date;
-    content: string;
-    sender: string;
-};
+import type Message from '../types/message';
 
 export default function ({
     isForeign,
@@ -14,7 +7,7 @@ export default function ({
     time,
     content,
     sender,
-}: Props): JSX.Element {
+}: Message): JSX.Element {
     const timeParsed = parseDate(time);
 
     return (

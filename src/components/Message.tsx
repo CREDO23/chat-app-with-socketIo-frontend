@@ -1,5 +1,5 @@
 import { parseDate } from '../utils/parser/index';
-import type Message from '../types/message';
+import type Message from '../types/props/message';
 
 export default function ({
     isForeign,
@@ -19,9 +19,7 @@ export default function ({
             )}
             <div className="px-1 w-full my-1">{content}</div>
             <div className="mx-1  text-gray-500 text-xs self-end">
-                <span className="mx-1">{timeParsed.hour}</span>
-                {':'}
-                <span className="mx-1">{timeParsed.minute}</span>
+                <span className="mx-1">{`${timeParsed.hour} : ${timeParsed.minute}`}</span>
             </div>
             {isForeign ? (
                 <span className="h-0 w-0 absolute border-[8px] border-white border-l-transparent  border-t-transparent border-solid  left-[-12px] bottom-0  bg-transprent"></span>

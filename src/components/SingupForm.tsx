@@ -125,7 +125,9 @@ export default function ({ setForm }: Props): JSX.Element {
                     Already have an account ?
                 </span>
                 <span
-                    onClick={() => setForm('singin')}
+                    onClick={() => {
+                        isLoading ? null : setForm('singin');
+                    }}
                     className=" font-medium ml-2 cursor-pointer text-[rgba(253,216,45,1)]"
                 >
                     Sing in
@@ -135,6 +137,7 @@ export default function ({ setForm }: Props): JSX.Element {
             <div>
                 <button
                     type="submit"
+                    disabled={isLoading}
                     className="w-full px-2 py-4 text-white bg-sky-900 rounded-md hover:bg-sky-800  focus:bg-sky-700 focus:outline-none"
                 >
                     {isLoading ? (

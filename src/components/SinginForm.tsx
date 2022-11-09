@@ -80,7 +80,9 @@ export default function ({ setForm }: Props): JSX.Element {
             <div className=" my-3 mx-2 font-light text-xs flex items-center justify-end">
                 <span className=" text-slate-900">Don't have an account ?</span>
                 <span
-                    onClick={() => setForm('singup')}
+                    onClick={() => {
+                        isloading ? null : setForm('singup');
+                    }}
                     className=" font-medium ml-2 cursor-pointer text-[rgba(253,216,45,1)]"
                 >
                     Sing up
@@ -90,6 +92,7 @@ export default function ({ setForm }: Props): JSX.Element {
             <div>
                 <button
                     type="submit"
+                    disabled={isloading}
                     className=" w-full px-2 py-4 text-white bg-sky-900 rounded-md hover:bg-sky-800  focus:bg-sky-700 focus:outline-none"
                 >
                     {isloading ? (

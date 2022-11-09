@@ -1,6 +1,6 @@
 export type DateParsed = {
     year: string;
-    mounth: string;
+    month: string;
     day: string;
     hour: string;
     minute: string;

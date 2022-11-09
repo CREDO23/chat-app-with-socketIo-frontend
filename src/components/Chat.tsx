@@ -1,10 +1,20 @@
 import logo from '../assets/logo.png';
-import type Message from '../types/message';
-import type Chat from '../types/chat';
+import type Chat from '../types/props/chat';
+import { parseDate, parseContent } from '../utils/parser/index';
 
-export default function ({ isNew }: Chat): JSX.Element {
+export default function ({
+    newMessageCount,
+    name,
+    lastMessage,
+}: Chat): JSX.Element {
+    const dateParsed = parseDate(lastMessage.time);
+
     return (
-        <div className="w-[23rem] bg-gray-400 px-2 h-[4rem] rounded flex items-center">
+        <div
+            className={`w-[23rem] cursor-pointer my-1 ${
+                newMessageCount ? ' bg-slate-200' : 'bg-white'
+            } px-2 h-[4rem] rounded flex items-center`}
+        >
             <img
                 className="h-[3rem]  w-[3rem]  rounded-full"
                 src={logo}
@@ -12,22 +22,28 @@ export default function ({ isNew }: Chat): JSX.Element {
             />
             <div className="flex h-full pr-1 ml-auto justify-around items-center flex-col">
                 <div className="flex w-[18rem] justify-between item-center">
-                    <h2 className="font-semibold">Jethron</h2>
+                    <h2 className=" text-slate-900 font-semibold">{name}</h2>
                     <div
                         className={`text-sm ${
-                            isNew ? ' text-green-900' : 'text-white'
+                            newMessageCount
+                                ? ' text-green-900'
+                                : ' text-gray-700'
                         }`}
                     >
-                        <span>12</span>
-                        {':'}
-                        <span>05</span>
+                        {dateParsed.day == 'Today' ? (
+                            <span>{`${dateParsed.hour} : ${dateParsed.minute}`}</span>
+                        ) : (
+                            <span>{`${dateParsed.month}/${dateParsed.day}/${dateParsed.year}`}</span>
+                        )}
                     </div>
                 </div>
                 <div className="self-start w-full flex items-center justify-between">
-                    <p>Nisawa man ?</p>
-                    {isNew ? (
-                        <span className="bg-green-900 text-white text-sm flex items-center justify-center rounded-full h-[1.5rem] w-[1.5rem]">
-                            2
+                    <p className="text-sm text-slate-900">
+                        {parseContent(lastMessage.content)}
+                    </p>
+                    {newMessageCount ? (
+                        <span className="bg-green-900 text-white text-xs flex items-center justify-center rounded-full h-[1.2rem] w-[1.2rem]">
+                            {newMessageCount}
                         </span>
                     ) : null}
                 </div>

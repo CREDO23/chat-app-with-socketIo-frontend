@@ -1,6 +1,6 @@
 import logo from '../assets/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { faPaperPlane, faImage } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import messages from '../../fakedata/message.json';
 import chats from '../../fakedata/chat.json';
@@ -110,7 +110,7 @@ export default function (): JSX.Element {
                     />
                 </div>
             </div>
-            <div className=" w-[25%] h-[97%] ">
+            <div className=" w-[25%] px-1 h-[97%] ">
                 <div className="h-[2.5rem] flex items-center justify-end">
                     <span
                         className={`px-3 cursor-pointer ${
@@ -133,7 +133,41 @@ export default function (): JSX.Element {
                         Users
                     </span>
                 </div>
-                <div className=""></div>
+                <div className="w-full flex flex-col items-center justify-start  h-[calc(100%-2.5rem)]">
+                    <div className="relative flex my-3 items-center justify-center">
+                        <img
+                            src={logo}
+                            className="h-[10rem] rounded-full border w-[10rem]"
+                            alt=""
+                        />
+                        <FontAwesomeIcon
+                            className=" cursor-pointer bottom-3 right-10 absolute rounded-full border p-2  text-sky-900"
+                            icon={faImage}
+                        />
+                    </div>
+
+                    <div className="flex my-3 flex-col px-1 items-start w-full ">
+                        <span className="font-semibold text-slate-900">
+                            BAKERA Thierry
+                        </span>
+                        <span className=" text-gray-400 font-medium">
+                            Credo23
+                        </span>
+                        <span className=" my-2 text-slate-900 text-sm">
+                            Developeur Web FullStack . My favorites languages
+                            are TypeScript and JavaScript . I'm a leaner at Goma
+                            Digital Academy
+                        </span>
+                    </div>
+                    <div className="w-full flex items-center justify-center">
+                        <button
+                            type="submit"
+                            className=" w-4/5 p-2 text-white bg-sky-900 rounded-md hover:bg-sky-800  focus:bg-sky-700 focus:outline-none"
+                        >
+                            Edit Profile
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     );

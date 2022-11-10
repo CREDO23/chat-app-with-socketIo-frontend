@@ -6,26 +6,26 @@ const parseLength = (value: string): string => {
     return result;
 };
 
-export const parseDate = (date: Date): DateParsed => {
+export const parseDate = (date: string): DateParsed => {
     const currentDay = new Date(Date.now()).getDate();
     const currentMonth = new Date(Date.now()).getMonth();
     const currentYear = new Date(Date.now()).getFullYear();
 
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const hour = date.getHours().toString();
-    const minute = date.getMinutes().toString();
-    const second = date.getSeconds().toString();
+    const year = new Date(date).getFullYear();
+    const month = new Date(date).getMonth() + 1;
+    const hour = new Date(date).getHours().toString();
+    const minute = new Date(date).getMinutes().toString();
+    const second = new Date(date).getSeconds().toString();
     let day = '';
 
     if (
         currentYear == year &&
         currentMonth == month - 1 &&
-        date.getDate() == currentDay
+        new Date(date).getDate() == currentDay
     ) {
         day = 'Today';
     } else {
-        day = parseLength(date.getDate().toString());
+        day = parseLength(new Date(date).getDate().toString());
     }
 
     return {

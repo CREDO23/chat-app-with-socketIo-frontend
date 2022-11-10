@@ -1,7 +1,7 @@
 type Message = {
     isForeign: boolean;
     isPrivate: boolean;
-    time: Date;
+    time: string;
     content: string;
     sender: string;
 };

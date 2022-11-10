@@ -12,9 +12,9 @@ export default function ({
 
     return (
         <div
-            className={`w-[16rem] my-2  ${
-                isForeign ? ' bg-white' : 'bg-slate-300'
-            }  relative rounded-md flex flex-col items-center justify-between`}
+            className={`w-[16rem] my-2 border ${
+                isForeign ? ' bg-white self-start' : 'bg-slate-300 self-end'
+            }  relative rounded-lg flex flex-col items-center justify-between`}
         >
             {isForeign ? (
                 !isPrivate ? (
@@ -23,7 +23,7 @@ export default function ({
                     </div>
                 ) : null
             ) : null}
-            <div className="px-1  text-slate-900 text-sm w-full my-1">
+            <div className="px-2  text-slate-900 text-sm w-full my-1">
                 {content}
             </div>
             <div className="mx-2  text-gray-500 text-xs self-end">

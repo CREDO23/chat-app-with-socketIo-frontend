@@ -22,12 +22,14 @@ export default function ({
             />
             <div className="flex h-full pr-1 ml-auto justify-around items-center flex-col">
                 <div className="flex w-[18rem] justify-between item-center">
-                    <h2 className=" text-slate-900 font-semibold">{name}</h2>
+                    <h2 className=" text-slate-900 font-semibold">
+                        {parseContent(name)}
+                    </h2>
                     <div
                         className={`text-sm ${
                             newMessageCount
                                 ? ' text-green-900'
-                                : ' text-gray-700'
+                                : ' text-gray-300'
                         }`}
                     >
                         {dateParsed.day == 'Today' ? (

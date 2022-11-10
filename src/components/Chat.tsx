@@ -11,7 +11,7 @@ export default function ({
 
     return (
         <div
-            className={`w-[23rem] cursor-pointer my-1 ${
+            className={`w-[20rem] cursor-pointer my-1 ${
                 newMessageCount ? ' bg-slate-200' : 'bg-white'
             } px-2 h-[4rem] rounded flex items-center`}
         >
@@ -21,7 +21,7 @@ export default function ({
                 alt=""
             />
             <div className="flex h-full pr-1 ml-auto justify-around items-center flex-col">
-                <div className="flex w-[18rem] justify-between item-center">
+                <div className="flex w-[15rem] justify-between item-center">
                     <h2 className=" text-slate-900 font-semibold">
                         {parseContent(name)}
                     </h2>

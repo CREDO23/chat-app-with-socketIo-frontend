@@ -11,7 +11,7 @@ export default function ({
 
     return (
         <div
-            className={`w-[20rem] cursor-pointer my-1 ${
+            className={` w-[23.75rem] md:w-[20rem] cursor-pointer my-1 ${
                 newMessageCount ? ' bg-slate-200' : 'bg-white'
             } px-2 h-[4rem] rounded flex items-center`}
         >

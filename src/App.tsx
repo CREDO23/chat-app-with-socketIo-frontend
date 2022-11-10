@@ -6,10 +6,10 @@ import Message from './components/Message';
 
 function App() {
     return (
-        <div className="w-[100vw] h-[100vh] font-Poppins bg-[#EDF0F6]  flex items-center justify-center flex-col">
+        <div className="w-[100vw] h-[100vh] font-Poppins  flex items-center justify-center flex-col">
             {/* <Connexion /> */}
-            {/* <Home /> */}
-            <UserItem
+            <Home />
+            {/* <UserItem
                 online={false}
                 imageProfile={'ddad'}
                 userName={'CREDO23shdbkjdssddjksnskjn'}
@@ -60,7 +60,7 @@ function App() {
                     'Hey les gars comment allez vous ? je voulais vous demander si demain on sera ensemble'
                 }
                 sender={'Credo'}
-            />
+            /> */}
         </div>
     );
 }

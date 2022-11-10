@@ -26,9 +26,6 @@ export default function (): JSX.Element {
                                 Lorem ipsum dolor sit amet, consectetur
                                 adipisicing elit. Sequi dolorum labore nemo,
                                 officia, odit sapiente aliquam reiciendis fugiat
-                                aperiam ducimus mollitia, quaerat quisquam
-                                nesciunt perferendis enim tempora obcaecati
-                                facere maxime!
                             </p>
                             <button className=" transition my-3 w-2/5  py-2 text-[rgba(253,216,45,1)] bg-sky-900 rounded-md hover:bg-white  hover:text-sky-900 focus:bg-sky-700 focus:outline-none">
                                 Find out more

@@ -26,7 +26,7 @@ export default function ({
             <div className="px-2  text-slate-900 text-sm w-full my-1">
                 {content}
             </div>
-            <div className="mx-2  text-gray-500 text-xs self-end">
+            <div className="mx-2  text-gray-400 text-xs self-end">
                 {dateParsed.day == 'Today' ? (
                     <span>{`${dateParsed.hour} : ${dateParsed.minute}`}</span>
                 ) : (

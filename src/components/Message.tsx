@@ -12,7 +12,7 @@ export default function ({
 
     return (
         <div
-            className={`w-[16rem] my-2 border ${
+            className={` max-w-[16rem] md:max-w-md my-2 border ${
                 isForeign ? ' bg-white self-start' : 'bg-slate-300 self-end'
             }  relative rounded-lg flex flex-col items-center justify-between`}
         >

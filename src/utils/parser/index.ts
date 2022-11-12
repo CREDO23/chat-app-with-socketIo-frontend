@@ -38,6 +38,6 @@ export const parseDate = (date: string): DateParsed => {
     };
 };
 
-export const parseContent = (content: string): string => {
-    return content.length > 12 ? `${content.substring(0, 12)} ...` : content;
+export const parseContent = (content: string , length : number): string => {
+    return content.length > length ? `${content.substring(0, length)} ...` : content;
 };

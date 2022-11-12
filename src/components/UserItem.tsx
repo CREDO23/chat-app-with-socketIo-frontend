@@ -12,7 +12,7 @@ export default function ({ online, userName }: UserItem): JSX.Element {
             />
             <div className=" w-[18rem] ml-auto flex items-center justify-between">
                 <p className="text-sm  text-slate-900">
-                    {parseContent(userName)}
+                    {parseContent(userName , 15)}
                 </p>
                 <p className="text-xs font-medium text-green-900">
                     {online && 'online'}

@@ -23,7 +23,7 @@ export default function ({
             <div className="flex h-full w-full  pr-1 ml-auto justify-around items-center flex-col">
                 <div className="flex w-full  justify-between item-center">
                     <h2 className=" text-slate-900 font-semibold">
-                        {parseContent(name)}
+                        {parseContent(name ,30)}
                     </h2>
                     <div
                         className={`text-sm ${
@@ -41,7 +41,7 @@ export default function ({
                 </div>
                 <div className="self-start w-full flex items-center justify-between">
                     <p className="text-sm text-slate-900">
-                        {parseContent(lastMessage.content)}
+                        {parseContent(lastMessage.content , 32)}
                     </p>
                     {newMessageCount ? (
                         <span className="bg-green-900 text-white text-xs flex items-center justify-center rounded-full h-[1.2rem] w-[1.2rem]">

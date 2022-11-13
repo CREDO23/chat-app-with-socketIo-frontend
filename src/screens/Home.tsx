@@ -4,10 +4,10 @@ import {
     faPaperPlane,
     faImage,
     faDiamond,
-    faUser,
     faArrowLeft,
+    faChevronDown,
 } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import messages from '../../fakedata/message.json';
 import chats from '../../fakedata/chat.json';
 import userItems from '../../fakedata/userItem.json';
@@ -26,6 +26,17 @@ export default function (): JSX.Element {
     const [mainSide, setMainSide] = useState<
         'chats' | 'users' | 'messages' | 'profil'
     >('chats');
+
+    const messagesDiv = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        messagesDiv.current?.scrollTo({
+            behavior: 'auto',
+            top: messagesDiv.current.scrollHeight,
+        });
+    }, [content]);
+
+    const [chevronDown, setChevronDonw] = useState<boolean>(false);
 
     return (
         <>
@@ -54,6 +65,7 @@ export default function (): JSX.Element {
                         {chats.map((chat) => {
                             return (
                                 <Chat
+                                    key={chat.name}
                                     newMessageCount={chat.newMessageCount}
                                     name={chat.name}
                                     messages={chat.messages}
@@ -63,7 +75,10 @@ export default function (): JSX.Element {
                         })}
                     </div>
                 </div>
-                <div className="md:w-[60%] bg-[#e9effc] h-[97%] rounded-md">
+                <div
+                    onClick={() => setContent('messages')}
+                    className="md:w-[60%] bg-[#e9effc] h-[97%] rounded-md"
+                >
                     <div className="h-[4rem] border-b-2 px-2  flex items-center justify-between">
                         <div className="w-3/5 flex items-center justify-start ">
                             <img
@@ -90,28 +105,43 @@ export default function (): JSX.Element {
                                     content == 'participants'
                                         ? ' text-sky-800  bg-sky-200'
                                         : ' text-gray-400 bg-transparent'
-                                } cursor-pointer font-semibold py-1 mx-3  text-xs border rounded-3xl`}
-                                onClick={() => setContent('participants')}
+                                } cursor-pointer relative font-semibold py-1 mx-3  text-xs border rounded-3xl`}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setContent('participants');
+                                }}
                             >
                                 Participants
                             </span>
                         </div>
                     </div>
-                    <div className="h-[calc(100%-7.5rem)] backdrop-blur-md relative no-scrollbar overflow-y-auto p-4 flex flex-col ">
+                    <div
+                        ref={messagesDiv}
+                        onScroll={(e) => {
+                            if (e.currentTarget.scrollTop < 50) {
+                                setChevronDonw(true);
+                            } else {
+                                setChevronDonw(false);
+                            }
+                        }}
+                        className="h-[calc(100%-7.5rem)] backdrop-blur-md no-scrollbar overflow-y-auto p-4 flex flex-col "
+                    >
                         {content == 'participants' ? <UserChatList /> : null}
-                        {messages.map((message) => {
-                            return (
-                                <Message
-                                    time={message.time}
-                                    isForeign={message.isForeign}
-                                    isPrivate={message.isPrivate}
-                                    content={message.content}
-                                    sender={message.sender}
-                                />
-                            );
-                        })}
+                        {content == 'messages' &&
+                            messages.map((message) => {
+                                return (
+                                    <Message
+                                        key={message.time}
+                                        time={message.time}
+                                        isForeign={message.isForeign}
+                                        isPrivate={message.isPrivate}
+                                        content={message.content}
+                                        sender={message.sender}
+                                    />
+                                );
+                            })}
                     </div>
-                    <div className="h-[3.5rem] items-center flex p-1 border-t-2 ">
+                    <div className="h-[3.5rem] items-center relative flex p-1 border-t-2 ">
                         <input
                             type="text"
                             id="message"
@@ -123,6 +153,18 @@ export default function (): JSX.Element {
                             icon={faPaperPlane}
                             size={'2x'}
                         />
+                        {chevronDown && content == 'messages' && (
+                            <FontAwesomeIcon
+                                onClick={() =>
+                                    messagesDiv.current?.scrollTo({
+                                        behavior: 'auto',
+                                        top: messagesDiv.current.scrollHeight,
+                                    })
+                                }
+                                className="text-sky-700 absolute cursor-pointer right-3 animate-bounce bg-white -top-[4rem] rounded-full p-3 border"
+                                icon={faChevronDown}
+                            />
+                        )}
                     </div>
                 </div>
                 <div className=" md:w-[25%] px-1 h-[97%] ">
@@ -199,6 +241,7 @@ export default function (): JSX.Element {
                                     {userItems.map((item) => {
                                         return (
                                             <UserItem
+                                                key={item.userName}
                                                 imageProfile={item.imageProfile}
                                                 online={item.online}
                                                 userName={item.userName}
@@ -239,6 +282,7 @@ export default function (): JSX.Element {
                                 {chats.map((chat) => {
                                     return (
                                         <Chat
+                                            key={chat.name}
                                             newMessageCount={
                                                 chat.newMessageCount
                                             }
@@ -248,6 +292,7 @@ export default function (): JSX.Element {
                                         />
                                     );
                                 })}
+                                <span></span>
                             </div>
                         </div>
                     </>
@@ -293,6 +338,7 @@ export default function (): JSX.Element {
                                 {messages.map((message) => {
                                     return (
                                         <Message
+                                            key={message.time}
                                             time={message.time}
                                             isForeign={message.isForeign}
                                             isPrivate={message.isPrivate}
@@ -331,6 +377,7 @@ export default function (): JSX.Element {
                             {userItems.map((item) => {
                                 return (
                                     <UserItem
+                                        key={item.userName}
                                         imageProfile={item.imageProfile}
                                         online={item.online}
                                         userName={item.userName}
@@ -391,7 +438,7 @@ export default function (): JSX.Element {
                         onClick={() => setMainSide('profil')}
                     >
                         <img
-                            className="p-1 w-10 h-10 rounded-full  dark:ring-gray-500"
+                            className="p-1 w-10 h-10 border rounded-full  dark:ring-gray-500"
                             src={logo}
                             alt="Bordered avatar"
                         />

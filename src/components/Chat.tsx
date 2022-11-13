@@ -12,7 +12,7 @@ export default function ({
 
     return (
         <div
-            onClick={showMessages}
+            onClick={() => showMessages('messages')}
             className={` w-[23.75rem] md:w-full cursor-pointer my-1 ${
                 newMessageCount ? ' bg-slate-200' : 'bg-white'
             } px-1 h-[4rem] rounded flex items-center `}

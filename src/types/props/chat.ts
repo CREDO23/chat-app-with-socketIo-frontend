@@ -5,7 +5,9 @@ type Chat = {
     lastMessage: Message;
     newMessageCount: number;
     messages: Message[];
-    showMessages: () => void;
+    showMessages: React.Dispatch<
+        React.SetStateAction<'users' | 'profil' | 'chats' | 'messages'>
+    >;
 };
 
 export default Chat;

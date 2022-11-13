@@ -2,7 +2,7 @@ import logo from '../assets/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faPaperPlane,
-    faImage,
+    faPen,
     faDiamond,
     faArrowLeft,
     faChevronDown,
@@ -87,7 +87,10 @@ export default function (): JSX.Element {
                                 src={logo}
                                 alt=""
                             />
-                            <p className="mx-3">Credo23</p>
+                            <div className="flex mx-3 flex-col items-start justify-between">
+                                <p className="text-sky-900">Credo23</p>
+                                <p className="text-green-600 text-xs">Online</p>
+                            </div>
                         </div>
 
                         <div className=" flex items-center justify-end h-full w-2/5">
@@ -202,7 +205,7 @@ export default function (): JSX.Element {
                                     />
                                     <FontAwesomeIcon
                                         className=" cursor-pointer bottom-5 right-1 absolute rounded-full border p-2  text-sky-800  bg-sky-100"
-                                        icon={faImage}
+                                        icon={faPen}
                                     />
                                 </div>
 
@@ -229,7 +232,7 @@ export default function (): JSX.Element {
                                 </div>
                             </>
                         ) : leftSide == 'users' ? (
-                           <Users/>
+                            <Users />
                         ) : null}
                     </div>
                 </div>
@@ -357,7 +360,7 @@ export default function (): JSX.Element {
                             {userItems.map((item) => {
                                 return (
                                     <UserItem
-                                    mode='private'
+                                        mode="private"
                                         key={item.userName}
                                         imageProfile={item.imageProfile}
                                         online={item.online}
@@ -377,7 +380,7 @@ export default function (): JSX.Element {
                             />
                             <FontAwesomeIcon
                                 className=" cursor-pointer bottom-5 right-1 absolute rounded-full border p-2  text-sky-800  bg-sky-100"
-                                icon={faImage}
+                                icon={faPen}
                             />
                         </div>
 

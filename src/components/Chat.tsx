@@ -13,7 +13,7 @@ export default function ({
         <div
             className={` w-[23.75rem] md:w-full cursor-pointer my-1 ${
                 newMessageCount ? ' bg-slate-200' : 'bg-white'
-            } px-2 h-[4rem] rounded flex items-center `}
+            } px-1 h-[4rem] rounded flex items-center `}
         >
             <img
                 className="h-[3rem] m-1 border  w-[3rem]  rounded-full"
@@ -28,7 +28,7 @@ export default function ({
                     <div
                         className={`text-sm ${
                             newMessageCount
-                                ? ' text-green-900'
+                                ? ' text-green-600'
                                 : ' text-gray-300'
                         }`}
                     >
@@ -44,7 +44,7 @@ export default function ({
                         {parseContent(lastMessage.content, 20)}
                     </p>
                     {newMessageCount ? (
-                        <span className="bg-green-900 text-white text-xs flex items-center justify-center rounded-full h-[1.2rem] w-[1.2rem]">
+                        <span className="bg-green-600 text-white text-xs flex items-center justify-center rounded-full h-[1.2rem] w-[1.2rem]">
                             {newMessageCount}
                         </span>
                     ) : null}

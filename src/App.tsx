@@ -2,6 +2,7 @@ import Connexion from './screens/Connexion';
 import UserItem from './components/UserItem';
 import Chat from './components/Chat';
 import Home from './screens/Home';
+import 'flowbite-react'
 import Message from './components/Message';
 
 function App() {

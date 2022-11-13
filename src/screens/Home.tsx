@@ -28,8 +28,8 @@ export default function (): JSX.Element {
 
     return (
         <>
-            <div className="w-screen relative hidden  bg-white items-center md:flex h-full">
-                <div className=" px-1 w-sreen md:w-[25%] h-[97%] ">
+            <div className="w-screen md:w-[1360px] relative hidden  bg-white items-center md:flex h-full">
+                <div className=" px-1 w-sreen md:w-[28%] h-[97%] ">
                     <div className="h-[4rem] flex items-center px-2 ">
                         <span className="bg-clip-text  text-4xl text-transparent bg-gradient-to-r from-[rgba(12,74,130,1)] to-[rgba(253,216,45,1)] font-bold">
                             Chataw
@@ -62,7 +62,7 @@ export default function (): JSX.Element {
                         })}
                     </div>
                 </div>
-                <div className="md:w-[65%] bg-[#e9effc] h-[97%] rounded-md">
+                <div className="md:w-[60%] bg-[#e9effc] h-[97%] rounded-md">
                     <div className="h-[4rem] border-b-2 px-2  flex items-center justify-between">
                         <div className="w-3/5 flex items-center justify-start ">
                             <img

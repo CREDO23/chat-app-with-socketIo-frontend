@@ -14,6 +14,7 @@ import userItems from '../../fakedata/userItem.json';
 import Message from '../components/Message';
 import Chat from '../components/Chat';
 import UserItem from '../components/UserItem';
+import UserChatList from '../components/UserChatList';
 
 export default function (): JSX.Element {
     const [content, setContent] = useState<'messages' | 'participants'>(
@@ -28,8 +29,8 @@ export default function (): JSX.Element {
 
     return (
         <>
-            <div className="w-screen relative hidden  bg-white items-center md:flex h-full">
-                <div className=" px-1 w-sreen md:w-[25%] h-[97%] ">
+            <div className="w-full md:w-[1360px] relative hidden  bg-white items-center md:flex h-full">
+                <div className=" px-1 w-sreen md:w-[28%] h-[97%] ">
                     <div className="h-[4rem] flex items-center px-2 ">
                         <span className="bg-clip-text  text-4xl text-transparent bg-gradient-to-r from-[rgba(12,74,130,1)] to-[rgba(253,216,45,1)] font-bold">
                             Chataw
@@ -62,7 +63,7 @@ export default function (): JSX.Element {
                         })}
                     </div>
                 </div>
-                <div className="md:w-[65%] bg-[#e9effc] h-[97%] rounded-md">
+                <div className="md:w-[60%] bg-[#e9effc] h-[97%] rounded-md">
                     <div className="h-[4rem] border-b-2 px-2  flex items-center justify-between">
                         <div className="w-3/5 flex items-center justify-start ">
                             <img
@@ -96,7 +97,8 @@ export default function (): JSX.Element {
                             </span>
                         </div>
                     </div>
-                    <div className="h-[calc(100%-7.5rem)] no-scrollbar overflow-y-auto p-4 flex flex-col ">
+                    <div className="h-[calc(100%-7.5rem)] backdrop-blur-md relative no-scrollbar overflow-y-auto p-4 flex flex-col ">
+                        {content == 'participants' ? <UserChatList /> : null}
                         {messages.map((message) => {
                             return (
                                 <Message
@@ -375,7 +377,7 @@ export default function (): JSX.Element {
                     </>
                 ) : null}
             </div>
-            <span className="absolute md:hidden top-4 h-12 w-12 flex items-center justify-center bg-sky-800 text-sky-100 p-1 rounded-full right-5">
+            <span className="absolute md:hidden top-4 h-12 w-12 flex items-center justify-center text-sky-100 p-1 rounded-full right-5">
                 {mainSide == 'profil' || mainSide == 'users' ? (
                     <span
                         className=" fixed"
@@ -384,8 +386,16 @@ export default function (): JSX.Element {
                         <FontAwesomeIcon icon={faArrowLeft} />
                     </span>
                 ) : (
-                    <span onClick={() => setMainSide('profil')}>
-                        <FontAwesomeIcon icon={faUser} />
+                    <span
+                        className="relative"
+                        onClick={() => setMainSide('profil')}
+                    >
+                        <img
+                            className="p-1 w-10 h-10 rounded-full  dark:ring-gray-500"
+                            src={logo}
+                            alt="Bordered avatar"
+                        />
+                        <span className="top-0 left-7 absolute  w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
                     </span>
                 )}
             </span>

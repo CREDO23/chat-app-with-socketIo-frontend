@@ -5,6 +5,7 @@ type Chat = {
     lastMessage: Message;
     newMessageCount: number;
     messages: Message[];
+    showMessages: () => void;
 };
 
 export default Chat;

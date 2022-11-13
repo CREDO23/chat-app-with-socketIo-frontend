@@ -1,8 +1,8 @@
 import logo from '../assets/logo.png';
 export default function (): JSX.Element {
     return (
-        <div className="bg-white absolute top-3 right-3 ml-auto z-10 w-60  rounded shadow dark:bg-gray-700">
-            <ul className="py-1 no-scrollbar overflow-y-auto h-48 text-gray-700 dark:text-gray-200">
+        <div className="bg-white absolute z-20 top-3 right-3 ml-auto h-auto w-60   rounded shadow dark:bg-gray-700">
+            <ul className="py-1 no-scrollbar overflow-y-auto max-h-[30rem] text-gray-700 dark:text-gray-200">
                 <li>
                     <a
                         href="#"

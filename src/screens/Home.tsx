@@ -10,10 +10,8 @@ import {
 import { useRef, useState, useEffect } from 'react';
 import messages from '../../fakedata/message.json';
 import chats from '../../fakedata/chat.json';
-import userItems from '../../fakedata/userItem.json';
 import Message from '../components/Message';
 import Chat from '../components/Chat';
-import UserItem from '../components/UserItem';
 import UserChatList from '../components/UserChatList';
 import Users from '../components/Users';
 
@@ -31,17 +29,24 @@ export default function (): JSX.Element {
     const messagesDiv = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        messagesDiv.current?.scrollTo({
-            behavior: 'auto',
-            top: messagesDiv.current.scrollHeight,
-        });
-    }, [content]);
+        if (content == 'messages') {
+            messagesDiv.current?.scrollTo({
+                behavior: 'auto',
+                top: messagesDiv.current.scrollHeight,
+            });
+        } else if (content == 'participants') {
+            messagesDiv.current?.scrollTo({
+                behavior: 'auto',
+                top: 0,
+            });
+        }
+    }, [content, content]);
 
     const [chevronDown, setChevronDonw] = useState<boolean>(false);
 
     return (
         <>
-            <div className="w-full md:w-[1360px] relative hidden  bg-white items-center md:flex h-full">
+            <div className="w-full md:w-[1360px] hidden  bg-white items-center md:flex h-full">
                 <div className=" px-1 w-sreen md:w-[28%] h-[97%] ">
                     <div className="h-[4rem] flex items-center px-2 ">
                         <span className="bg-clip-text  text-4xl text-transparent bg-gradient-to-r from-[rgba(12,74,130,1)] to-[rgba(253,216,45,1)] font-bold">
@@ -66,6 +71,7 @@ export default function (): JSX.Element {
                         {chats.map((chat) => {
                             return (
                                 <Chat
+                                    showMessages={() => setMainSide('messages')}
                                     key={chat.name}
                                     newMessageCount={chat.newMessageCount}
                                     name={chat.name}
@@ -128,22 +134,22 @@ export default function (): JSX.Element {
                                 setChevronDonw(false);
                             }
                         }}
-                        className="h-[calc(100%-7.5rem)] backdrop-blur-md no-scrollbar overflow-y-auto p-4 flex flex-col "
+                        className="h-[calc(100%-7.5rem)] relative no-scrollbar overflow-y-auto p-4 flex flex-col "
                     >
-                        {content == 'participants' ? <UserChatList /> : null}
-                        {content == 'messages' &&
-                            messages.map((message) => {
-                                return (
-                                    <Message
-                                        key={message.time}
-                                        time={message.time}
-                                        isForeign={message.isForeign}
-                                        isPrivate={message.isPrivate}
-                                        content={message.content}
-                                        sender={message.sender}
-                                    />
-                                );
-                            })}
+                        {content == 'participants' && <UserChatList />}
+
+                        {messages.map((message) => {
+                            return (
+                                <Message
+                                    key={message.time}
+                                    time={message.time}
+                                    isForeign={message.isForeign}
+                                    isPrivate={message.isPrivate}
+                                    content={message.content}
+                                    sender={message.sender}
+                                />
+                            );
+                        })}
                     </div>
                     <div className="h-[3.5rem] items-center relative flex p-1 border-t-2 ">
                         <input
@@ -265,6 +271,9 @@ export default function (): JSX.Element {
                                 {chats.map((chat) => {
                                     return (
                                         <Chat
+                                            showMessages={() =>
+                                                setMainSide('messages')
+                                            }
                                             key={chat.name}
                                             newMessageCount={
                                                 chat.newMessageCount
@@ -281,7 +290,7 @@ export default function (): JSX.Element {
                     </>
                 ) : mainSide == 'messages' ? (
                     <>
-                        <div className="md:w-[65%] bg-[#e9effc] h-[97%] rounded-md">
+                        <div className="md:w-[65%] bg-[#e9effc] h-full rounded-md">
                             <div className="h-[4rem] border-b-2 px-2  flex items-center justify-between">
                                 <div className="w-3/5 flex items-center justify-start ">
                                     <img
@@ -347,32 +356,10 @@ export default function (): JSX.Element {
                         </div>
                     </>
                 ) : mainSide == 'users' ? (
-                    <>
-                        <div>
-                            <input
-                                type="text"
-                                id="message"
-                                placeholder="Search a user here ..."
-                                className="w-full px-3 py-2 flex text-slate-900 placeholder-gray-300 border border-gray-100 rounded-md  focus:outline-none  focus:ring-indigo-100 focus:border-indigo-200"
-                            />
-                        </div>
-                        <div>
-                            {userItems.map((item) => {
-                                return (
-                                    <UserItem
-                                        mode="private"
-                                        key={item.userName}
-                                        imageProfile={item.imageProfile}
-                                        online={item.online}
-                                        userName={item.userName}
-                                    />
-                                );
-                            })}
-                        </div>
-                    </>
+                    <Users />
                 ) : mainSide == 'profil' ? (
                     <>
-                        <div className="relativeflex my-3 items-center justify-center">
+                        <div className="relative flex my-3 items-center justify-center">
                             <img
                                 src={logo}
                                 className="h-[10rem] rounded-full border w-[10rem]"
@@ -409,14 +396,7 @@ export default function (): JSX.Element {
                 ) : null}
             </div>
             <span className="absolute md:hidden top-4 h-12 w-12 flex items-center justify-center text-sky-100 p-1 rounded-full right-5">
-                {mainSide == 'profil' || mainSide == 'users' ? (
-                    <span
-                        className=" fixed"
-                        onClick={() => setMainSide('chats')}
-                    >
-                        <FontAwesomeIcon icon={faArrowLeft} />
-                    </span>
-                ) : (
+                {mainSide == 'chats' && (
                     <span
                         className="relative"
                         onClick={() => setMainSide('profil')}
@@ -431,10 +411,26 @@ export default function (): JSX.Element {
                 )}
             </span>
             <span
-                onClick={() => setMainSide('users')}
-                className="absolute md:hidden bottom-4 h-12 w-12 flex items-center justify-center bg-sky-800 text-sky-100 p-1 rounded-full right-4"
+                onClick={() => {
+                    mainSide == 'chats'
+                        ? setMainSide('users')
+                        : setMainSide('chats');
+                }}
+                className={`absolute md:hidden ${
+                    mainSide == 'messages'
+                        ? 'top-[4.8rem] left-3'
+                        : 'bottom-4 right-4'
+                } h-12 w-12 flex items-center justify-center bg-sky-800 text-sky-100 p-1 rounded-full`}
             >
-                <FontAwesomeIcon icon={faDiamond} />
+                <FontAwesomeIcon
+                    icon={
+                        mainSide == 'users' ||
+                        mainSide == 'profil' ||
+                        mainSide == 'messages'
+                            ? faArrowLeft
+                            : faDiamond
+                    }
+                />
             </span>
         </>
     );

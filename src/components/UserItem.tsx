@@ -1,6 +1,5 @@
 import UserItem from '../types/props/userItem';
 import logo from '../assets/logo.png';
-import 'flowbite-react';
 import { parseContent } from '../utils/parser/index';
 
 export default function ({ online, userName, mode }: UserItem): JSX.Element {
@@ -25,7 +24,7 @@ export default function ({ online, userName, mode }: UserItem): JSX.Element {
                 </label>
 
                 {mode == 'channel' && (
-                    <div className="flex items-center mb-4">
+                    <div className="flexitems-center mb-4">
                         <input
                             id={userName}
                             type="checkbox"

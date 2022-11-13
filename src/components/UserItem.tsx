@@ -11,7 +11,7 @@ export default function ({ online, userName }: UserItem): JSX.Element {
                 src={logo}
                 alt=""
             />
-      
+
             <div className=" w-[16rem] ml-auto flex items-center justify-between">
                 <div className="text-sm  flex flex-col items-start justify-between text-slate-900">
                     <p>{parseContent(userName, 15)}</p>{' '}

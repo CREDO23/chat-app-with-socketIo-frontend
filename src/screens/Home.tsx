@@ -15,6 +15,7 @@ import Message from '../components/Message';
 import Chat from '../components/Chat';
 import UserItem from '../components/UserItem';
 import UserChatList from '../components/UserChatList';
+import Users from '../components/Users';
 
 export default function (): JSX.Element {
     const [content, setContent] = useState<'messages' | 'participants'>(
@@ -190,7 +191,7 @@ export default function (): JSX.Element {
                             Users
                         </span>
                     </div>
-                    <div className="w-full  no-scrollbar overflow-y-auto mb-2 flex flex-col items-center justify-start  h-[calc(100%-2.5rem)]">
+                    <div className="w-full  mb-2 flex flex-col items-center justify-start  h-[calc(100%-2.5rem)]">
                         {leftSide == 'me' ? (
                             <>
                                 <div className="relative flex my-3 items-center justify-center">
@@ -228,28 +229,7 @@ export default function (): JSX.Element {
                                 </div>
                             </>
                         ) : leftSide == 'users' ? (
-                            <>
-                                <div>
-                                    <input
-                                        type="text"
-                                        id="message"
-                                        placeholder="Search a user here ..."
-                                        className="w-full px-3 py-2 flex text-slate-900 placeholder-gray-300 border border-gray-100 rounded-md  focus:outline-none  focus:ring-indigo-100 focus:border-indigo-200"
-                                    />
-                                </div>
-                                <div>
-                                    {userItems.map((item) => {
-                                        return (
-                                            <UserItem
-                                                key={item.userName}
-                                                imageProfile={item.imageProfile}
-                                                online={item.online}
-                                                userName={item.userName}
-                                            />
-                                        );
-                                    })}
-                                </div>
-                            </>
+                           <Users/>
                         ) : null}
                     </div>
                 </div>
@@ -377,6 +357,7 @@ export default function (): JSX.Element {
                             {userItems.map((item) => {
                                 return (
                                     <UserItem
+                                    mode='private'
                                         key={item.userName}
                                         imageProfile={item.imageProfile}
                                         online={item.online}

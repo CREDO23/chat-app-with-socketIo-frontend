@@ -3,7 +3,7 @@ import logo from '../assets/logo.png';
 import 'flowbite-react';
 import { parseContent } from '../utils/parser/index';
 
-export default function ({ online, userName }: UserItem): JSX.Element {
+export default function ({ online, userName, mode }: UserItem): JSX.Element {
     return (
         <div className="w-full cursor-pointer my-1 bg-white px-2 h-[3.5rem] rounded flex items-center">
             <span className="relative h-[3rem] mr-1  w-[3rem]">
@@ -13,13 +13,27 @@ export default function ({ online, userName }: UserItem): JSX.Element {
                 )}
             </span>
 
-            <div className=" w-[14rem] ">
-                <div className="text-sm flex flex-col items-start justify-between  text-slate-900">
+            <div className=" cursor-pointer w-[14rem] flex justify-between ">
+                <label
+                    htmlFor={userName}
+                    className="text-sm flex flex-col cursor-pointer items-start justify-between  text-slate-900"
+                >
                     <p> {parseContent(userName, 15)}</p>
                     <p className="text-gray-400 font-light text-xs">
                         bakerathierry@gmail.com
                     </p>
-                </div>
+                </label>
+
+                {mode == 'channel' && (
+                    <div className="flex items-center mb-4">
+                        <input
+                            id={userName}
+                            type="checkbox"
+                            value=""
+                            className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-30 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        />
+                    </div>
+                )}
             </div>
         </div>
     );

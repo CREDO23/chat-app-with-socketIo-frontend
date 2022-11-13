@@ -49,7 +49,7 @@ export default function (): JSX.Element {
                             className="w-1/6 mx-1 py-3 cursor-pointer  bg-sky-200   text-xs  font-semibold text-sky-800   border border-gray-100 rounded-md  focus:outline-none  focus:ring-sky-100 focus:border-sky-100"
                         />
                     </div>
-                    <div className="h-[calc(100%-8rem)] no-scrollbar overflow-y-auto">
+                    <div className="h-[calc(100%-8rem)] flex flex-col items-center no-scrollbar overflow-y-auto">
                         {chats.map((chat) => {
                             return (
                                 <Chat

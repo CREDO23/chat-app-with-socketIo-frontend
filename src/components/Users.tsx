@@ -31,10 +31,11 @@ export default function (): JSX.Element {
                     </option>
                     <option value="channel">Channel Chat</option>
                 </select>
-                {
-                    mode == 'channel' && <div className='w-1/5 font-medium bg-sky-200  text-sky-800 p-2 rounded-lg cursor-pointer'>Start</div>
-                }
-                
+                {mode == 'channel' && (
+                    <div className="w-1/5 font-medium bg-sky-200  text-sky-800 p-2 rounded-lg cursor-pointer">
+                        Start
+                    </div>
+                )}
             </div>
             <div className="no-scrollbar overflow-y-auto">
                 {userItems.map((item) => {

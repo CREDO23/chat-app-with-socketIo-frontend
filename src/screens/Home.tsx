@@ -8,7 +8,7 @@ import UserChatList from '../components/UserChatList';
 import Mobile from './Mobile';
 import LeftSide from '../components/LeftSide';
 import RightSide from '../components/RightSide';
-import {ToastContainer} from 'react-toastify'
+import { ToastContainer } from 'react-toastify';
 
 export default function (): JSX.Element {
     const [content, setContent] = useState<'messages' | 'participants'>(
@@ -145,7 +145,7 @@ export default function (): JSX.Element {
                 <RightSide rightSide={rightSide} setRightSide={setRightSide} />
             </div>
             <Mobile />
-            <ToastContainer/>
+            <ToastContainer />
         </>
     );
 }

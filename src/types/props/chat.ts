@@ -1,6 +1,6 @@
 import type Message from './message';
 
-type Chat = {
+type ChatProps = {
     name: string;
     lastMessage: Message;
     newMessageCount: number;
@@ -10,4 +10,4 @@ type Chat = {
     >;
 };
 
-export default Chat;
+export default ChatProps;

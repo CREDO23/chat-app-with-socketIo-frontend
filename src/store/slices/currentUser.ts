@@ -8,10 +8,9 @@ import type {
     CurrentUser,
 } from '../../types/user';
 
-
 const initialState: CurrentUser = {
     loading: false,
-    user: JSON.parse(localStorage.getItem('user') as string) ,
+    user: JSON.parse(localStorage.getItem('user') as string),
     accessToken: localStorage.getItem('accessToken'),
 };
 
@@ -70,12 +69,10 @@ export const currentUserSlice = createSlice({
                 );
                 localStorage.setItem(
                     'user',
-                    JSON.stringify(action.payload.data.data.user)
+                    JSON.stringify(action.payload.data.data.user),
                 );
-                setTimeout(() => window.location.href = '/home' , 3000)
-                
+                setTimeout(() => (window.location.href = '/home'), 3000);
             },
-
         );
 
         builder.addCase(singup.rejected, (state, action) => {
@@ -101,9 +98,9 @@ export const currentUserSlice = createSlice({
                 );
                 localStorage.setItem(
                     'user',
-                    JSON.stringify(action.payload.data.data.user)
+                    JSON.stringify(action.payload.data.data.user),
                 );
-                setTimeout(() => window.location.href = '/home' , 3000)
+                setTimeout(() => (window.location.href = '/home'), 3000);
             },
         );
 

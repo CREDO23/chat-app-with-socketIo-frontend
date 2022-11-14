@@ -30,12 +30,12 @@ type SingupResponse = {
 };
 
 type UserChat = {
-    id : string;
-    userName : string;
-    avatar : string;
-    bio : string;
-    email : string;
-}
+    id: string;
+    userName: string;
+    avatar: string;
+    bio: string;
+    email: string;
+};
 
 export default USER;
-export type { SigninResponse, SingupResponse, CurrentUser , UserChat } ;
+export type { SigninResponse, SingupResponse, CurrentUser, UserChat };

@@ -2,7 +2,6 @@ import {
     createSlice,
     PayloadAction,
     createAsyncThunk,
-    isAsyncThunkAction,
 } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
 import toast from '../../utils/toasty/index';
@@ -27,6 +26,7 @@ export const getChats = createAsyncThunk<AxiosResponse, Chat>(
                 },
             });
             return result;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             return rejectWithValue(error?.response?.data?.message);
         }
@@ -56,6 +56,7 @@ const chatsSlice = createSlice({
         createChat: (state, action: PayloadAction<Chat>) => {
             state.currentChat = action.payload;
         },
+
     },
     extraReducers: (builer) => {
         builer.addCase(getChats.pending, (state) => {

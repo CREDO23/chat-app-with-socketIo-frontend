@@ -49,11 +49,9 @@ export default function ({ setForm }: Props): JSX.Element {
                     email: singupForm.email,
                 }),
             );
-           
         } catch (error) {
             toast.error(error as string);
         }
-
     };
 
     return (

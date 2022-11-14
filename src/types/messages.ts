@@ -1,6 +1,6 @@
 export type Message = {
-    sender : string;
-    recipient : string;
-    content : string;
-    chat : string;
-}
+    sender: string;
+    recipient: string;
+    content: string;
+    chat: string;
+};

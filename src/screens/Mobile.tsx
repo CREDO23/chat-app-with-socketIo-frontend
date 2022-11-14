@@ -23,7 +23,7 @@ export default function (): JSX.Element {
 
     const [mainSide, setMainSide] = useState<
         'chats' | 'users' | 'messages' | 'profil'
-    >('chats');
+    >('profil');
 
     const messagesDiv = useRef<HTMLDivElement>(null);
 

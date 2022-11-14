@@ -14,7 +14,7 @@ type Props = {
 };
 
 export default function ({ setForm }: Props): JSX.Element {
-    const isLoading = useAppSelector((state) => state.currentUser.loading);
+    const currentUser = useAppSelector((state) => state.currentUser);
     const dispatch = useAppDispatch();
 
     const [singupForm, setSingupForm] = useState({
@@ -49,9 +49,11 @@ export default function ({ setForm }: Props): JSX.Element {
                     email: singupForm.email,
                 }),
             );
+           
         } catch (error) {
             toast.error(error as string);
         }
+
     };
 
     return (
@@ -126,7 +128,7 @@ export default function ({ setForm }: Props): JSX.Element {
                 </span>
                 <span
                     onClick={() => {
-                        isLoading ? null : setForm('singin');
+                        currentUser.loading ? null : setForm('singin');
                     }}
                     className=" font-medium ml-2 cursor-pointer text-[rgba(253,216,45,1)]"
                 >
@@ -137,10 +139,10 @@ export default function ({ setForm }: Props): JSX.Element {
             <div>
                 <button
                     type="submit"
-                    disabled={isLoading}
+                    disabled={currentUser.loading}
                     className="w-full px-2 py-4 text-white bg-sky-900 rounded-md hover:bg-sky-800  focus:bg-sky-700 focus:outline-none"
                 >
-                    {isLoading ? (
+                    {currentUser.loading ? (
                         <FontAwesomeIcon
                             className=" animate-spin"
                             icon={faSpinner}

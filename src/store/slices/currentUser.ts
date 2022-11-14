@@ -8,9 +8,10 @@ import type {
     CurrentUser,
 } from '../../types/user';
 
+
 const initialState: CurrentUser = {
     loading: false,
-    user: null,
+    user: JSON.parse(localStorage.getItem('user') as string) ,
     accessToken: localStorage.getItem('accessToken'),
 };
 
@@ -62,8 +63,19 @@ export const currentUserSlice = createSlice({
             (state, action: PayloadAction<AxiosResponse<SingupResponse>>) => {
                 state.loading = false;
                 toast.susscess(action.payload.data.message);
-                state.user = action.payload.data.data;
+                state.user = action.payload.data.data.user;
+                localStorage.setItem(
+                    'accessToken',
+                    action.payload.data.data.accessToken,
+                );
+                localStorage.setItem(
+                    'user',
+                    JSON.stringify(action.payload.data.data.user)
+                );
+                setTimeout(() => window.location.href = '/home' , 3000)
+                
             },
+
         );
 
         builder.addCase(singup.rejected, (state, action) => {
@@ -87,6 +99,11 @@ export const currentUserSlice = createSlice({
                     'accessToken',
                     action.payload.data.data.accessToken,
                 );
+                localStorage.setItem(
+                    'user',
+                    JSON.stringify(action.payload.data.data.user)
+                );
+                setTimeout(() => window.location.href = '/home' , 3000)
             },
         );
 

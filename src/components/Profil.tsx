@@ -98,15 +98,11 @@ export default function (): JSX.Element {
                 </div>
             ) : (
                 <>
-                    <div className="relative flex my-3 items-center justify-center">
+                    <div className=" flex my-3 items-center justify-center">
                         <img
                             src={logo}
                             className="h-[10rem] rounded-full border w-[10rem]"
                             alt=""
-                        />
-                        <FontAwesomeIcon
-                            className=" cursor-pointer bottom-5 right-1 absolute rounded-full border p-2  text-sky-800  bg-sky-100"
-                            icon={faPen}
                         />
                     </div>
 

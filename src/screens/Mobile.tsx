@@ -19,11 +19,12 @@ export default function (): JSX.Element {
         'messages',
     );
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [rightSide, setRightSide] = useState<'me' | 'users'>('me');
 
     const [mainSide, setMainSide] = useState<
         'chats' | 'users' | 'messages' | 'profil'
-    >('profil');
+    >('chats');
 
     const messagesDiv = useRef<HTMLDivElement>(null);
 

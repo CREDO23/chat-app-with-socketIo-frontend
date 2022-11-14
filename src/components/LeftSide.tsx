@@ -20,7 +20,6 @@ export default function ({ setMainSide, setRightSide }: Props): JSX.Element {
             </div>
             <div className="flex items-center justify-between h-[4rem]">
                 <input
-                    disabled
                     type="text"
                     id="message"
                     placeholder="Search a chat here ..."

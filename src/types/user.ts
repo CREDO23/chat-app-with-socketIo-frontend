@@ -23,8 +23,19 @@ type SigninResponse = {
 
 type SingupResponse = {
     message: string;
-    data: USER;
+    data: {
+        accessToken: string;
+        user: USER;
+    };
 };
 
+type UserChat = {
+    id : string;
+    userName : string;
+    avatar : string;
+    bio : string;
+    email : string;
+}
+
 export default USER;
-export type { SigninResponse, SingupResponse, CurrentUser };
+export type { SigninResponse, SingupResponse, CurrentUser , UserChat } ;

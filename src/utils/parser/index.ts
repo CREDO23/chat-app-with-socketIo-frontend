@@ -1,4 +1,12 @@
-import type { DateParsed } from '../../types/dates';
+
+ type DateParsed = {
+    year: string;
+    month: string;
+    day: string;
+    hour: string;
+    minute: string;
+    second: string;
+};
 
 const parseLength = (value: string): string => {
     let result;
@@ -43,3 +51,5 @@ export const parseContent = (content: string, length: number): string => {
         ? `${content.substring(0, length)} ...`
         : content;
 };
+
+

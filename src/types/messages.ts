@@ -1,6 +1,15 @@
-export type Message = {
-    sender: string;
-    recipient: string;
+
+import type USER from "./user";
+import type Chat from './chat'
+
+ type Message = {
+    id?: string;
+    sender: USER;
+    recipient: USER & Chat;
     content: string;
-    chat: string;
+    updatedAt : string;
 };
+
+
+
+export default Message

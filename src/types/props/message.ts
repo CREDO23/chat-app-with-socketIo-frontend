@@ -4,6 +4,7 @@ type Message = {
     time: string;
     content: string;
     sender: string;
+    recipient? : string
 };
 
 export default Message;

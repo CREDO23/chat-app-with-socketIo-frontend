@@ -1,10 +1,14 @@
 interface USER {
+    id ?: string;
     userName: string;
     firstName?: string;
     lastName?: string;
-    password: string;
+    password?: string;
     confirmPassword?: string;
+    avatar?: string;
     email?: string;
+    bio? : string;
+    isLogged : boolean;
 }
 
 type CurrentUser = {
@@ -29,13 +33,6 @@ type SingupResponse = {
     };
 };
 
-type UserChat = {
-    id: string;
-    userName: string;
-    avatar: string;
-    bio: string;
-    email: string;
-};
 
 export default USER;
-export type { SigninResponse, SingupResponse, CurrentUser, UserChat };
+export type { SigninResponse, SingupResponse, CurrentUser};

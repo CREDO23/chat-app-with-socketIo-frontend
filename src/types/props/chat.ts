@@ -1,4 +1,4 @@
-import type Message from './message';
+import type Message from '../messages';
 
 type ChatProps = {
     name: string;

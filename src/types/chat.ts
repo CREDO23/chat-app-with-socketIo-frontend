@@ -1,22 +1,27 @@
-import type { UserChat } from './user';
-import type { Message } from './messages';
+import type USER from './user';
+import type  Message  from './messages';
 
-
-export type Chat = {
+ type Chat = {
     admin?: string;
+    isPrivate : boolean;
     name: string;
     avatar: string;
-    users: UserChat[];
-    messages: Message[]; 
+    users: USER[];
+    messages: Message[];
+    updatedAt : string;
 };
 
 export type ChatState = {
     loading: boolean;
     currentChat: Chat | null;
+    lastUpdate : string
     chats: Chat[] | null;
 };
 
 export type ChatResponse = {
     message: string;
-    data: Chat[] ;
+    data: Chat[];
 };
+
+
+export default Chat

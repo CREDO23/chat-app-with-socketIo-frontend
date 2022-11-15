@@ -1,16 +1,14 @@
-import {
-    createSlice,
-    PayloadAction,
-    createAsyncThunk,
-} from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
 import toast from '../../utils/toasty/index';
-import type { Chat, ChatState, ChatResponse } from '../../types/chat';
-import { Message } from '../../types/messages';
+import type { ChatState, ChatResponse } from '../../types/chat';
+import type Chat from '../../types/chat';
+import Message from '../../types/messages';
 
 const initialState: ChatState = {
     loading: false,
     currentChat: null,
+    lastUpdate: new Date().toLocaleDateString(),
     chats: [],
 };
 
@@ -26,7 +24,7 @@ export const getChats = createAsyncThunk<AxiosResponse, Chat>(
                 },
             });
             return result;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             return rejectWithValue(error?.response?.data?.message);
         }
@@ -38,15 +36,7 @@ const chatsSlice = createSlice({
     initialState,
     reducers: {
         addMessage: (state, action: PayloadAction<Message>) => {
-            if (state.currentChat?.name == action.payload.chat) {
-                state.currentChat.messages.push(action.payload);
-            } else {
-                state.chats?.forEach((chat) => {
-                    if (chat.name == action.payload.chat) {
-                        chat.messages.push(action.payload);
-                    }
-                });
-            }
+            state.currentChat?.messages.push(action.payload);
         },
 
         setCurrentChat: (state, action: PayloadAction<Chat>) => {
@@ -56,7 +46,6 @@ const chatsSlice = createSlice({
         createChat: (state, action: PayloadAction<Chat>) => {
             state.currentChat = action.payload;
         },
-
     },
     extraReducers: (builer) => {
         builer.addCase(getChats.pending, (state) => {

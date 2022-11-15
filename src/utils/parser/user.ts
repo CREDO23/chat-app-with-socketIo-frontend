@@ -5,6 +5,6 @@ export const parseUser = (user: USER): UserItem => {
     return {
         userName: user.userName,
         imageProfile: user.avatar,
-        online: user.isLogged,
+        online: user.isLogged as boolean,
     };
 };

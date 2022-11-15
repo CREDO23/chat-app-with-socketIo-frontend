@@ -1,5 +1,5 @@
 interface USER {
-    id?: string;
+    _id?: string;
     userName: string;
     firstName?: string;
     lastName?: string;
@@ -8,7 +8,7 @@ interface USER {
     avatar?: string;
     email?: string;
     bio?: string;
-    isLogged: boolean;
+    isLogged?: boolean;
 }
 
 type CurrentUser = {

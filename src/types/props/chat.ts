@@ -1,5 +1,5 @@
 import type Message from '../messages';
-import type MessageProps from './message'
+import type MessageProps from './message';
 
 type ChatProps = {
     name: string;

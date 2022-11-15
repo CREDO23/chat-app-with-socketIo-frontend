@@ -9,10 +9,10 @@ export const parseNewMessageCount = (
 ): number => {
     let count = 0;
 
-
     messages.forEach((message) => {
         if (
-            new Date(message.updatedAt as string).getTime() > new Date(lastUpdate).getTime()
+            new Date(message.updatedAt as string).getTime() >
+            new Date(lastUpdate).getTime()
         ) {
             count++;
         }
@@ -21,7 +21,10 @@ export const parseNewMessageCount = (
     return count;
 };
 
-export const parseLastMessage = (chat: Chat, userName: string): MessageProps => {
+export const parseLastMessage = (
+    chat: Chat,
+    userName: string,
+): MessageProps => {
     const lastMessage = chat.messages[chat.messages.length - 1];
 
     const isForeign = lastMessage.sender.userName != userName;

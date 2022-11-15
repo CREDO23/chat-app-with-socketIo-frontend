@@ -5,7 +5,7 @@ import chats from './slices/chats';
 const store = configureStore({
     reducer: {
         currentUser,
-        chats 
+        chats,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

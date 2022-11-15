@@ -1,9 +1,15 @@
-
 import Chat from '../components/Chat';
-import {useAppSelector} from '../store/hooks'
-import {parseLastMessage , parseName , parseNewMessageCount} from '../utils/parser/chat'
-import type USER from '../types/user'
+import { useAppSelector } from '../store/hooks';
+import {
+    parseLastMessage,
+    parseName,
+    parseNewMessageCount,
+} from '../utils/parser/chat';
+import type USER from '../types/user';
+import { getChats } from '../store/slices/chats';
+import { useAppDispatch } from '../store/hooks/index';
 import { useEffect } from 'react';
+import toast from '../utils/toasty/index';
 
 type Props = {
     setMainSide: React.Dispatch<
@@ -15,10 +21,21 @@ type Props = {
 export default function ({ setMainSide, setRightSide }: Props): JSX.Element {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
-    const user = useAppSelector(state => state.currentUser.user)
+    const user = useAppSelector((state) => state.currentUser.user);
 
-    const chatState = useAppSelector(state => state.chats)
+    const chatState = useAppSelector((state) => state.chats);
 
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        try {
+            if (user?._id) {
+                dispatch(getChats(user?._id as string));
+            }
+        } catch (error) {
+            toast.error(error as string);
+        }
+    }, []);
 
     return (
         <div className=" px-1 w-sreen md:w-[28%] h-[97%] ">
@@ -44,18 +61,31 @@ export default function ({ setMainSide, setRightSide }: Props): JSX.Element {
                     New
                 </span>
             </div>
-            <div className="h-[calc(100%-8rem)] flex flex-col items-center no-scrollbar overflow-y-auto">
+            <div className="h-[calc(100%-8rem)]  flex flex-col items-center justify-center no-scrollbar overflow-y-auto">
+                {chatState.chats?.length < 1 && (
+                    <div>
+                        <span className="h-5 text-lg py-5 text-gray-400">
+                            Not chat yet
+                        </span>
+                    </div>
+                )}
                 {chatState.chats?.map((chat) => {
                     return (
                         <Chat
                             messages={chat.messages}
                             name={parseName(chat, user as USER)}
-                            newMessageCount={parseNewMessageCount(chatState.lastUpdate, chat.messages)}
-                            lastMessage={parseLastMessage(chat, user?.userName as string)}
-                            showMessages={() => setMainSide('messages')}                      />
+                            newMessageCount={parseNewMessageCount(
+                                chatState.lastUpdate,
+                                chat.messages,
+                            )}
+                            lastMessage={parseLastMessage(
+                                chat,
+                                user?.userName as string,
+                            )}
+                            showMessages={() => setMainSide('messages')}
+                        />
                     );
                 })}
-              
             </div>
         </div>
     );

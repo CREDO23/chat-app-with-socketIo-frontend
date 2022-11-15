@@ -15,7 +15,7 @@ export type ChatState = {
     loading: boolean;
     currentChat: Chat | null;
     lastUpdate: string;
-    chats: Chat[] | null;
+    chats: Chat[];
 };
 
 export type ChatResponse = {

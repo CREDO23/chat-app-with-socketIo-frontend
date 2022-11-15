@@ -12,16 +12,14 @@ const initialState: ChatState = {
     chats: [],
 };
 
-export const getChats = createAsyncThunk<AxiosResponse, Chat>(
+export const getChats = createAsyncThunk<AxiosResponse,string>(
     'chats/getChats',
     async (id, { rejectWithValue }) => {
         try {
             const result: AxiosResponse = await axios({
-                method: 'POST',
-                url: `${import.meta.env.VITE_BACKEND_URL}/api/chats`,
-                params: {
-                    id,
-                },
+                method: 'GET',
+                url: `${import.meta.env.VITE_BACKEND_URL}/api/chats/${id}`,
+            
             });
             return result;
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -62,7 +60,7 @@ const chatsSlice = createSlice({
 
         builer.addCase(getChats.rejected, (state, action) => {
             state.loading = false;
-            state.chats = null;
+            state.chats = [];
             toast.error(action.payload as string);
         });
     },

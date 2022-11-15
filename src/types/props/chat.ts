@@ -1,8 +1,9 @@
 import type Message from '../messages';
+import type MessageProps from './message'
 
 type ChatProps = {
     name: string;
-    lastMessage: Message;
+    lastMessage: MessageProps;
     newMessageCount: number;
     messages: Message[];
     showMessages: React.Dispatch<

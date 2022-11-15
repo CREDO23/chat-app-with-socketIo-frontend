@@ -1,5 +1,4 @@
-
- type DateParsed = {
+type DateParsed = {
     year: string;
     month: string;
     day: string;
@@ -51,5 +50,3 @@ export const parseContent = (content: string, length: number): string => {
         ? `${content.substring(0, length)} ...`
         : content;
 };
-
-

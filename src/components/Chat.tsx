@@ -1,13 +1,12 @@
 import logo from '../assets/logo.png';
-import type Chat from '../types/props/chat';
+import type ChatProps from '../types/props/chat';
 import { parseDate, parseContent } from '../utils/parser/index';
-
 export default function ({
     newMessageCount,
     name,
     lastMessage,
     showMessages,
-}: Chat): JSX.Element {
+}: ChatProps): JSX.Element {
     const dateParsed = parseDate(lastMessage.time);
 
     return (

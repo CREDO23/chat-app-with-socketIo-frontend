@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import currentUser from './slices/currentUser';
+import chats from './slices/chats';
 
 const store = configureStore({
     reducer: {
         currentUser,
+        chats 
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

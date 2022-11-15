@@ -8,7 +8,6 @@ type Form = 'singin' | 'singup';
 export default function (): JSX.Element {
     const [form, setForm] = useState<Form>('singin');
 
-
     return (
         <div className="w-full h-full flex items-center justify-center">
             <div className="hidden h-full bg-bgLogin bg-no-repeat bg-cover w-2/5 md:flex items-center justify-end">

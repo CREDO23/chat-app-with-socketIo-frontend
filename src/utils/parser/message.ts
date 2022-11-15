@@ -1,14 +1,15 @@
-
 import type MessageProps from '../../types/props/message';
-import type Message from '../../types/messages'
+import type Message from '../../types/messages';
 
-export const parseMessage = (message : Message, userName: string): MessageProps => {
-
+export const parseMessage = (
+    message: Message,
+    userName: string,
+): MessageProps => {
     const isForeign = message.sender.userName != userName;
 
     const isPrivate = message.recipient.userName ? true : false;
 
-    const time = message.updatedAt;
+    const time = message.updatedAt as string;
 
     const content = message.content;
 

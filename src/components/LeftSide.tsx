@@ -1,5 +1,9 @@
-import chats from '../../fakedata/chat.json';
+
 import Chat from '../components/Chat';
+import {useAppSelector} from '../store/hooks'
+import {parseLastMessage , parseName , parseNewMessageCount} from '../utils/parser/chat'
+import type USER from '../types/user'
+import { useEffect } from 'react';
 
 type Props = {
     setMainSide: React.Dispatch<
@@ -10,6 +14,11 @@ type Props = {
 
 export default function ({ setMainSide, setRightSide }: Props): JSX.Element {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+    const user = useAppSelector(state => state.currentUser.user)
+
+    const chatState = useAppSelector(state => state.chats)
+
 
     return (
         <div className=" px-1 w-sreen md:w-[28%] h-[97%] ">
@@ -36,18 +45,17 @@ export default function ({ setMainSide, setRightSide }: Props): JSX.Element {
                 </span>
             </div>
             <div className="h-[calc(100%-8rem)] flex flex-col items-center no-scrollbar overflow-y-auto">
-                {chats.map((chat) => {
+                {chatState.chats?.map((chat) => {
                     return (
                         <Chat
-                            showMessages={setMainSide}
-                            key={chat.name}
-                            newMessageCount={chat.newMessageCount}
-                            name={chat.name}
                             messages={chat.messages}
-                            lastMessage={chat.messages[0]}
-                        />
+                            name={parseName(chat, user as USER)}
+                            newMessageCount={parseNewMessageCount(chatState.lastUpdate, chat.messages)}
+                            lastMessage={parseLastMessage(chat, user?.userName as string)}
+                            showMessages={() => setMainSide('messages')}                      />
                     );
                 })}
+              
             </div>
         </div>
     );

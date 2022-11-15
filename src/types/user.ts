@@ -1,5 +1,5 @@
 interface USER {
-    id ?: string;
+    id?: string;
     userName: string;
     firstName?: string;
     lastName?: string;
@@ -7,8 +7,8 @@ interface USER {
     confirmPassword?: string;
     avatar?: string;
     email?: string;
-    bio? : string;
-    isLogged : boolean;
+    bio?: string;
+    isLogged: boolean;
 }
 
 type CurrentUser = {
@@ -33,6 +33,5 @@ type SingupResponse = {
     };
 };
 
-
 export default USER;
-export type { SigninResponse, SingupResponse, CurrentUser};
+export type { SigninResponse, SingupResponse, CurrentUser };

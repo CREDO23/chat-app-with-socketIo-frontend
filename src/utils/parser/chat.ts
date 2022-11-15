@@ -1,16 +1,18 @@
+import type Message from '../../types/messages';
 import type Chat from '../../types/chat';
-import type Message from '../../types/props/message';
 import type USER from '../../types/user';
+import MessageProps from '../../types/props/message';
 
 export const parseNewMessageCount = (
     lastUpdate: string,
-    chats: Chat[],
+    messages: Message[],
 ): number => {
     let count = 0;
 
-    chats.forEach((chat) => {
+
+    messages.forEach((message) => {
         if (
-            new Date(chat.updatedAt).getTime() > new Date(lastUpdate).getTime()
+            new Date(message.updatedAt as string).getTime() > new Date(lastUpdate).getTime()
         ) {
             count++;
         }
@@ -19,20 +21,20 @@ export const parseNewMessageCount = (
     return count;
 };
 
-export const parseLastMessage = (chat: Chat , userName : string): Message => {
+export const parseLastMessage = (chat: Chat, userName: string): MessageProps => {
     const lastMessage = chat.messages[chat.messages.length - 1];
 
-    const isForeign = lastMessage.sender.userName  != userName
+    const isForeign = lastMessage.sender.userName != userName;
 
     const isPrivate = chat.isPrivate;
 
-    const time = lastMessage.updatedAt;
+    const time = lastMessage.updatedAt as string;
 
     const content = lastMessage.content;
 
     const sender = lastMessage.sender.userName;
 
-    const recipient = chat.name
+    const recipient = chat.name;
 
     return {
         isForeign,
@@ -45,13 +47,13 @@ export const parseLastMessage = (chat: Chat , userName : string): Message => {
 };
 
 export const parseName = (chat: Chat, user: USER): string => {
-    let name : string
+    let name: string;
 
     if (chat.name.split('-').length > 1) {
-        name = chat.name.split('-').filter((name) => name != user.userName)[0]
+        name = chat.name.split('-').filter((name) => name != user.userName)[0];
     } else {
         name = chat.name;
     }
 
-    return name
+    return name;
 };

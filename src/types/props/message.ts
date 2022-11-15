@@ -1,10 +1,10 @@
-type Message = {
+type MessageProps = {
     isForeign: boolean;
     isPrivate: boolean;
     time: string;
     content: string;
     sender: string;
-    recipient? : string
+    recipient?: string;
 };
 
-export default Message;
+export default MessageProps;

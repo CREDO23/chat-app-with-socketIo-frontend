@@ -61,7 +61,7 @@ export default function ({ setMainSide, setRightSide }: Props): JSX.Element {
                     New
                 </span>
             </div>
-            <div className="h-[calc(100%-8rem)]  flex flex-col items-center justify-center no-scrollbar overflow-y-auto">
+            <div className="h-[calc(100%-8rem)]  flex flex-col items-center  no-scrollbar overflow-y-auto">
                 {chatState.chats?.length < 1 && (
                     <div>
                         <span className="h-5 text-lg py-5 text-gray-400">
@@ -74,6 +74,7 @@ export default function ({ setMainSide, setRightSide }: Props): JSX.Element {
                         <Chat
                             messages={chat.messages}
                             name={parseName(chat, user as USER)}
+                            id={chat._id as string}
                             newMessageCount={parseNewMessageCount(
                                 chatState.lastUpdate,
                                 chat.messages,
@@ -82,7 +83,9 @@ export default function ({ setMainSide, setRightSide }: Props): JSX.Element {
                                 chat,
                                 user?.userName as string,
                             )}
-                            showMessages={() => setMainSide('messages')}
+                            showMessages={() =>{
+                                setMainSide('messages')
+                            } }
                         />
                     );
                 })}

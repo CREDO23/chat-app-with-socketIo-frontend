@@ -8,18 +8,17 @@ import Message from '../../types/messages';
 const initialState: ChatState = {
     loading: false,
     currentChat: null,
-    lastUpdate: new Date().toLocaleDateString(),
+    lastUpdate: new Date().toISOString(),
     chats: [],
 };
 
-export const getChats = createAsyncThunk<AxiosResponse,string>(
+export const getChats = createAsyncThunk<AxiosResponse, string>(
     'chats/getChats',
     async (id, { rejectWithValue }) => {
         try {
             const result: AxiosResponse = await axios({
                 method: 'GET',
                 url: `${import.meta.env.VITE_BACKEND_URL}/api/chats/${id}`,
-            
             });
             return result;
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -29,20 +28,16 @@ export const getChats = createAsyncThunk<AxiosResponse,string>(
     },
 );
 
+//update lastConnection of this user in the backend
+//create the message in the backend
+//create the chat in thr backend
+
 const chatsSlice = createSlice({
     name: 'chats',
     initialState,
     reducers: {
-        addMessage: (state, action: PayloadAction<Message>) => {
-            state.currentChat?.messages.push(action.payload);
-        },
-
-        setCurrentChat: (state, action: PayloadAction<Chat>) => {
-            state.currentChat = action.payload;
-        },
-
-        createChat: (state, action: PayloadAction<Chat>) => {
-            state.currentChat = action.payload;
+        setCurrentChat: (state, action: PayloadAction<string>) => {
+            state.currentChat = state.chats.filter(chat => chat._id == action.payload)[0]
         },
     },
     extraReducers: (builer) => {
@@ -67,4 +62,4 @@ const chatsSlice = createSlice({
 });
 
 export default chatsSlice.reducer;
-export const { addMessage, setCurrentChat, createChat } = chatsSlice.actions;
+export const {  setCurrentChat } = chatsSlice.actions;

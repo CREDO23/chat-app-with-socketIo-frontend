@@ -1,5 +1,8 @@
 import Users from './Users';
 import Profil from './Profil';
+import {useAppDispatch , useAppSelector} from '../store/hooks/index'
+import {getUsers} from '../store/slices/users'
+import { useEffect } from 'react';
 
 type Props = {
     setRightSide: React.Dispatch<React.SetStateAction<'users' | 'me'>>;
@@ -7,6 +10,15 @@ type Props = {
 };
 
 export default function ({ setRightSide, rightSide }: Props): JSX.Element {
+
+    const dispatch = useAppDispatch();
+
+    const users = useAppSelector(state => state.users.users)
+
+    useEffect(() => {
+        dispatch(getUsers({size : 20}))
+    } , [])
+
     return (
         <div className=" md:w-[25%] px-1 h-[97%] ">
             <div className="h-[2.5rem] flex items-center justify-end">
@@ -35,7 +47,7 @@ export default function ({ setRightSide, rightSide }: Props): JSX.Element {
                 {rightSide == 'me' ? (
                     <Profil />
                 ) : rightSide == 'users' ? (
-                    <Users />
+                    <Users users={users} />
                 ) : null}
             </div>
         </div>

@@ -1,8 +1,8 @@
 import UserItem from './UserItem';
-import userItems from '../../fakedata/userItem.json';
 import { useState } from 'react';
+import type UserList from '../types/props/userChatList'
 
-export default function (): JSX.Element {
+export default function ({users} : UserList): JSX.Element {
     const [mode, setMode] = useState<'private' | 'channel'>('private');
 
     return (
@@ -37,13 +37,13 @@ export default function (): JSX.Element {
                 )}
             </div>
             <div className="no-scrollbar w-full overflow-y-auto">
-                {userItems.map((item) => {
+                {users.map((item) => {
                     return (
                         <UserItem
                             mode={mode}
                             key={item.userName}
-                            imageProfile={item.imageProfile}
-                            online={item.online}
+                            imageProfile={item.avatar}
+                            online={item.isLogged as boolean}
                             userName={item.userName}
                         />
                     );

@@ -18,10 +18,10 @@ type CurrentUserState = {
 };
 
 type UsersState = {
-    loading: boolean
-    total : number;
-    users : USER[]
-}
+    loading: boolean;
+    total: number;
+    users: USER[];
+};
 
 type SigninResponse = {
     message: string;
@@ -40,9 +40,9 @@ type SingupResponse = {
 };
 
 type UsersListResponse = {
-    message : string;
-    data : USER[]
-}
+    message: string;
+    data: USER[];
+};
 
 type UpdateResponse = {
     message: string;
@@ -50,4 +50,11 @@ type UpdateResponse = {
 };
 
 export default USER;
-export type { SigninResponse, SingupResponse, CurrentUserState, UpdateResponse , UsersListResponse  , UsersState};
+export type {
+    SigninResponse,
+    SingupResponse,
+    CurrentUserState,
+    UpdateResponse,
+    UsersListResponse,
+    UsersState,
+};

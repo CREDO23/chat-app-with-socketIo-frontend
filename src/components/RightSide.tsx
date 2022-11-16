@@ -2,7 +2,7 @@ import Users from './Users';
 import Profil from './Profil';
 import { useAppDispatch, useAppSelector } from '../store/hooks/index';
 import { getUsers } from '../store/slices/users';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 type Props = {
     setRightSide: React.Dispatch<React.SetStateAction<'users' | 'me'>>;
@@ -14,9 +14,12 @@ export default function ({ setRightSide, rightSide }: Props): JSX.Element {
 
     const users = useAppSelector((state) => state.users.users);
 
+    const [search , setSearch] = useState('')
+
     useEffect(() => {
-        dispatch(getUsers({ size: 20 }));
-    }, []);
+        dispatch(getUsers({ search }));
+    }, [search]);
+
 
     return (
         <div className=" md:w-[25%] px-1 h-[97%] ">
@@ -46,7 +49,7 @@ export default function ({ setRightSide, rightSide }: Props): JSX.Element {
                 {rightSide == 'me' ? (
                     <Profil />
                 ) : rightSide == 'users' ? (
-                    <Users users={users} />
+                    <Users setSearch={setSearch} users={users} />
                 ) : null}
             </div>
         </div>

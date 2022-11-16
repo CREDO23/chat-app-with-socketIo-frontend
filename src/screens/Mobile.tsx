@@ -5,6 +5,8 @@ import {
     faDiamond,
     faArrowLeft,
     faChevronDown,
+    faMessage,
+    faUserFriends
 } from '@fortawesome/free-solid-svg-icons';
 import { useRef, useState, useEffect } from 'react';
 import Message from '../components/Message';
@@ -31,6 +33,8 @@ export default function (): JSX.Element {
     const [mainSide, setMainSide] = useState<
         'chats' | 'users' | 'messages' | 'profil'
     >('chats');
+
+    const [search , setSearch] = useState('')
 
     const messagesDiv = useRef<HTMLDivElement>(null);
 
@@ -60,6 +64,7 @@ export default function (): JSX.Element {
 
     const chats = useAppSelector((state) => state.chats);
     const user = useAppSelector((state) => state.currentUser.user);
+
 
     return (
         <div
@@ -93,6 +98,11 @@ export default function (): JSX.Element {
                     ) : (
                         <div className="md:w-[65%] bg-[#e9effc] h-full rounded-md">
                             <div className="h-[4rem] border-b-2 px-2  flex items-center justify-between">
+                                <FontAwesomeIcon
+                                onClick={() => setMainSide('chats')}
+                                    className="p-3 rounded-full bg-sky-800 text-sky-100"
+                                    icon={faArrowLeft}
+                                />
                                 <div className="w-3/5 flex items-center justify-start ">
                                     <img
                                         className="h-[3rem] cursor-pointer  w-[3rem] rounded-full border"
@@ -113,7 +123,7 @@ export default function (): JSX.Element {
                                     )}
                                 </div>
 
-                                <div className=" flex items-center justify-end h-full w-2/5">
+                                <div className=" flex items-center justify-end h-full w-1/5">
                                     <span
                                         className={`px-3 cursor-pointer ${
                                             content == 'messages'
@@ -122,7 +132,7 @@ export default function (): JSX.Element {
                                         } font-semibold py-1 text-xs border rounded-lg`}
                                         onClick={() => setContent('messages')}
                                     >
-                                        Messages
+                                        <FontAwesomeIcon icon={faMessage}/>
                                     </span>
                                     <span
                                         className={`px-3 ${
@@ -135,7 +145,10 @@ export default function (): JSX.Element {
                                             setContent('participants');
                                         }}
                                     >
-                                        Participants
+                                        <FontAwesomeIcon  onClick={(e) => {
+                                            e.stopPropagation();
+                                            setContent('participants');
+                                        }}  icon={faUserFriends}/>
                                     </span>
                                 </div>
                             </div>
@@ -204,7 +217,7 @@ export default function (): JSX.Element {
                     )}
                 </>
             ) : mainSide == 'users' ? (
-                <Users users={users} />
+                <Users setSearch={setSearch} users={users} />
             ) : mainSide == 'profil' ? (
                 <Profil />
             ) : null}
@@ -223,28 +236,26 @@ export default function (): JSX.Element {
                     </span>
                 )}
             </span>
-            <span
-                onClick={() => {
-                    mainSide == 'chats'
-                        ? setMainSide('users')
-                        : setMainSide('chats');
-                }}
-                className={`absolute md:hidden ${
-                    mainSide == 'messages'
-                        ? 'top-[4.8rem] left-3'
-                        : 'bottom-4 right-4'
-                } h-12 w-12 flex items-center justify-center bg-sky-800 text-sky-100 p-1 rounded-full`}
-            >
-                <FontAwesomeIcon
-                    icon={
-                        mainSide == 'users' ||
-                        mainSide == 'profil' ||
-                        mainSide == 'messages'
-                            ? faArrowLeft
-                            : faDiamond
-                    }
-                />
-            </span>
+            {mainSide != 'messages' && (
+                <span
+                    onClick={() => {
+                        mainSide == 'chats'
+                            ? setMainSide('users')
+                            : setMainSide('chats');
+                    }}
+                    className="absolute md:hidden 
+                        bottom-4 right-4
+                } h-12 w-12 flex items-center justify-center bg-sky-800 text-sky-100 p-1 rounded-full"
+                >
+                    <FontAwesomeIcon
+                        icon={
+                            mainSide == 'users' || mainSide == 'profil'
+                                ? faArrowLeft
+                                : faDiamond
+                        }
+                    />
+                </span>
+            )}
         </div>
     );
 }

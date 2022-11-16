@@ -51,12 +51,12 @@ export const newChat = createAsyncThunk<AxiosResponse, Chat>(
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const newMessage = createAsyncThunk<AxiosResponse, any>(
     'chat/newMessage',
-    async ({id , message}, { rejectWithValue }) => {
+    async ({ id, message }, { rejectWithValue }) => {
         try {
             const result: AxiosResponse = await axios({
                 method: 'POST',
                 url: `${import.meta.env.VITE_BACKEND_URL}/api/chats/${id}`,
-                data : message
+                data: message,
             });
             return result;
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -65,8 +65,6 @@ export const newMessage = createAsyncThunk<AxiosResponse, any>(
         }
     },
 );
-
-
 
 const chatsSlice = createSlice({
     name: 'chats',

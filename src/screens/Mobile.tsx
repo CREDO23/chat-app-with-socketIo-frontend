@@ -7,12 +7,14 @@ import {
     faChevronDown,
 } from '@fortawesome/free-solid-svg-icons';
 import { useRef, useState, useEffect } from 'react';
-import messages from '../../fakedata/message.json';
 import Message from '../components/Message';
 import UserChatList from '../components/UserChatList';
 import Users from '../components/Users';
 import LeftSide from '../components/LeftSide';
 import Profil from '../components/Profil';
+import { useAppSelector } from '../store/hooks/index';
+import { parseMessage } from '../utils/parser/message';
+import type USER from '../types/user';
 
 export default function (): JSX.Element {
     const [content, setContent] = useState<'messages' | 'participants'>(
@@ -44,7 +46,8 @@ export default function (): JSX.Element {
 
     const [chevronDown, setChevronDonw] = useState<boolean>(false);
 
-    console.log(mainSide);
+    const currentChat = useAppSelector((state) => state.chats.currentChat);
+    const user = useAppSelector((state) => state.currentUser.user);
 
     return (
         <div
@@ -111,16 +114,24 @@ export default function (): JSX.Element {
                             }}
                             className="h-[calc(100%-7.5rem)] no-scrollbar overflow-y-auto p-4 flex flex-col "
                         >
-                            {content == 'participants' && <UserChatList />}
-                            {messages.map((message) => {
+                            {content == 'participants' && (
+                                <UserChatList
+                                    users={currentChat?.users as USER[]}
+                                />
+                            )}
+                            {currentChat?.messages.map((message) => {
+                                const parsedMessage = parseMessage(
+                                    message,
+                                    user?.userName as string,
+                                );
                                 return (
                                     <Message
-                                        key={message.time}
-                                        time={message.time}
-                                        isForeign={message.isForeign}
-                                        isPrivate={message.isPrivate}
-                                        content={message.content}
-                                        sender={message.sender}
+                                        key={message.id}
+                                        time={parsedMessage.time}
+                                        isForeign={parsedMessage.isForeign}
+                                        isPrivate={parsedMessage.isPrivate}
+                                        content={parsedMessage.content}
+                                        sender={parsedMessage.sender}
                                     />
                                 );
                             })}

@@ -37,7 +37,9 @@ const chatsSlice = createSlice({
     initialState,
     reducers: {
         setCurrentChat: (state, action: PayloadAction<string>) => {
-            state.currentChat = state.chats.filter(chat => chat._id == action.payload)[0]
+            state.currentChat = state.chats.filter(
+                (chat) => chat._id == action.payload,
+            )[0];
         },
     },
     extraReducers: (builer) => {
@@ -62,4 +64,4 @@ const chatsSlice = createSlice({
 });
 
 export default chatsSlice.reducer;
-export const {  setCurrentChat } = chatsSlice.actions;
+export const { setCurrentChat } = chatsSlice.actions;

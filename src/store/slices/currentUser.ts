@@ -6,6 +6,7 @@ import type {
     SigninResponse,
     SingupResponse,
     CurrentUser,
+    UpdateResponse,
 } from '../../types/user';
 
 const initialState: CurrentUser = {
@@ -39,6 +40,24 @@ export const singin = createAsyncThunk<AxiosResponse, USER>(
                 method: 'POST',
                 url: `${import.meta.env.VITE_BACKEND_URL}/api/users/singin`,
                 data: user,
+            });
+            return result;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            return rejectWithValue(error?.response?.data?.message);
+        }
+    },
+);
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const updateUser = createAsyncThunk<AxiosResponse, any>(
+    'user/update',
+    async ({ id, body }, { rejectWithValue }) => {
+        try {
+            const result: AxiosResponse = await axios({
+                method: 'PUT',
+                url: `${import.meta.env.VITE_BACKEND_URL}/api/users/${id}`,
+                data: body,
             });
             return result;
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -108,6 +127,28 @@ export const currentUserSlice = createSlice({
             state.loading = false;
             state.user = null;
             state.accessToken = null;
+            toast.error(action.payload as string);
+        });
+
+        builder.addCase(updateUser.pending, (state) => {
+            state.loading = true;
+        });
+
+        builder.addCase(
+            updateUser.fulfilled,
+            (state, action: PayloadAction<AxiosResponse<UpdateResponse>>) => {
+                state.loading = false;
+                state.user = action.payload.data.data;
+                toast.susscess(action.payload.data.message);
+                localStorage.setItem(
+                    'user',
+                    JSON.stringify(action.payload.data.data),
+                );
+            },
+        );
+
+        builder.addCase(updateUser.rejected, (state, action) => {
+            state.loading = false;
             toast.error(action.payload as string);
         });
     },

@@ -1,13 +1,8 @@
 import logo from '../assets/logo.png';
 import type ChatProps from '../types/props/chat';
 import { parseDate, parseContent } from '../utils/parser/index';
-import {setCurrentChat} from '../store/slices/chats'
-import {useAppDispatch} from '../store/hooks/index'
-
-
-
-
-
+import { setCurrentChat } from '../store/slices/chats';
+import { useAppDispatch } from '../store/hooks/index';
 
 export default function ({
     newMessageCount,
@@ -21,10 +16,10 @@ export default function ({
 
     return (
         <div
-            onClick={() =>{
-                dispatch(setCurrentChat(id))
-                showMessages('messages')
-            } }
+            onClick={() => {
+                dispatch(setCurrentChat(id));
+                showMessages('messages');
+            }}
             className={` w-[23.75rem] md:w-full cursor-pointer my-1 ${
                 newMessageCount ? ' bg-slate-200' : 'bg-white'
             } px-1 h-[4rem] rounded flex items-center `}

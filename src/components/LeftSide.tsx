@@ -73,7 +73,7 @@ export default function ({ setMainSide, setRightSide }: Props): JSX.Element {
                     return (
                         <Chat
                             messages={chat.messages}
-                            name={parseName(chat, user as USER)}
+                            name={parseName(chat, user as USER)[0]}
                             id={chat._id as string}
                             newMessageCount={parseNewMessageCount(
                                 chatState.lastUpdate,
@@ -83,9 +83,9 @@ export default function ({ setMainSide, setRightSide }: Props): JSX.Element {
                                 chat,
                                 user?.userName as string,
                             )}
-                            showMessages={() =>{
-                                setMainSide('messages')
-                            } }
+                            showMessages={() => {
+                                setMainSide('messages');
+                            }}
                         />
                     );
                 })}

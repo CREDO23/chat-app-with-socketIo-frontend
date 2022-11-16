@@ -33,5 +33,10 @@ type SingupResponse = {
     };
 };
 
+type UpdateResponse = {
+    message: string;
+    data: USER;
+}
+
 export default USER;
-export type { SigninResponse, SingupResponse, CurrentUser };
+export type { SigninResponse, SingupResponse, CurrentUser , UpdateResponse };

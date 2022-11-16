@@ -1,8 +1,7 @@
-import type USER from '../user'
+import type USER from '../user';
 
 type ChatListProps = {
-    users : USER[]
-}
+    users: USER[];
+};
 
-
-export default ChatListProps
+export default ChatListProps;

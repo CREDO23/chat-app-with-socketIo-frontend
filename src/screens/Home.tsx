@@ -2,15 +2,17 @@ import logo from '../assets/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { useRef, useState, useEffect } from 'react';
-import type USER from '../types/user'
+import type USER from '../types/user';
 import Message from '../components/Message';
 import UserChatList from '../components/UserChatList';
 import Mobile from './Mobile';
 import LeftSide from '../components/LeftSide';
 import RightSide from '../components/RightSide';
 import { ToastContainer } from 'react-toastify';
-import {useAppSelector} from '../store/hooks/index'
-import {parseMessage} from '../utils/parser/message'
+import { useAppSelector } from '../store/hooks/index';
+import { parseMessage } from '../utils/parser/message';
+import { parseName } from '../utils/parser/chat';
+import Chat from '../types/chat';
 
 export default function (): JSX.Element {
     const [content, setContent] = useState<'messages' | 'participants'>(
@@ -42,8 +44,8 @@ export default function (): JSX.Element {
 
     const [chevronDown, setChevronDonw] = useState<boolean>(false);
 
-    const currentChat = useAppSelector(state => state.chats.currentChat)
-    const user = useAppSelector(state => state.currentUser.user)
+    const currentChat = useAppSelector((state) => state.chats.currentChat);
+    const user = useAppSelector((state) => state.currentUser.user);
 
     return (
         <>
@@ -64,8 +66,16 @@ export default function (): JSX.Element {
                                 alt=""
                             />
                             <div className="flex mx-3 flex-col items-start justify-between">
-                                <p className="text-sky-900">Credo23</p>
-                                <p className="text-green-600 text-xs">Online</p>
+                                {currentChat && (
+                                    <>
+                                        <p className="text-sky-900">
+                                            {parseName(
+                                                currentChat as Chat,
+                                                user as USER,
+                                            )[0]}
+                                        </p>
+                                    </>
+                                )}
                             </div>
                         </div>
 
@@ -106,11 +116,17 @@ export default function (): JSX.Element {
                         }}
                         className="h-[calc(100%-7.5rem)] relative no-scrollbar overflow-y-auto p-4 flex flex-col "
                     >
-                        {content == 'participants' && <UserChatList users={currentChat?.users as USER[]} />}
+                        {content == 'participants' && (
+                            <UserChatList
+                                users={currentChat?.users as USER[]}
+                            />
+                        )}
 
                         {currentChat?.messages.map((message) => {
-
-                            const parsedMessage = parseMessage(message , user?.userName as string)
+                            const parsedMessage = parseMessage(
+                                message,
+                                user?.userName as string,
+                            );
                             return (
                                 <Message
                                     key={message.id}

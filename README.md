@@ -6,3 +6,4 @@ A chat app in real time with socket Io
 - Redux-toolkit 
 - ExpressJS
 - MongoDB
+- Redux persist

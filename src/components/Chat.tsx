@@ -35,7 +35,7 @@ export default function ({
                         {parseContent(name, 15)}
                     </h2>
                     <div
-                        className={`text-sm ${
+                        className={`text-xs ${
                             newMessageCount
                                 ? ' text-green-600'
                                 : ' text-gray-300'

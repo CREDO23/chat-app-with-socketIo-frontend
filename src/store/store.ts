@@ -1,13 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import currentUser from './slices/currentUser';
 import chats from './slices/chats';
-import users from './slices/users'
+import users from './slices/users';
 
 const store = configureStore({
     reducer: {
         currentUser,
         chats,
-        users
+        users,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

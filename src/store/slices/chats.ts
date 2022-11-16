@@ -7,7 +7,6 @@ import type {
     AddChatResponse,
 } from '../../types/chat';
 import type Chat from '../../types/chat';
-import Message from '../../types/messages';
 
 const initialState: ChatState = {
     loading: false,
@@ -49,9 +48,25 @@ export const newChat = createAsyncThunk<AxiosResponse, Chat>(
     },
 );
 
-//update lastConnection of this user in the backend
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const newMessage = createAsyncThunk<AxiosResponse, any>(
+    'chat/newMessage',
+    async ({id , message}, { rejectWithValue }) => {
+        try {
+            const result: AxiosResponse = await axios({
+                method: 'POST',
+                url: `${import.meta.env.VITE_BACKEND_URL}/api/chats/${id}`,
+                data : message
+            });
+            return result;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            return rejectWithValue(error?.response?.data?.message);
+        }
+    },
+);
 
-//create the chat in thr backend
+
 
 const chatsSlice = createSlice({
     name: 'chats',

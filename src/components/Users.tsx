@@ -1,8 +1,8 @@
 import UserItem from './UserItem';
 import { useState } from 'react';
-import type UserList from '../types/props/userChatList'
+import type UserList from '../types/props/userChatList';
 
-export default function ({users} : UserList): JSX.Element {
+export default function ({ users }: UserList): JSX.Element {
     const [mode, setMode] = useState<'private' | 'channel'>('private');
 
     return (

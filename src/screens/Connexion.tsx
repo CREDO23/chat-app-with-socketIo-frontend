@@ -1,12 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import SinginForm from '../components/SinginForm';
 import SingupForm from '../components/SingupForm';
 import logo from '../assets/logo.png';
+import { useAppSelector } from '../store/hooks/index';
 
 type Form = 'singin' | 'singup';
 
 export default function (): JSX.Element {
     const [form, setForm] = useState<Form>('singin');
+
+    const token = useAppSelector((state) => state.currentUser.accessToken);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (token) {
+            navigate('/home');
+        }
+    }, [token]);
 
     return (
         <div className="w-full h-full flex items-center justify-center">

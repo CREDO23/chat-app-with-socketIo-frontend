@@ -12,9 +12,13 @@ import UserChatList from '../components/UserChatList';
 import Users from '../components/Users';
 import LeftSide from '../components/LeftSide';
 import Profil from '../components/Profil';
-import { useAppSelector } from '../store/hooks/index';
+import { useAppSelector, useAppDispatch } from '../store/hooks/index';
 import { parseMessage } from '../utils/parser/message';
 import type USER from '../types/user';
+import { getUsers } from '../store/slices/users';
+import homeImage from '../assets/home.svg';
+import type Chat from '../types/chat';
+import { parseName } from '../utils/parser/chat';
 
 export default function (): JSX.Element {
     const [content, setContent] = useState<'messages' | 'participants'>(
@@ -44,9 +48,17 @@ export default function (): JSX.Element {
         }
     }, [content, content, mainSide]);
 
+    const dispatch = useAppDispatch();
+
+    const users = useAppSelector((state) => state.users.users);
+
+    useEffect(() => {
+        dispatch(getUsers({ size: 20 }));
+    }, []);
+
     const [chevronDown, setChevronDonw] = useState<boolean>(false);
 
-    const currentChat = useAppSelector((state) => state.chats.currentChat);
+    const chats = useAppSelector((state) => state.chats);
     const user = useAppSelector((state) => state.currentUser.user);
 
     return (
@@ -61,111 +73,138 @@ export default function (): JSX.Element {
                 />
             ) : mainSide == 'messages' ? (
                 <>
-                    <div className="md:w-[65%] bg-[#e9effc] h-full rounded-md">
-                        <div className="h-[4rem] border-b-2 px-2  flex items-center justify-between">
-                            <div className="w-3/5 flex items-center justify-start ">
-                                <img
-                                    className="h-[3rem] cursor-pointer  w-[3rem] rounded-full border"
-                                    src={logo}
-                                    alt=""
-                                />
-                                <div className="flex mx-3 flex-col items-start justify-between">
-                                    <p className="text-sky-900">Credo23</p>
-                                    <p className="text-green-600 text-xs">
-                                        Online
-                                    </p>
+                    {!chats.currentChat?.messages ? (
+                        <div className="md:w-[60%] bg-transparent h-[97%] rounded-md flex flex-col items-center justify-center">
+                            <img
+                                src={homeImage}
+                                className="h-48 w-48"
+                                alt="home"
+                            />
+                            <span
+                                className="px-5 mx-1 py-3 cursor-pointer  bg-sky-200  flex items-center justify-center  text-xs  font-semibold text-sky-800   border border-gray-100 rounded-md  focus:outline-none  focus:ring-sky-100 focus:border-sky-100"
+                                onClick={() => {
+                                    setMainSide('users');
+                                    setRightSide('users');
+                                }}
+                            >
+                                Start a chat
+                            </span>
+                        </div>
+                    ) : (
+                        <div className="md:w-[65%] bg-[#e9effc] h-full rounded-md">
+                            <div className="h-[4rem] border-b-2 px-2  flex items-center justify-between">
+                                <div className="w-3/5 flex items-center justify-start ">
+                                    <img
+                                        className="h-[3rem] cursor-pointer  w-[3rem] rounded-full border"
+                                        src={logo}
+                                        alt=""
+                                    />
+                                    {chats.currentChat && (
+                                        <>
+                                            <p className="text-sky-900">
+                                                {
+                                                    parseName(
+                                                        chats.currentChat as Chat,
+                                                        user as USER,
+                                                    )[0]
+                                                }
+                                            </p>
+                                        </>
+                                    )}
+                                </div>
+
+                                <div className=" flex items-center justify-end h-full w-2/5">
+                                    <span
+                                        className={`px-3 cursor-pointer ${
+                                            content == 'messages'
+                                                ? ' text-sky-800  bg-sky-200'
+                                                : ' text-gray-400 bg-transparent'
+                                        } font-semibold py-1 text-xs border rounded-lg`}
+                                        onClick={() => setContent('messages')}
+                                    >
+                                        Messages
+                                    </span>
+                                    <span
+                                        className={`px-3 ${
+                                            content == 'participants'
+                                                ? ' text-sky-800  bg-sky-200'
+                                                : ' text-gray-400 bg-transparent'
+                                        } cursor-pointer font-semibold py-1 mx-3  text-xs border rounded-3xl`}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setContent('participants');
+                                        }}
+                                    >
+                                        Participants
+                                    </span>
                                 </div>
                             </div>
-
-                            <div className=" flex items-center justify-end h-full w-2/5">
-                                <span
-                                    className={`px-3 cursor-pointer ${
-                                        content == 'messages'
-                                            ? ' text-sky-800  bg-sky-200'
-                                            : ' text-gray-400 bg-transparent'
-                                    } font-semibold py-1 text-xs border rounded-lg`}
-                                    onClick={() => setContent('messages')}
-                                >
-                                    Messages
-                                </span>
-                                <span
-                                    className={`px-3 ${
-                                        content == 'participants'
-                                            ? ' text-sky-800  bg-sky-200'
-                                            : ' text-gray-400 bg-transparent'
-                                    } cursor-pointer font-semibold py-1 mx-3  text-xs border rounded-3xl`}
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setContent('participants');
-                                    }}
-                                >
-                                    Participants
-                                </span>
+                            <div
+                                ref={messagesDiv}
+                                onScroll={(e) => {
+                                    if (e.currentTarget.scrollTop < 50) {
+                                        setChevronDonw(true);
+                                    } else {
+                                        setChevronDonw(false);
+                                    }
+                                }}
+                                className="h-[calc(100%-7.5rem)] no-scrollbar overflow-y-auto p-4 flex flex-col "
+                            >
+                                {content == 'participants' && (
+                                    <UserChatList
+                                        users={
+                                            chats.currentChat?.users as USER[]
+                                        }
+                                    />
+                                )}
+                                {chats.currentChat?.messages.map((message) => {
+                                    const parsedMessage = parseMessage(
+                                        message,
+                                        user?.userName as string,
+                                    );
+                                    return (
+                                        <Message
+                                            key={message.id}
+                                            time={parsedMessage.time}
+                                            isForeign={parsedMessage.isForeign}
+                                            isPrivate={parsedMessage.isPrivate}
+                                            content={parsedMessage.content}
+                                            sender={parsedMessage.sender}
+                                        />
+                                    );
+                                })}
+                            </div>
+                            <div className="h-[3.5rem] items-center relative flex p-1 border-t-2 ">
+                                <input
+                                    type="text"
+                                    id="message"
+                                    placeholder="Here your message ..."
+                                    className="w-11/12 px-3 py-2 flex text-slate-900 placeholder-gray-300 border border-gray-100 rounded-md  focus:outline-none  focus:ring-indigo-100 focus:border-indigo-200"
+                                />
+                                <FontAwesomeIcon
+                                    className="w-1/12 cursor-pointer text-sky-600"
+                                    icon={faPaperPlane}
+                                    size={'2x'}
+                                />
+                                {chevronDown && content == 'messages' && (
+                                    <FontAwesomeIcon
+                                        onClick={() =>
+                                            messagesDiv.current?.scrollTo({
+                                                behavior: 'auto',
+                                                top: messagesDiv.current
+                                                    .scrollHeight,
+                                            })
+                                        }
+                                        className="text-sky-700 absolute cursor-pointer right-3 animate-bounce bg-white -top-[4rem] rounded-full p-3 border"
+                                        icon={faChevronDown}
+                                    />
+                                )}
                             </div>
                         </div>
-                        <div
-                            ref={messagesDiv}
-                            onScroll={(e) => {
-                                if (e.currentTarget.scrollTop < 50) {
-                                    setChevronDonw(true);
-                                } else {
-                                    setChevronDonw(false);
-                                }
-                            }}
-                            className="h-[calc(100%-7.5rem)] no-scrollbar overflow-y-auto p-4 flex flex-col "
-                        >
-                            {content == 'participants' && (
-                                <UserChatList
-                                    users={currentChat?.users as USER[]}
-                                />
-                            )}
-                            {currentChat?.messages.map((message) => {
-                                const parsedMessage = parseMessage(
-                                    message,
-                                    user?.userName as string,
-                                );
-                                return (
-                                    <Message
-                                        key={message.id}
-                                        time={parsedMessage.time}
-                                        isForeign={parsedMessage.isForeign}
-                                        isPrivate={parsedMessage.isPrivate}
-                                        content={parsedMessage.content}
-                                        sender={parsedMessage.sender}
-                                    />
-                                );
-                            })}
-                        </div>
-                        <div className="h-[3.5rem] items-center relative flex p-1 border-t-2 ">
-                            <input
-                                type="text"
-                                id="message"
-                                placeholder="Here your message ..."
-                                className="w-11/12 px-3 py-2 flex text-slate-900 placeholder-gray-300 border border-gray-100 rounded-md  focus:outline-none  focus:ring-indigo-100 focus:border-indigo-200"
-                            />
-                            <FontAwesomeIcon
-                                className="w-1/12 cursor-pointer text-sky-600"
-                                icon={faPaperPlane}
-                                size={'2x'}
-                            />
-                            {chevronDown && content == 'messages' && (
-                                <FontAwesomeIcon
-                                    onClick={() =>
-                                        messagesDiv.current?.scrollTo({
-                                            behavior: 'auto',
-                                            top: messagesDiv.current
-                                                .scrollHeight,
-                                        })
-                                    }
-                                    className="text-sky-700 absolute cursor-pointer right-3 animate-bounce bg-white -top-[4rem] rounded-full p-3 border"
-                                    icon={faChevronDown}
-                                />
-                            )}
-                        </div>
-                    </div>
+                    )}
                 </>
             ) : mainSide == 'users' ? (
-                <Users />
+                <Users users={users} />
             ) : mainSide == 'profil' ? (
                 <Profil />
             ) : null}

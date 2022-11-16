@@ -1,7 +1,7 @@
 import Users from './Users';
 import Profil from './Profil';
-import {useAppDispatch , useAppSelector} from '../store/hooks/index'
-import {getUsers} from '../store/slices/users'
+import { useAppDispatch, useAppSelector } from '../store/hooks/index';
+import { getUsers } from '../store/slices/users';
 import { useEffect } from 'react';
 
 type Props = {
@@ -10,14 +10,13 @@ type Props = {
 };
 
 export default function ({ setRightSide, rightSide }: Props): JSX.Element {
-
     const dispatch = useAppDispatch();
 
-    const users = useAppSelector(state => state.users.users)
+    const users = useAppSelector((state) => state.users.users);
 
     useEffect(() => {
-        dispatch(getUsers({size : 20}))
-    } , [])
+        dispatch(getUsers({ size: 20 }));
+    }, []);
 
     return (
         <div className=" md:w-[25%] px-1 h-[97%] ">

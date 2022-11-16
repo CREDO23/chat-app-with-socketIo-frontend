@@ -51,15 +51,14 @@ export const parseLastMessage = (
 
 export const parseName = (chat: Chat, user: USER): string[] => {
     let name: string;
-    let context : string
+    let context: string;
 
     if (chat.name.split('-').length > 1) {
         name = chat.name.split('-').filter((name) => name != user.userName)[0];
-        context = 'channel'
+        context = 'channel';
     } else {
         name = chat.name;
-        context = 'user'
-
+        context = 'user';
     }
 
     return [name, context];

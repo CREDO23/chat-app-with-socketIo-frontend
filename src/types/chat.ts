@@ -19,9 +19,14 @@ export type ChatState = {
     chats: Chat[];
 };
 
-export type ChatResponse = {
+export type GetChatResponse = {
     message: string;
     data: Chat[];
+};
+
+export type AddChatResponse = {
+    message: string;
+    data: Chat;
 };
 
 export default Chat;

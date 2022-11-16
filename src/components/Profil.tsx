@@ -57,6 +57,12 @@ export default function (): JSX.Element {
                     },
                 }),
             );
+
+            setTimeout(() => {
+                if (!currentUser.loading) {
+                    setUpdate(false);
+                }
+            }, 2000);
         } catch (error) {
             toast.error(error as string);
         }
@@ -186,13 +192,6 @@ export default function (): JSX.Element {
 
                     <button
                         type="submit"
-                        onClick={() => {
-                            setTimeout(() => {
-                                if(!currentUser.loading){
-                                    setUpdate(false)
-                                }
-                            } , 2000)
-                        }}
                         className=" self-center my-3 w-11/12 p-2 text-white bg-sky-700 rounded-md hover:bg-sky-800  focus:bg-sky-700 focus:outline-none"
                     >
                         {currentUser.loading ? (

@@ -36,7 +36,7 @@ type SingupResponse = {
 type UpdateResponse = {
     message: string;
     data: USER;
-}
+};
 
 export default USER;
-export type { SigninResponse, SingupResponse, CurrentUser , UpdateResponse };
+export type { SigninResponse, SingupResponse, CurrentUser, UpdateResponse };

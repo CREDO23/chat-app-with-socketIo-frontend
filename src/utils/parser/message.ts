@@ -7,7 +7,7 @@ export const parseMessage = (
 ): MessageProps => {
     const isForeign = message.sender.userName != userName;
 
-    const isPrivate = message.recipient.userName ? true : false;
+    const isPrivate = message.recipient ? true : false;
 
     const time = message.updatedAt as string;
 
@@ -15,7 +15,7 @@ export const parseMessage = (
 
     const sender = message.sender.userName;
 
-    const recipient = message.recipient.userName || message.recipient.name;
+    const recipient = message.recipient ? message.recipient.userName : 'chat'
 
     return {
         isForeign,

@@ -69,10 +69,12 @@ export default function (): JSX.Element {
                                 {currentChat && (
                                     <>
                                         <p className="text-sky-900">
-                                            {parseName(
-                                                currentChat as Chat,
-                                                user as USER,
-                                            )[0]}
+                                            {
+                                                parseName(
+                                                    currentChat as Chat,
+                                                    user as USER,
+                                                )[0]
+                                            }
                                         </p>
                                     </>
                                 )}

@@ -11,11 +11,17 @@ interface USER {
     isLogged?: boolean;
 }
 
-type CurrentUser = {
+type CurrentUserState = {
     loading: boolean;
     user: USER | null;
     accessToken: unknown;
 };
+
+type UsersState = {
+    loading: boolean
+    total : number;
+    users : USER[]
+}
 
 type SigninResponse = {
     message: string;
@@ -33,10 +39,15 @@ type SingupResponse = {
     };
 };
 
+type UsersListResponse = {
+    message : string;
+    data : USER[]
+}
+
 type UpdateResponse = {
     message: string;
     data: USER;
 };
 
 export default USER;
-export type { SigninResponse, SingupResponse, CurrentUser, UpdateResponse };
+export type { SigninResponse, SingupResponse, CurrentUserState, UpdateResponse , UsersListResponse  , UsersState};

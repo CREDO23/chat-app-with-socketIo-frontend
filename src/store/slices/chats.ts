@@ -1,10 +1,13 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
 import toast from '../../utils/toasty/index';
-import type { ChatState, GetChatResponse  , AddChatResponse} from '../../types/chat';
+import type {
+    ChatState,
+    GetChatResponse,
+    AddChatResponse,
+} from '../../types/chat';
 import type Chat from '../../types/chat';
 import Message from '../../types/messages';
-
 
 const initialState: ChatState = {
     loading: false,
@@ -29,19 +32,22 @@ export const getChats = createAsyncThunk<AxiosResponse, string>(
     },
 );
 
-export const newChat = createAsyncThunk<AxiosResponse, Chat>('chat/new' , async ( chat, { rejectWithValue }) => {
-    try {
-        const result: AxiosResponse = await axios({
-            method: 'POST',
-            url: `${import.meta.env.VITE_BACKEND_URL}/api/chats`,
-            data: chat,
-        });
-        return result;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-        return rejectWithValue(error?.response?.data?.message);
-    }
-})
+export const newChat = createAsyncThunk<AxiosResponse, Chat>(
+    'chat/new',
+    async (chat, { rejectWithValue }) => {
+        try {
+            const result: AxiosResponse = await axios({
+                method: 'POST',
+                url: `${import.meta.env.VITE_BACKEND_URL}/api/chats`,
+                data: chat,
+            });
+            return result;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            return rejectWithValue(error?.response?.data?.message);
+        }
+    },
+);
 
 //update lastConnection of this user in the backend
 
@@ -76,21 +82,24 @@ const chatsSlice = createSlice({
             toast.error(action.payload as string);
         });
 
-        builer.addCase(newChat.pending , (state) => {
+        builer.addCase(newChat.pending, (state) => {
             state.loading = true;
-        })
+        });
 
-        builer.addCase(newChat.fulfilled , (state, action : PayloadAction<AxiosResponse<AddChatResponse>>) => {
-            state.loading = false;
-            state.chats.push(action.payload.data.data)
-            state.currentChat = action.payload.data.data
-            state.lastUpdate = new Date().toISOString();
-        })
+        builer.addCase(
+            newChat.fulfilled,
+            (state, action: PayloadAction<AxiosResponse<AddChatResponse>>) => {
+                state.loading = false;
+                state.chats.push(action.payload.data.data);
+                state.currentChat = action.payload.data.data;
+                state.lastUpdate = new Date().toISOString();
+            },
+        );
 
-        builer.addCase(newChat.rejected , (state, action) => {
+        builer.addCase(newChat.rejected, (state, action) => {
             state.loading = false;
             toast.error(action.payload as string);
-        })
+        });
     },
 });
 

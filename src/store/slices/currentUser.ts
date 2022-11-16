@@ -5,11 +5,11 @@ import axios, { AxiosResponse } from 'axios';
 import type {
     SigninResponse,
     SingupResponse,
-    CurrentUser,
+    CurrentUserState,
     UpdateResponse,
 } from '../../types/user';
 
-const initialState: CurrentUser = {
+const initialState: CurrentUserState = {
     loading: false,
     user: JSON.parse(localStorage.getItem('user') as string),
     accessToken: localStorage.getItem('accessToken'),

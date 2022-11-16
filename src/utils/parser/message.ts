@@ -15,7 +15,7 @@ export const parseMessage = (
 
     const sender = message.sender.userName;
 
-    const recipient = message.recipient ? message.recipient.userName : 'chat'
+    const recipient = message.recipient ? message.recipient.userName : 'chat';
 
     return {
         isForeign,

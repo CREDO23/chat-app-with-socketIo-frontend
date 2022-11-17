@@ -2,8 +2,9 @@ import UserItem from '../types/props/userItem';
 import logo from '../assets/logo.png';
 import { parseContent } from '../utils/parser/index';
 import { useAppDispatch } from '../store/hooks/index';
-import { setCurrentChat } from '../store/slices/chats';
+import { setCurrentChat , setNewChat } from '../store/slices/chats';
 import { useAppSelector } from '../store/hooks/index';
+import type USER from '../types/user';
 
 export default function ({
     online,
@@ -11,6 +12,7 @@ export default function ({
     mode,
     id,
     avatar,
+    setUserChat
 }: UserItem): JSX.Element {
     const dispatch = useAppDispatch();
 
@@ -37,6 +39,32 @@ export default function ({
                     updatedAt: new Date().toISOString(),
                 }),
             );
+            dispatch(setNewChat({
+                name: `${currentUser?.userName}-${userName}`,
+                avatar: avatar,
+                users: [
+                    {
+                        _id: id,
+                        userName,
+                    },
+                    {
+                        _id: currentUser?._id,
+                        userName: currentUser?.userName as string,
+                    },
+                ],
+                isPrivate: true,
+                messages: [
+                ],
+                updatedAt: new Date().toISOString(),
+            }))
+        }else{
+            setUserChat((prevSate) : any[] => {
+                return [...prevSate, {
+                    _id: id,
+                    userName,
+                }]
+        
+            })
         }
     };
 

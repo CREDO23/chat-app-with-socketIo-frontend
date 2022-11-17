@@ -13,16 +13,7 @@ import type Message from '../../types/messages';
 const initialState: ChatState = {
     loading: false,
     currentChat: null,
-    newChat: {
-        _id: '',
-        admin: '',
-        isPrivate: true,
-        name: '',
-        avatar: '',
-        users: [],
-        messages: [],
-        updatedAt: '',
-    },
+    newChat:null,
     chats: [],
 };
 
@@ -90,6 +81,17 @@ const chatsSlice = createSlice({
                 state.currentChat = action.payload;
             }
         },
+        setNewChat : (state, action: PayloadAction<string | Chat>) => {
+            state.newChat = action.payload as Chat
+        },
+
+        setNewMessage : (state, action: PayloadAction<Message>) => {
+            if(!state.currentChat?.messages[0]){
+                state.newChat?.messages.push(action.payload)
+                state.currentChat?.messages.push(action.payload)
+            }
+            
+        }
     },
     extraReducers: (builer) => {
         builer.addCase(getChats.pending, (state) => {
@@ -131,5 +133,4 @@ const chatsSlice = createSlice({
 });
 
 export default chatsSlice.reducer;
-export const { setCurrentChat} =
-    chatsSlice.actions;
+export const { setCurrentChat , setNewChat , setNewMessage } = chatsSlice.actions;

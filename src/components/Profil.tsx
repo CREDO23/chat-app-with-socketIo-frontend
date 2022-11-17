@@ -219,7 +219,7 @@ export default function (): JSX.Element {
                             {currentUser.user?.firstName}{' '}
                             {currentUser.user?.lastName}
                         </span>
-                        <span className="font-light text-gray-400">
+                        <span className="font-light text-sm text-gray-400">
                             {currentUser.user?.email}
                         </span>
                         <span className=" text-gray-400 font-medium">

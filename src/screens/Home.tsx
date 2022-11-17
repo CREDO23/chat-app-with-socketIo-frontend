@@ -9,10 +9,11 @@ import Mobile from './Mobile';
 import LeftSide from '../components/LeftSide';
 import RightSide from '../components/RightSide';
 import { ToastContainer } from 'react-toastify';
-import { useAppSelector } from '../store/hooks/index';
+import { useAppSelector, useAppDispatch } from '../store/hooks/index';
 import { parseMessage } from '../utils/parser/message';
 import { parseName } from '../utils/parser/chat';
 import homeImage from '../assets/home.svg';
+import { setNewMessage } from '../store/slices/chats';
 
 export default function (): JSX.Element {
     const [content, setContent] = useState<'messages' | 'participants'>(
@@ -44,8 +45,13 @@ export default function (): JSX.Element {
 
     const [chevronDown, setChevronDonw] = useState<boolean>(false);
 
-    const currentChat = useAppSelector((state) => state.chats.currentChat);
+    const [message, setMessage] = useState<string>('');
+
+    const chats = useAppSelector((state) => state.chats);
     const user = useAppSelector((state) => state.currentUser.user);
+    const dispatch = useAppDispatch();
+
+    console.log(message)
 
     return (
         <>
@@ -54,7 +60,7 @@ export default function (): JSX.Element {
                     setRightSide={setRightSide}
                     setMainSide={setMainSide}
                 />
-                {!currentChat?.messages ? (
+                {!chats.currentChat?.messages ? (
                     <div className="md:w-[60%] bg-transparent h-[97%] rounded-md flex flex-col items-center justify-center">
                         <img src={homeImage} className="h-48 w-48" alt="home" />
                         <span
@@ -80,12 +86,12 @@ export default function (): JSX.Element {
                                     alt=""
                                 />
                                 <div className="flex mx-3 flex-col items-start justify-between">
-                                    {currentChat && (
+                                    {chats.currentChat && (
                                         <>
                                             <p className="text-sky-900">
                                                 {
                                                     parseName(
-                                                        currentChat,
+                                                        chats.currentChat,
                                                         user as USER,
                                                     )[0]
                                                 }
@@ -134,47 +140,66 @@ export default function (): JSX.Element {
                         >
                             {content == 'participants' && (
                                 <UserChatList
-                                    users={currentChat.users as USER[]}
+                                    users={chats.currentChat.users as USER[]}
                                 />
                             )}
-                            {currentChat?.messages.map((message) => {
+                            {chats.currentChat?.messages.map((message) => {
                                 const parsedMessage = parseMessage(
                                     message,
                                     user?.userName as string,
                                 );
-                                return (
-                                    <Message
-                                        key={message.id}
-                                        time={parsedMessage.time}
-                                        isForeign={parsedMessage.isForeign}
-                                        isPrivate={parsedMessage.isPrivate}
-                                        content={parsedMessage.content}
-                                        sender={parsedMessage.sender}
-                                    />
-                                );
+                                if (message.content) {
+                                    return (
+                                        <Message
+                                            key={message.id}
+                                            time={parsedMessage.time}
+                                            isForeign={parsedMessage.isForeign}
+                                            isPrivate={parsedMessage.isPrivate}
+                                            content={parsedMessage.content}
+                                            sender={parsedMessage.sender}
+                                        />
+                                    );
+                                }
                             })}
                         </div>
                         <div className="h-[3.5rem] items-center relative flex p-1 border-t-2 ">
                             <input
                                 type="text"
                                 id="message"
+                                onChange={(e) => setMessage(e.target.value)}
                                 placeholder="Here your message ..."
                                 className="w-11/12 px-3 py-2 flex text-slate-900 placeholder-gray-300 border border-gray-100 rounded-md  focus:outline-none  focus:ring-indigo-100 focus:border-indigo-200"
                             />
                             <FontAwesomeIcon
                                 className="w-1/12 cursor-pointer text-sky-600"
+                                onClick={() => {
+                                    console.log(message)
+                                    dispatch(
+                                        setNewMessage({
+                                            sender: user as USER,
+                                            content: message,
+                                            updatedAt : new Date().toISOString()
+                                        }),
+                                    );
+                                }}
                                 icon={faPaperPlane}
                                 size={'2x'}
                             />
                             {chevronDown && content == 'messages' && (
                                 <FontAwesomeIcon
-                                    onClick={() =>
+                                    onClick={() => {
                                         messagesDiv.current?.scrollTo({
                                             behavior: 'auto',
                                             top: messagesDiv.current
                                                 .scrollHeight,
-                                        })
-                                    }
+                                        });
+
+                                        if (chats.newChat) {
+                                            // new chat backend
+                                        } else {
+                                            // new message backend
+                                        }
+                                    }}
                                     className="text-sky-700 absolute cursor-pointer right-3 animate-bounce bg-white -top-[4rem] rounded-full p-3 border"
                                     icon={faChevronDown}
                                 />

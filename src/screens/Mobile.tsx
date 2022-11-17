@@ -6,7 +6,7 @@ import {
     faArrowLeft,
     faChevronDown,
     faMessage,
-    faUserFriends
+    faUserFriends,
 } from '@fortawesome/free-solid-svg-icons';
 import { useRef, useState, useEffect } from 'react';
 import Message from '../components/Message';
@@ -19,7 +19,6 @@ import { parseMessage } from '../utils/parser/message';
 import type USER from '../types/user';
 import { getUsers } from '../store/slices/users';
 import homeImage from '../assets/home.svg';
-import type Chat from '../types/chat';
 import { parseName } from '../utils/parser/chat';
 
 export default function (): JSX.Element {
@@ -34,7 +33,7 @@ export default function (): JSX.Element {
         'chats' | 'users' | 'messages' | 'profil'
     >('chats');
 
-    const [search , setSearch] = useState('')
+    const [search, setSearch] = useState('');
 
     const messagesDiv = useRef<HTMLDivElement>(null);
 
@@ -57,14 +56,13 @@ export default function (): JSX.Element {
     const users = useAppSelector((state) => state.users.users);
 
     useEffect(() => {
-        dispatch(getUsers({ size: 20 }));
-    }, []);
+        dispatch(getUsers({ search }));
+    }, [search]);
 
     const [chevronDown, setChevronDonw] = useState<boolean>(false);
 
     const chats = useAppSelector((state) => state.chats);
     const user = useAppSelector((state) => state.currentUser.user);
-
 
     return (
         <div
@@ -99,7 +97,7 @@ export default function (): JSX.Element {
                         <div className="md:w-[65%] bg-[#e9effc] h-full rounded-md">
                             <div className="h-[4rem] border-b-2 px-2  flex items-center justify-between">
                                 <FontAwesomeIcon
-                                onClick={() => setMainSide('chats')}
+                                    onClick={() => setMainSide('chats')}
                                     className="p-3 rounded-full bg-sky-800 text-sky-100"
                                     icon={faArrowLeft}
                                 />
@@ -114,7 +112,7 @@ export default function (): JSX.Element {
                                             <p className="text-sky-900">
                                                 {
                                                     parseName(
-                                                        chats.currentChat as Chat,
+                                                        chats.currentChat,
                                                         user as USER,
                                                     )[0]
                                                 }
@@ -132,7 +130,7 @@ export default function (): JSX.Element {
                                         } font-semibold py-1 text-xs border rounded-lg`}
                                         onClick={() => setContent('messages')}
                                     >
-                                        <FontAwesomeIcon icon={faMessage}/>
+                                        <FontAwesomeIcon icon={faMessage} />
                                     </span>
                                     <span
                                         className={`px-3 ${
@@ -145,10 +143,13 @@ export default function (): JSX.Element {
                                             setContent('participants');
                                         }}
                                     >
-                                        <FontAwesomeIcon  onClick={(e) => {
-                                            e.stopPropagation();
-                                            setContent('participants');
-                                        }}  icon={faUserFriends}/>
+                                        <FontAwesomeIcon
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setContent('participants');
+                                            }}
+                                            icon={faUserFriends}
+                                        />
                                     </span>
                                 </div>
                             </div>
@@ -166,7 +167,7 @@ export default function (): JSX.Element {
                                 {content == 'participants' && (
                                     <UserChatList
                                         users={
-                                            chats.currentChat?.users as USER[]
+                                            chats.currentChat.users as USER[]
                                         }
                                     />
                                 )}

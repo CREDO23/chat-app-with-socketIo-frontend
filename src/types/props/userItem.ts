@@ -1,6 +1,7 @@
 type UserItem = {
     userName: string;
-    imageProfile?: string;
+    id : string;
+    avatar?: string;
     online: boolean;
     mode?: 'private' | 'channel';
 };

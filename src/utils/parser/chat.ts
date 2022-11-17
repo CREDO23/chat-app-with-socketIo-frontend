@@ -27,7 +27,7 @@ export const parseLastMessage = (
 ): MessageProps => {
     const lastMessage = chat.messages[chat.messages.length - 1];
 
-    const isForeign = lastMessage.sender.userName != userName;
+    const isForeign = lastMessage?.sender?.userName != userName;
 
     const isPrivate = chat.isPrivate;
 

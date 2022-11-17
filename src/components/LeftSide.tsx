@@ -72,12 +72,12 @@ export default function ({ setMainSide, setRightSide }: Props): JSX.Element {
                 {chatState.chats?.map((chat) => {
                     return (
                         <Chat
-                            messages={chat.messages}
+                            messages={chat?.messages}
                             name={parseName(chat, user as USER)[0]}
                             id={chat._id as string}
                             newMessageCount={parseNewMessageCount(
-                                chatState.lastUpdate,
-                                chat.messages,
+                                new Date().toISOString(),
+                                chat?.messages,
                             )}
                             lastMessage={parseLastMessage(
                                 chat,

@@ -12,7 +12,6 @@ import { ToastContainer } from 'react-toastify';
 import { useAppSelector } from '../store/hooks/index';
 import { parseMessage } from '../utils/parser/message';
 import { parseName } from '../utils/parser/chat';
-import Chat from '../types/chat';
 import homeImage from '../assets/home.svg';
 
 export default function (): JSX.Element {
@@ -86,7 +85,7 @@ export default function (): JSX.Element {
                                             <p className="text-sky-900">
                                                 {
                                                     parseName(
-                                                        currentChat as Chat,
+                                                        currentChat,
                                                         user as USER,
                                                     )[0]
                                                 }
@@ -135,7 +134,7 @@ export default function (): JSX.Element {
                         >
                             {content == 'participants' && (
                                 <UserChatList
-                                    users={currentChat?.users as USER[]}
+                                    users={currentChat.users as USER[]}
                                 />
                             )}
                             {currentChat?.messages.map((message) => {

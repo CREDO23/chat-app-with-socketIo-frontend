@@ -1,10 +1,52 @@
 import UserItem from '../types/props/userItem';
 import logo from '../assets/logo.png';
 import { parseContent } from '../utils/parser/index';
+import { useAppDispatch } from '../store/hooks/index';
+import { setCurrentChat } from '../store/slices/chats';
+import { useAppSelector } from '../store/hooks/index';
 
-export default function ({ online, userName, mode }: UserItem): JSX.Element {
+export default function ({
+    online,
+    userName,
+    mode,
+    id,
+    avatar,
+}: UserItem): JSX.Element {
+    const dispatch = useAppDispatch();
+
+    const currentUser = useAppSelector((state) => state.currentUser.user);
+
+    const startChat = () => {
+        if (mode == 'private') {
+            dispatch(
+                setCurrentChat({
+                    name: `${currentUser?.userName}-${userName}`,
+                    avatar: avatar,
+                    users: [
+                        {
+                            _id: id,
+                            userName,
+                        },
+                        {
+                            _id: currentUser?._id,
+                            userName: currentUser?.userName as string,
+                        },
+                    ],
+                    isPrivate: true,
+                    messages: [],
+                    updatedAt: new Date().toISOString(),
+                }),
+            );
+        }
+    };
+
     return (
-        <div className="w-full cursor-pointer my-1 bg-white px-2 h-[3.5rem] rounded flex items-center">
+        <div
+            onClick={() => {
+                startChat();
+            }}
+            className="w-full relative cursor-pointer my-1 bg-white px-2 h-[3.5rem] rounded flex items-center"
+        >
             <span className="relative h-[3rem] mr-1  w-[3rem]">
                 <img className=" border  rounded-full" src={logo} alt="" />
                 {online && (

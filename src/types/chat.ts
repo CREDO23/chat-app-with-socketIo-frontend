@@ -6,7 +6,7 @@ type Chat = {
     admin?: string;
     isPrivate: boolean;
     name: string;
-    avatar: string;
+    avatar?: string;
     users: USER[];
     messages: Message[];
     updatedAt: string;
@@ -15,7 +15,7 @@ type Chat = {
 export type ChatState = {
     loading: boolean;
     currentChat: Chat | null;
-    lastUpdate: string;
+    newChat : Chat | any
     chats: Chat[];
 };
 

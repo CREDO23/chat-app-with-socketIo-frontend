@@ -14,12 +14,11 @@ export default function ({ setRightSide, rightSide }: Props): JSX.Element {
 
     const users = useAppSelector((state) => state.users.users);
 
-    const [search , setSearch] = useState('')
+    const [search, setSearch] = useState('');
 
     useEffect(() => {
         dispatch(getUsers({ search }));
     }, [search]);
-
 
     return (
         <div className=" md:w-[25%] px-1 h-[97%] ">

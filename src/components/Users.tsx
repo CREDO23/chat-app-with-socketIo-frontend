@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 import type UserList from '../types/props/userChatList';
 
 type Props = {
-    setSearch : React.Dispatch<React.SetStateAction<string>>
-}
+    setSearch: React.Dispatch<React.SetStateAction<string>>;
+};
 
-export default function ({ users , setSearch }: UserList & Props): JSX.Element {
+export default function ({ users, setSearch }: UserList & Props): JSX.Element {
     const [mode, setMode] = useState<'private' | 'channel'>('private');
 
     return (
@@ -14,7 +14,7 @@ export default function ({ users , setSearch }: UserList & Props): JSX.Element {
             <div className=" w-full px-2">
                 <input
                     type="text"
-                    onChange={(e)  => setSearch(e.target.value)}
+                    onChange={(e) => setSearch(e.target.value)}
                     placeholder="Search a user here ..."
                     className="w-full px-3 py-1 flex text-slate-900 placeholder-gray-300 border border-gray-100 rounded-md  focus:outline-none  focus:ring-indigo-100 focus:border-indigo-200"
                 />
@@ -41,15 +41,27 @@ export default function ({ users , setSearch }: UserList & Props): JSX.Element {
                     </p>
                 )}
             </div>
+            {mode == 'channel' && (
+                <div className=" w-full px-2">
+                    <input
+                        type="text"
+                        onChange={(e) => setSearch(e.target.value)}
+                        placeholder="Chat name"
+                        className="w-full px-3 py-1 flex text-slate-900 placeholder-gray-300 border border-gray-100 rounded-md  focus:outline-none  focus:ring-indigo-100 focus:border-indigo-200"
+                    />
+                </div>
+            )}
+
             <div className="no-scrollbar w-full overflow-y-auto">
                 {users.map((item) => {
                     return (
                         <UserItem
                             mode={mode}
                             key={item.userName}
-                            imageProfile={item.avatar}
+                            avatar={item.avatar as string}
                             online={item.isLogged as boolean}
                             userName={item.userName}
+                            id={item._id as string}
                         />
                     );
                 })}

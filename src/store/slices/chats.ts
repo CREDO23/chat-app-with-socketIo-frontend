@@ -6,12 +6,23 @@ import type {
     GetChatResponse,
     AddChatResponse,
 } from '../../types/chat';
+import type USER from '../../types/user';
 import type Chat from '../../types/chat';
+import type Message from '../../types/messages';
 
 const initialState: ChatState = {
     loading: false,
     currentChat: null,
-    lastUpdate: new Date().toISOString(),
+    newChat: {
+        _id: '',
+        admin: '',
+        isPrivate: true,
+        name: '',
+        avatar: '',
+        users: [],
+        messages: [],
+        updatedAt: '',
+    },
     chats: [],
 };
 
@@ -70,10 +81,14 @@ const chatsSlice = createSlice({
     name: 'chats',
     initialState,
     reducers: {
-        setCurrentChat: (state, action: PayloadAction<string>) => {
-            state.currentChat = state.chats.filter(
-                (chat) => chat._id == action.payload,
-            )[0];
+        setCurrentChat: (state, action: PayloadAction<string | Chat>) => {
+            if (typeof action.payload === 'string') {
+                state.currentChat = state.chats.filter(
+                    (chat) => chat._id == action.payload,
+                )[0];
+            } else {
+                state.currentChat = action.payload;
+            }
         },
     },
     extraReducers: (builer) => {
@@ -105,7 +120,6 @@ const chatsSlice = createSlice({
                 state.loading = false;
                 state.chats.push(action.payload.data.data);
                 state.currentChat = action.payload.data.data;
-                state.lastUpdate = new Date().toISOString();
             },
         );
 
@@ -117,4 +131,5 @@ const chatsSlice = createSlice({
 });
 
 export default chatsSlice.reducer;
-export const { setCurrentChat } = chatsSlice.actions;
+export const { setCurrentChat} =
+    chatsSlice.actions;

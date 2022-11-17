@@ -42,16 +42,7 @@ export default function ({
             dispatch(setNewChat({
                 name: `${currentUser?.userName}-${userName}`,
                 avatar: avatar,
-                users: [
-                    {
-                        _id: id,
-                        userName,
-                    },
-                    {
-                        _id: currentUser?._id,
-                        userName: currentUser?.userName as string,
-                    },
-                ],
+                users:[currentUser?._id as string , id as string],
                 isPrivate: true,
                 messages: [
                 ],

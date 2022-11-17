@@ -13,7 +13,7 @@ import type Message from '../../types/messages';
 const initialState: ChatState = {
     loading: false,
     currentChat: null,
-    newChat:null,
+    newChat: null,
     chats: [],
 };
 
@@ -33,10 +33,11 @@ export const getChats = createAsyncThunk<AxiosResponse, string>(
     },
 );
 
-export const newChat = createAsyncThunk<AxiosResponse, Chat>(
+export const newChat = createAsyncThunk<AxiosResponse,any>(
     'chat/new',
     async (chat, { rejectWithValue }) => {
         try {
+            
             const result: AxiosResponse = await axios({
                 method: 'POST',
                 url: `${import.meta.env.VITE_BACKEND_URL}/api/chats`,
@@ -81,17 +82,16 @@ const chatsSlice = createSlice({
                 state.currentChat = action.payload;
             }
         },
-        setNewChat : (state, action: PayloadAction<string | Chat>) => {
-            state.newChat = action.payload as Chat
+        setNewChat: (state, action: PayloadAction<string | Chat>) => {
+            state.newChat = action.payload as Chat;
         },
 
-        setNewMessage : (state, action: PayloadAction<Message>) => {
-            if(!state.currentChat?.messages[0]){
-                state.newChat?.messages.push(action.payload)
-                state.currentChat?.messages.push(action.payload)
+        setNewMessage: (state, action: PayloadAction<Message>) => {
+            if (!state.currentChat?.messages[0]) {
+                state.newChat?.messages.push(action.payload);
+                state.currentChat?.messages.push(action.payload);
             }
-            
-        }
+        },
     },
     extraReducers: (builer) => {
         builer.addCase(getChats.pending, (state) => {
@@ -133,4 +133,4 @@ const chatsSlice = createSlice({
 });
 
 export default chatsSlice.reducer;
-export const { setCurrentChat , setNewChat , setNewMessage } = chatsSlice.actions;
+export const { setCurrentChat, setNewChat, setNewMessage } = chatsSlice.actions;

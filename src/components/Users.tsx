@@ -1,7 +1,7 @@
 import UserItem from './UserItem';
 import React, { useState } from 'react';
 import type UserList from '../types/props/userChatList';
-import type USER from '../types/user'
+import type USER from '../types/user';
 
 type Props = {
     setSearch: React.Dispatch<React.SetStateAction<string>>;
@@ -10,7 +10,7 @@ type Props = {
 export default function ({ users, setSearch }: UserList & Props): JSX.Element {
     const [mode, setMode] = useState<'private' | 'channel'>('private');
 
-    const [usersChat , setUserChat] =  useState<any[]>([])
+    const [usersChat, setUserChat] = useState<any[]>([]);
 
     return (
         <>
@@ -57,7 +57,6 @@ export default function ({ users, setSearch }: UserList & Props): JSX.Element {
 
             <div className="no-scrollbar w-full overflow-y-auto">
                 {users.map((item) => {
-                    
                     return (
                         <UserItem
                             setUserChat={setUserChat}

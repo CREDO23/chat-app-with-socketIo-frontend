@@ -10,10 +10,10 @@ import LeftSide from '../components/LeftSide';
 import RightSide from '../components/RightSide';
 import { ToastContainer } from 'react-toastify';
 import { useAppSelector, useAppDispatch } from '../store/hooks/index';
-import { parseMessage } from '../utils/parser/message';
+import { parseMessage, parseRecipient } from '../utils/parser/message';
 import { parseName } from '../utils/parser/chat';
 import homeImage from '../assets/home.svg';
-import { setNewMessage } from '../store/slices/chats';
+import { setNewMessage, newChat } from '../store/slices/chats';
 
 export default function (): JSX.Element {
     const [content, setContent] = useState<'messages' | 'participants'>(
@@ -50,8 +50,6 @@ export default function (): JSX.Element {
     const chats = useAppSelector((state) => state.chats);
     const user = useAppSelector((state) => state.currentUser.user);
     const dispatch = useAppDispatch();
-
-    console.log(message)
 
     return (
         <>
@@ -136,7 +134,7 @@ export default function (): JSX.Element {
                                     setChevronDonw(false);
                                 }
                             }}
-                            className="h-[calc(100%-7.5rem)] relative no-scrollbar overflow-y-auto p-4 flex flex-col "
+                            className="h-[calc(100%-7.5rem)] relative no-scrollbar overflow-y-auto  p-4 flex flex-col "
                         >
                             {content == 'participants' && (
                                 <UserChatList
@@ -165,6 +163,7 @@ export default function (): JSX.Element {
                         <div className="h-[3.5rem] items-center relative flex p-1 border-t-2 ">
                             <input
                                 type="text"
+                                value={message}
                                 id="message"
                                 onChange={(e) => setMessage(e.target.value)}
                                 placeholder="Here your message ..."
@@ -173,12 +172,29 @@ export default function (): JSX.Element {
                             <FontAwesomeIcon
                                 className="w-1/12 cursor-pointer text-sky-600"
                                 onClick={() => {
-                                    console.log(message)
                                     dispatch(
                                         setNewMessage({
                                             sender: user as USER,
                                             content: message,
-                                            updatedAt : new Date().toISOString()
+                                            updatedAt: new Date().toISOString(),
+                                        }),
+                                    );
+                                   
+                                    dispatch(
+                                        newChat({
+                                            name: chats.currentChat
+                                                ?.name as string,
+                                            users: chats.newChat
+                                                ?.users as string[],
+                                            message: {
+                                                sender: user?._id as string,
+                                                content: message,
+                                                recipient: parseRecipient(
+                                                    chats.newChat
+                                                        ?.users as USER[],
+                                                    user?.userName as string,
+                                                ),
+                                            },
                                         }),
                                     );
                                 }}
@@ -193,12 +209,6 @@ export default function (): JSX.Element {
                                             top: messagesDiv.current
                                                 .scrollHeight,
                                         });
-
-                                        if (chats.newChat) {
-                                            // new chat backend
-                                        } else {
-                                            // new message backend
-                                        }
                                     }}
                                     className="text-sky-700 absolute cursor-pointer right-3 animate-bounce bg-white -top-[4rem] rounded-full p-3 border"
                                     icon={faChevronDown}

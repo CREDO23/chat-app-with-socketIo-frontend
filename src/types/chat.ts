@@ -7,7 +7,7 @@ type Chat = {
     isPrivate: boolean;
     name: string;
     avatar?: string;
-    users: USER[];
+    users: USER[] | string[];
     messages: Message[];
     updatedAt: string;
 };

@@ -13,7 +13,8 @@ import { useAppSelector, useAppDispatch } from '../store/hooks/index';
 import { parseMessage, parseRecipient } from '../utils/parser/message';
 import { parseName } from '../utils/parser/chat';
 import homeImage from '../assets/home.svg';
-import { setNewMessage, newChat , newMessage } from '../store/slices/chats';
+import { setNewMessage, newChat, newMessage } from '../store/slices/chats';
+import type Chat from '../types/chat';
 
 export default function (): JSX.Element {
     const [content, setContent] = useState<'messages' | 'participants'>(
@@ -145,6 +146,7 @@ export default function (): JSX.Element {
                                 const parsedMessage = parseMessage(
                                     message,
                                     user?.userName as string,
+                                    chats.currentChat as Chat
                                 );
                                 if (message.content) {
                                     return (
@@ -197,11 +199,16 @@ export default function (): JSX.Element {
                                                 },
                                             }),
                                         );
-                                    }else{
-                                        dispatch(newMessage({id : chats.currentChat._id , message : {
-                                            sender: user?._id,
-                                            content: message,
-                                        }}))
+                                    } else {
+                                        dispatch(
+                                            newMessage({
+                                                id: chats.currentChat._id,
+                                                message: {
+                                                    sender: user?._id,
+                                                    content: message,
+                                                },
+                                            }),
+                                        );
                                     }
 
                                     setTimeout(() => setMessage(''), 1000);

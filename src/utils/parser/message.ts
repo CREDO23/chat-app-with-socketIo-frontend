@@ -1,14 +1,16 @@
 import type MessageProps from '../../types/props/message';
 import type Message from '../../types/messages';
 import type USER from '../../types/user';
+import type Chat from '../../types/chat';
 
 export const parseMessage = (
     message: Message,
     userName: string,
+    chat : Chat
 ): MessageProps => {
     const isForeign = message.sender.userName != userName;
 
-    const isPrivate = message.recipient ? true : false;
+    const isPrivate = chat.isPrivate
 
     const time = message.updatedAt as string;
 

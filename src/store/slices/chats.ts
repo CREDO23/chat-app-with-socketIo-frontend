@@ -136,11 +136,13 @@ const chatsSlice = createSlice({
             (state, action: PayloadAction<AxiosResponse<AddChatResponse>>) => {
                 state.loading = false;
 
-            const index = state.chats.findIndex(chat => chat._id == action.payload.data.data._id)   
-            
-            state.chats.splice(index ,1)
-                
-            state.chats.unshift(action.payload.data.data)
+                const index = state.chats.findIndex(
+                    (chat) => chat._id == action.payload.data.data._id,
+                );
+
+                state.chats.splice(index, 1);
+
+                state.chats.unshift(action.payload.data.data);
             },
         );
 

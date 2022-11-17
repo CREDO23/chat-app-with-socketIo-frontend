@@ -33,11 +33,10 @@ export const getChats = createAsyncThunk<AxiosResponse, string>(
     },
 );
 
-export const newChat = createAsyncThunk<AxiosResponse,any>(
+export const newChat = createAsyncThunk<AxiosResponse, any>(
     'chat/new',
     async (chat, { rejectWithValue }) => {
         try {
-            
             const result: AxiosResponse = await axios({
                 method: 'POST',
                 url: `${import.meta.env.VITE_BACKEND_URL}/api/chats`,
@@ -120,7 +119,7 @@ const chatsSlice = createSlice({
             newChat.fulfilled,
             (state, action: PayloadAction<AxiosResponse<AddChatResponse>>) => {
                 state.loading = false;
-                state.chats.push(action.payload.data.data);
+                state.chats.unshift(action.payload.data.data);
                 state.currentChat = action.payload.data.data;
             },
         );

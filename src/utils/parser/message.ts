@@ -28,16 +28,15 @@ export const parseMessage = (
     };
 };
 
-export const parseRecipient = (users : USER[] , userName : string) : string => {
-    let recipient = ' '
+export const parseRecipient = (users: USER[], userName: string): string => {
+    let recipient = ' ';
 
-    if(users.length > 2){
-        recipient = 'chat'
-    }else{
-        const target = users.filter(user =>  user.userName !== userName)[0]
-        recipient = target.userName
+    if (users.length > 2) {
+        recipient = 'chat';
+    } else {
+        const target = users.filter((user) => user.userName !== userName)[0];
+        recipient = target.userName;
     }
 
-
-    return recipient
-}
+    return recipient;
+};

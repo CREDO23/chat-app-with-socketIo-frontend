@@ -2,8 +2,9 @@ import UserItem from '../types/props/userItem';
 import logo from '../assets/logo.png';
 import { parseContent } from '../utils/parser/index';
 import { useAppDispatch } from '../store/hooks/index';
-import { setCurrentChat , setNewChat } from '../store/slices/chats';
+import { setCurrentChat, setNewChat } from '../store/slices/chats';
 import { useAppSelector } from '../store/hooks/index';
+import { parseName } from '../utils/parser/chat';
 import type USER from '../types/user';
 
 export default function ({
@@ -12,50 +13,60 @@ export default function ({
     mode,
     id,
     avatar,
-    setUserChat
+    setUserChat,
 }: UserItem): JSX.Element {
     const dispatch = useAppDispatch();
 
     const currentUser = useAppSelector((state) => state.currentUser.user);
 
+    const chats = useAppSelector((state) => state.chats);
+
     const startChat = () => {
         if (mode == 'private') {
-            dispatch(
-                setCurrentChat({
-                    name: `${currentUser?.userName}-${userName}`,
-                    avatar: avatar,
-                    users: [
-                        {
-                            _id: id,
-                            userName,
-                        },
-                        {
-                            _id: currentUser?._id,
-                            userName: currentUser?.userName as string,
-                        },
-                    ],
-                    isPrivate: true,
-                    messages: [],
-                    updatedAt: new Date().toISOString(),
-                }),
-            );
-            dispatch(setNewChat({
-                name: `${currentUser?.userName}-${userName}`,
-                avatar: avatar,
-                users:[currentUser?._id as string , id as string],
-                isPrivate: true,
-                messages: [
-                ],
-                updatedAt: new Date().toISOString(),
-            }))
-        }else{
-            setUserChat((prevSate) : any[] => {
-                return [...prevSate, {
-                    _id: id,
-                    userName,
-                }]
-        
-            })
+            if (
+                chats.chats.filter(
+                    (chat) =>
+                        parseName(chat, currentUser as USER)[0] == userName,
+                )[0]
+            ) {
+                const id = chats.chats.filter(
+                    (chat) =>
+                        parseName(chat, currentUser as USER)[0] == userName,
+                )[0]._id;
+                if (id) {
+                    dispatch(setCurrentChat( id ))   ;
+                }
+            } else {
+                dispatch(
+                    setCurrentChat({
+                        name: `${currentUser?.userName}-${userName}`,
+                        avatar: avatar,
+                        users: [
+                            {
+                                _id: id,
+                                userName,
+                            },
+                            {
+                                _id: currentUser?._id,
+                                userName: currentUser?.userName as string,
+                            },
+                        ],
+                        isPrivate: true,
+                        messages: [],
+                        updatedAt: new Date().toISOString(),
+                    }),
+                );
+                dispatch(
+                    setNewChat({
+                        name: `${currentUser?.userName}-${userName}`,
+                        avatar: avatar,
+                        users: [currentUser?._id as string, id as string],
+                        isPrivate: true,
+                        messages: [],
+                        updatedAt: new Date().toISOString(),
+                    }),
+                );
+            }
         }
     };
 
@@ -88,6 +99,25 @@ export default function ({
                     <div className="flexitems-center mb-4">
                         <input
                             id={userName}
+                            onChange={(e) => {
+                                if (e.target.checked) {
+                                    setUserChat((prevSate): any[] => {
+                                        return [
+                                            ...prevSate,
+                                            {
+                                                _id: id,
+                                                userName,
+                                            },
+                                        ];
+                                    });
+                                } else {
+                                    setUserChat((prevSate): any[] => {
+                                        return prevSate.filter(
+                                            (user) => user._id != id,
+                                        );
+                                    });
+                                }
+                            }}
                             type="checkbox"
                             value={userName}
                             className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-30 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"

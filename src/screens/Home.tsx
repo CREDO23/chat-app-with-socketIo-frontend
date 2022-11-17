@@ -179,24 +179,27 @@ export default function (): JSX.Element {
                                             updatedAt: new Date().toISOString(),
                                         }),
                                     );
-                                   
-                                    dispatch(
-                                        newChat({
-                                            name: chats.currentChat
-                                                ?.name as string,
-                                            users: chats.newChat
-                                                ?.users as string[],
-                                            message: {
-                                                sender: user?._id as string,
-                                                content: message,
-                                                recipient: parseRecipient(
-                                                    chats.newChat
-                                                        ?.users as USER[],
-                                                    user?.userName as string,
-                                                ),
-                                            },
-                                        }),
-                                    );
+                                    if (!chats.currentChat?.messages[0]) {
+                                        dispatch(
+                                            newChat({
+                                                name: chats.currentChat
+                                                    ?.name as string,
+                                                users: chats.newChat
+                                                    ?.users as string[],
+                                                message: {
+                                                    sender: user?._id as string,
+                                                    content: message,
+                                                    recipient: parseRecipient(
+                                                        chats.newChat
+                                                            ?.users as USER[],
+                                                        user?.userName as string,
+                                                    ),
+                                                },
+                                            }),
+                                        );
+                                    }
+
+                                    setTimeout(() => setMessage(''), 1000);
                                 }}
                                 icon={faPaperPlane}
                                 size={'2x'}

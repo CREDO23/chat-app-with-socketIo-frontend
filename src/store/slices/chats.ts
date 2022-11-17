@@ -56,7 +56,7 @@ export const newMessage = createAsyncThunk<AxiosResponse, any>(
     async ({ id, message }, { rejectWithValue }) => {
         try {
             const result: AxiosResponse = await axios({
-                method: 'POST',
+                method: 'PUT',
                 url: `${import.meta.env.VITE_BACKEND_URL}/api/chats/${id}`,
                 data: message,
             });
@@ -86,10 +86,8 @@ const chatsSlice = createSlice({
         },
 
         setNewMessage: (state, action: PayloadAction<Message>) => {
-            if (!state.currentChat?.messages[0]) {
-                state.newChat?.messages.push(action.payload);
-                state.currentChat?.messages.push(action.payload);
-            }
+            state.newChat?.messages.push(action.payload);
+            state.currentChat?.messages.push(action.payload);
         },
     },
     extraReducers: (builer) => {
@@ -125,6 +123,28 @@ const chatsSlice = createSlice({
         );
 
         builer.addCase(newChat.rejected, (state, action) => {
+            state.loading = false;
+            toast.error(action.payload as string);
+        });
+
+        builer.addCase(newMessage.pending, (state) => {
+            state.loading = true;
+        });
+
+        builer.addCase(
+            newMessage.fulfilled,
+            (state, action: PayloadAction<AxiosResponse<AddChatResponse>>) => {
+                state.loading = false;
+
+            const index = state.chats.findIndex(chat => chat._id == action.payload.data.data._id)   
+            
+            state.chats.splice(index ,1)
+                
+            state.chats.unshift(action.payload.data.data)
+            },
+        );
+
+        builer.addCase(newMessage.rejected, (state, action) => {
             state.loading = false;
             toast.error(action.payload as string);
         });

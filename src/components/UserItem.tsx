@@ -34,7 +34,7 @@ export default function ({
                         parseName(chat, currentUser as USER)[0] == userName,
                 )[0]._id;
                 if (id) {
-                    dispatch(setCurrentChat( id ))   ;
+                    dispatch(setCurrentChat(id));
                 }
             } else {
                 dispatch(

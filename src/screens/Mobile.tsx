@@ -9,17 +9,20 @@ import {
     faUserFriends,
 } from '@fortawesome/free-solid-svg-icons';
 import { useRef, useState, useEffect } from 'react';
+import {useNavigate} from 'react-router-dom'
 import Message from '../components/Message';
 import UserChatList from '../components/UserChatList';
 import Users from '../components/Users';
 import LeftSide from '../components/LeftSide';
 import Profil from '../components/Profil';
 import { useAppSelector, useAppDispatch } from '../store/hooks/index';
-import { parseMessage } from '../utils/parser/message';
+import { parseMessage , parseRecipient } from '../utils/parser/message';
 import type USER from '../types/user';
 import { getUsers } from '../store/slices/users';
 import homeImage from '../assets/home.svg';
-import { parseName } from '../utils/parser/chat';
+import { parseName} from '../utils/parser/chat';
+import type Chat from '../types/chat';
+import { setNewMessage, newChat, newMessage } from '../store/slices/chats';
 
 export default function (): JSX.Element {
     const [content, setContent] = useState<'messages' | 'participants'>(
@@ -61,8 +64,18 @@ export default function (): JSX.Element {
 
     const [chevronDown, setChevronDonw] = useState<boolean>(false);
 
+    const [message, setMessage] = useState<string>('');
+
     const chats = useAppSelector((state) => state.chats);
     const user = useAppSelector((state) => state.currentUser.user);
+
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (!localStorage.getItem('accessToken')) {
+            navigate('/');
+        }
+    }, []);
 
     return (
         <div
@@ -175,6 +188,7 @@ export default function (): JSX.Element {
                                     const parsedMessage = parseMessage(
                                         message,
                                         user?.userName as string,
+                                        chats.currentChat as Chat
                                     );
                                     return (
                                         <Message
@@ -197,6 +211,46 @@ export default function (): JSX.Element {
                                 />
                                 <FontAwesomeIcon
                                     className="w-1/12 cursor-pointer text-sky-600"
+                                    onClick={() => {
+                                        dispatch(
+                                            setNewMessage({
+                                                sender: user as USER,
+                                                content: message,
+                                                updatedAt: new Date().toISOString(),
+                                            }),
+                                        );
+                                        if (!chats.currentChat?.messages[0]) {
+                                            dispatch(
+                                                newChat({
+                                                    name: chats.currentChat
+                                                        ?.name as string,
+                                                    users: chats.newChat
+                                                        ?.users as string[],
+                                                    message: {
+                                                        sender: user?._id as string,
+                                                        content: message,
+                                                        recipient: parseRecipient(
+                                                            chats.newChat
+                                                                ?.users as USER[],
+                                                            user?.userName as string,
+                                                        ),
+                                                    },
+                                                }),
+                                            );
+                                        } else {
+                                            dispatch(
+                                                newMessage({
+                                                    id: chats.currentChat._id,
+                                                    message: {
+                                                        sender: user?._id,
+                                                        content: message,
+                                                    },
+                                                }),
+                                            );
+                                        }
+    
+                                        setTimeout(() => setMessage(''), 1000);
+                                    }}
                                     icon={faPaperPlane}
                                     size={'2x'}
                                 />

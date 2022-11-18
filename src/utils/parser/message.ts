@@ -6,11 +6,11 @@ import type Chat from '../../types/chat';
 export const parseMessage = (
     message: Message,
     userName: string,
-    chat : Chat
+    chat: Chat,
 ): MessageProps => {
     const isForeign = message.sender.userName != userName;
 
-    const isPrivate = chat.isPrivate
+    const isPrivate = chat.isPrivate;
 
     const time = message.updatedAt as string;
 

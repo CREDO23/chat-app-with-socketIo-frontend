@@ -15,6 +15,7 @@ import { parseName } from '../utils/parser/chat';
 import homeImage from '../assets/home.svg';
 import { setNewMessage, newChat, newMessage } from '../store/slices/chats';
 import type Chat from '../types/chat';
+import { useNavigate } from 'react-router-dom';
 
 export default function (): JSX.Element {
     const [content, setContent] = useState<'messages' | 'participants'>(
@@ -51,6 +52,14 @@ export default function (): JSX.Element {
     const chats = useAppSelector((state) => state.chats);
     const user = useAppSelector((state) => state.currentUser.user);
     const dispatch = useAppDispatch();
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!localStorage.getItem('accessToken')) {
+            navigate('/');
+        }
+    }, []);
 
     return (
         <>
@@ -146,7 +155,7 @@ export default function (): JSX.Element {
                                 const parsedMessage = parseMessage(
                                     message,
                                     user?.userName as string,
-                                    chats.currentChat as Chat
+                                    chats.currentChat as Chat,
                                 );
                                 if (message.content) {
                                     return (

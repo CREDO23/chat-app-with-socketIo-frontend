@@ -12,7 +12,7 @@ import type {
 const initialState: CurrentUserState = {
     loading: false,
     user: JSON.parse(localStorage.getItem('user') as string),
-    accessToken: localStorage.getItem('accessToken'),
+    accessToken: JSON.parse(localStorage.getItem('accessToken') as string),
 };
 
 export const singup = createAsyncThunk<AxiosResponse, USER>(
@@ -24,6 +24,7 @@ export const singup = createAsyncThunk<AxiosResponse, USER>(
                 url: `${import.meta.env.VITE_BACKEND_URL}/api/users/singup`,
                 data: user,
             });
+            console.log(result)
             return result;
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
@@ -81,16 +82,16 @@ export const currentUserSlice = createSlice({
             (state, action: PayloadAction<AxiosResponse<SingupResponse>>) => {
                 state.loading = false;
                 toast.susscess(action.payload.data.message);
+                state.accessToken = action.payload.data.data.accessToken;
                 state.user = action.payload.data.data.user;
                 localStorage.setItem(
                     'accessToken',
-                    action.payload.data.data.accessToken,
+                    JSON.stringify(action.payload?.data?.data?.accessToken),
                 );
                 localStorage.setItem(
                     'user',
-                    JSON.stringify(action.payload.data.data.user),
+                    JSON.stringify(action.payload?.data?.data?.user),
                 );
-                setTimeout(() => (window.location.href = '/home'), 3000);
             },
         );
 
@@ -109,17 +110,16 @@ export const currentUserSlice = createSlice({
             (state, action: PayloadAction<AxiosResponse<SigninResponse>>) => {
                 state.loading = false;
                 state.user = action.payload.data.data.user;
-                state.accessToken = action.payload.data.data.accessToken;
+                state.accessToken = action.payload?.data?.data?.accessToken;
                 toast.susscess(action.payload.data.message);
                 localStorage.setItem(
                     'accessToken',
-                    action.payload.data.data.accessToken,
+                    JSON.stringify(action.payload?.data?.data?.accessToken),
                 );
                 localStorage.setItem(
                     'user',
-                    JSON.stringify(action.payload.data.data.user),
+                    JSON.stringify(action.payload?.data?.data?.user),
                 );
-                setTimeout(() => (window.location.href = '/home'), 3000);
             },
         );
 

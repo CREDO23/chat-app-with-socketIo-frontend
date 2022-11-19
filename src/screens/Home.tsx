@@ -1,7 +1,7 @@
 import logo from '../assets/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane, faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useContext } from 'react';
 import type USER from '../types/user';
 import Message from '../components/Message';
 import UserChatList from '../components/UserChatList';
@@ -16,6 +16,7 @@ import homeImage from '../assets/home.svg';
 import { setNewMessage, newChat, newMessage } from '../store/slices/chats';
 import type Chat from '../types/chat';
 import { useNavigate } from 'react-router-dom';
+import socketContext from '../context';
 
 export default function (): JSX.Element {
     const [content, setContent] = useState<'messages' | 'participants'>(
@@ -60,6 +61,12 @@ export default function (): JSX.Element {
             navigate('/');
         }
     }, []);
+
+    const io = useContext(socketContext)
+
+    const socket = io?.getSocket 
+
+
 
     return (
         <>
@@ -129,6 +136,7 @@ export default function (): JSX.Element {
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         setContent('participants');
+                                        
                                     }}
                                 >
                                     Participants

@@ -13,8 +13,9 @@ export default function ({
     mode,
     id,
     avatar,
-    setUserChat,
-}: UserItem): JSX.Element {
+    userChats,
+}: // setUserChat,
+UserItem): JSX.Element {
     const dispatch = useAppDispatch();
 
     const currentUser = useAppSelector((state) => state.currentUser.user);
@@ -101,21 +102,26 @@ export default function ({
                             id={userName}
                             onChange={(e) => {
                                 if (e.target.checked) {
-                                    setUserChat((prevSate): any[] => {
-                                        return [
-                                            ...prevSate,
-                                            {
-                                                _id: id,
-                                                userName,
-                                            },
-                                        ];
+                                    userChats.push({
+                                        _id: id,
+                                        userName,
                                     });
+                                    // setUserChat((prevSate): any[] => {
+                                    //     return [
+                                    //         ...prevSate,
+                                    //         {
+                                    //             _id: id,
+                                    //             userName,
+                                    //         },
+                                    //     ];
+                                    // });
                                 } else {
-                                    setUserChat((prevSate): any[] => {
-                                        return prevSate.filter(
-                                            (user) => user._id != id,
-                                        );
-                                    });
+                                    userChats.filter((user) => user._id != id);
+                                    // setUserChat((prevSate): any[] => {
+                                    //     return prevSate.filter(
+                                    //         (user) => user._id != id,
+                                    //     );
+                                    // });
                                 }
                             }}
                             type="checkbox"

@@ -7,6 +7,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { isFill } from '../utils/validation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import {useContext} from 'react'
+import socketContext from '../context/index'
 
 type Form = 'singin' | 'singup';
 type Props = {
@@ -41,6 +43,8 @@ export default function ({ setForm }: Props): JSX.Element {
             toast.error(error as string);
         }
     };
+
+    const io = useContext(socketContext)
 
     return (
         <form

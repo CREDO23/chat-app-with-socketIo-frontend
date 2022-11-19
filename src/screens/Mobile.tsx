@@ -9,18 +9,18 @@ import {
     faUserFriends,
 } from '@fortawesome/free-solid-svg-icons';
 import { useRef, useState, useEffect } from 'react';
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 import Message from '../components/Message';
 import UserChatList from '../components/UserChatList';
 import Users from '../components/Users';
 import LeftSide from '../components/LeftSide';
 import Profil from '../components/Profil';
 import { useAppSelector, useAppDispatch } from '../store/hooks/index';
-import { parseMessage , parseRecipient } from '../utils/parser/message';
+import { parseMessage, parseRecipient } from '../utils/parser/message';
 import type USER from '../types/user';
 import { getUsers } from '../store/slices/users';
 import homeImage from '../assets/home.svg';
-import { parseName} from '../utils/parser/chat';
+import { parseName } from '../utils/parser/chat';
 import type Chat from '../types/chat';
 import { setNewMessage, newChat, newMessage } from '../store/slices/chats';
 
@@ -69,7 +69,7 @@ export default function (): JSX.Element {
     const chats = useAppSelector((state) => state.chats);
     const user = useAppSelector((state) => state.currentUser.user);
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (!localStorage.getItem('accessToken')) {
@@ -188,7 +188,7 @@ export default function (): JSX.Element {
                                     const parsedMessage = parseMessage(
                                         message,
                                         user?.userName as string,
-                                        chats.currentChat as Chat
+                                        chats.currentChat as Chat,
                                     );
                                     return (
                                         <Message
@@ -216,7 +216,8 @@ export default function (): JSX.Element {
                                             setNewMessage({
                                                 sender: user as USER,
                                                 content: message,
-                                                updatedAt: new Date().toISOString(),
+                                                updatedAt:
+                                                    new Date().toISOString(),
                                             }),
                                         );
                                         if (!chats.currentChat?.messages[0]) {
@@ -229,11 +230,12 @@ export default function (): JSX.Element {
                                                     message: {
                                                         sender: user?._id as string,
                                                         content: message,
-                                                        recipient: parseRecipient(
-                                                            chats.newChat
-                                                                ?.users as USER[],
-                                                            user?.userName as string,
-                                                        ),
+                                                        recipient:
+                                                            parseRecipient(
+                                                                chats.newChat
+                                                                    ?.users as USER[],
+                                                                user?.userName as string,
+                                                            ),
                                                     },
                                                 }),
                                             );
@@ -248,7 +250,7 @@ export default function (): JSX.Element {
                                                 }),
                                             );
                                         }
-    
+
                                         setTimeout(() => setMessage(''), 1000);
                                     }}
                                     icon={faPaperPlane}

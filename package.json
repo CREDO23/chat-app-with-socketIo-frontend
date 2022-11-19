@@ -26,6 +26,7 @@
         "react-redux": "^8.0.5",
         "react-router-dom": "^6.4.3",
         "react-toastify": "^9.1.1",
+        "socket.io-client": "^4.5.3",
         "validator": "^13.7.0"
     },
     "devDependencies": {

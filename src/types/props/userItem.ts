@@ -7,7 +7,8 @@ type UserItem = {
     avatar?: string;
     online: boolean;
     mode?: 'private' | 'channel';
-    setUserChat: React.Dispatch<React.SetStateAction<any[]>>;
+    // setUserChat: React.Dispatch<React.SetStateAction<any[]>>;
+    userChats : USER[]
 };
 
 export default UserItem;

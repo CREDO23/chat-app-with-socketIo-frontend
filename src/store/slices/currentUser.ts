@@ -24,7 +24,7 @@ export const singup = createAsyncThunk<AxiosResponse, USER>(
                 url: `${import.meta.env.VITE_BACKEND_URL}/api/users/singup`,
                 data: user,
             });
-            console.log(result)
+            console.log(result);
             return result;
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {

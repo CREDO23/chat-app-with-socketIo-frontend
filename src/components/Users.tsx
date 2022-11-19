@@ -10,7 +10,9 @@ type Props = {
 export default function ({ users, setSearch }: UserList & Props): JSX.Element {
     const [mode, setMode] = useState<'private' | 'channel'>('private');
 
-    const [usersChat, setUserChat] = useState<any[]>([]);
+    // const [usersChat, setUserChat] = useState<any[]>([]);
+
+    const usersChat : USER[] = []
 
     console.log(usersChat);
 
@@ -61,7 +63,8 @@ export default function ({ users, setSearch }: UserList & Props): JSX.Element {
                 {users.map((item) => {
                     return (
                         <UserItem
-                            setUserChat={setUserChat}
+                            // setUserChat={setUserChat}
+                            userChats={usersChat}
                             mode={mode}
                             key={item.userName}
                             avatar={item.avatar as string}

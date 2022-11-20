@@ -10,7 +10,7 @@ import { SocketIO } from '../src/context/index';
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
         <Provider store={store}>
-            <SocketContext.Provider value={new SocketIO}>
+            <SocketContext.Provider value={new SocketIO()}>
                 <App />
             </SocketContext.Provider>
         </Provider>

@@ -8,8 +8,9 @@ import {
 import type USER from '../types/user';
 import { getChats } from '../store/slices/chats';
 import { useAppDispatch } from '../store/hooks/index';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import toast from '../utils/toasty/index';
+import React from 'react';
 
 type Props = {
     setMainSide: React.Dispatch<
@@ -18,7 +19,7 @@ type Props = {
     setRightSide: React.Dispatch<React.SetStateAction<'users' | 'me'>>;
 };
 
-export default function ({ setMainSide, setRightSide }: Props): JSX.Element {
+ function leftSide ({ setMainSide, setRightSide }: Props): JSX.Element {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
     const user = useAppSelector((state) => state.currentUser.user);
@@ -27,7 +28,12 @@ export default function ({ setMainSide, setRightSide }: Props): JSX.Element {
 
     const dispatch = useAppDispatch();
 
-    useEffect(() => {
+    const handleUsersSide = useCallback(() => {
+        setMainSide('users');
+        setRightSide('users');
+    },[])
+
+    const fetchChats = useCallback(() => {
         try {
             if (user?._id) {
                 dispatch(getChats(user?._id as string));
@@ -35,6 +41,10 @@ export default function ({ setMainSide, setRightSide }: Props): JSX.Element {
         } catch (error) {
             toast.error(error as string);
         }
+    },[user])
+
+    useEffect(() => {
+       fetchChats()
     }, []);
 
     return (
@@ -53,10 +63,7 @@ export default function ({ setMainSide, setRightSide }: Props): JSX.Element {
                 />
                 <span
                     className="w-1/6 mx-1 py-3 cursor-pointer  bg-sky-200  flex items-center justify-center  text-xs  font-semibold text-sky-800   border border-gray-100 rounded-md  focus:outline-none  focus:ring-sky-100 focus:border-sky-100"
-                    onClick={() => {
-                        setMainSide('users');
-                        setRightSide('users');
-                    }}
+                    onClick={handleUsersSide}
                 >
                     New
                 </span>
@@ -93,3 +100,7 @@ export default function ({ setMainSide, setRightSide }: Props): JSX.Element {
         </div>
     );
 }
+
+
+
+export default React.memo(leftSide)

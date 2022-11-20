@@ -8,7 +8,7 @@ type UserItem = {
     online: boolean;
     mode?: 'private' | 'channel';
     // setUserChat: React.Dispatch<React.SetStateAction<any[]>>;
-    userChats : USER[]
+    userChats: USER[];
 };
 
 export default UserItem;

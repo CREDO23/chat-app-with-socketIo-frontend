@@ -23,8 +23,9 @@ import homeImage from '../assets/home.svg';
 import { parseName } from '../utils/parser/chat';
 import type Chat from '../types/chat';
 import { setNewMessage, newChat, newMessage } from '../store/slices/chats';
+import React from 'react';
 
-export default function (): JSX.Element {
+ function mobile (): JSX.Element {
     const [content, setContent] = useState<'messages' | 'participants'>(
         'messages',
     );
@@ -316,3 +317,6 @@ export default function (): JSX.Element {
         </div>
     );
 }
+
+
+export default React.memo(mobile)

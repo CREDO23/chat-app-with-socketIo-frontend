@@ -3,8 +3,9 @@ import type ChatProps from '../types/props/chat';
 import { parseDate, parseContent } from '../utils/parser/index';
 import { setCurrentChat } from '../store/slices/chats';
 import { useAppDispatch } from '../store/hooks/index';
+import React, { useCallback } from 'react';
 
-export default function ({
+ function chat ({
     newMessageCount,
     name,
     id,
@@ -14,12 +15,14 @@ export default function ({
     const dateParsed = parseDate(lastMessage.time);
     const dispatch = useAppDispatch();
 
+    const handleMessageSide = useCallback(() => {
+        dispatch(setCurrentChat(id));
+        showMessages('messages');
+    },[])
+
     return (
         <div
-            onClick={() => {
-                dispatch(setCurrentChat(id));
-                showMessages('messages');
-            }}
+            onClick={handleMessageSide}
             className={` w-[23.75rem] md:w-full cursor-pointer my-1 ${
                 newMessageCount ? ' bg-slate-200' : 'bg-white'
             } px-1 h-[4rem] rounded flex items-center `}
@@ -62,3 +65,5 @@ export default function ({
         </div>
     );
 }
+
+export default React.memo(chat)

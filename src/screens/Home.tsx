@@ -13,12 +13,13 @@ import { useAppSelector, useAppDispatch } from '../store/hooks/index';
 import { parseMessage, parseRecipient } from '../utils/parser/message';
 import { parseName } from '../utils/parser/chat';
 import homeImage from '../assets/home.svg';
-import { setNewMessage, newChat, newMessage } from '../store/slices/chats';
+import { setNewMessage, newChat, newMessage , newMsg} from '../store/slices/chats';
 import type Chat from '../types/chat';
 import { useNavigate } from 'react-router-dom';
 import socketContext from '../context';
+import React from 'react';
 
-export default function (): JSX.Element {
+ function home (): JSX.Element {
     const [content, setContent] = useState<'messages' | 'participants'>(
         'messages',
     );
@@ -32,6 +33,10 @@ export default function (): JSX.Element {
 
     const messagesDiv = useRef<HTMLDivElement>(null);
 
+    const chats = useAppSelector((state) => state.chats);
+    const user = useAppSelector((state) => state.currentUser.user);
+    const dispatch = useAppDispatch();
+
     useEffect(() => {
         if (content == 'messages') {
             messagesDiv.current?.scrollTo({
@@ -44,15 +49,13 @@ export default function (): JSX.Element {
                 top: 0,
             });
         }
-    }, [content, content]);
+    }, [content , chats.currentChat]);
 
     const [chevronDown, setChevronDonw] = useState<boolean>(false);
 
     const [message, setMessage] = useState<string>('');
 
-    const chats = useAppSelector((state) => state.chats);
-    const user = useAppSelector((state) => state.currentUser.user);
-    const dispatch = useAppDispatch();
+    
 
     const navigate = useNavigate();
 
@@ -62,11 +65,18 @@ export default function (): JSX.Element {
         }
     }, []);
 
-    const io = useContext(socketContext)
+    const io = useContext(socketContext);
 
-    const socket = io?.getSocket 
+    const socket = io?.getSocket()
 
-
+    useEffect(() => {
+        if(socket){
+            socket.on('newChat' , (chat) => {
+                dispatch(newMsg(chat))
+                console.log('newChat')
+            })
+        }
+    },[socket])
 
     return (
         <>
@@ -136,7 +146,7 @@ export default function (): JSX.Element {
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         setContent('participants');
-                                        
+                                        socket?.emit('salut')
                                     }}
                                 >
                                     Participants
@@ -257,3 +267,6 @@ export default function (): JSX.Element {
         </>
     );
 }
+
+
+export default React.memo(home)

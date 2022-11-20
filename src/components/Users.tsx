@@ -12,9 +12,7 @@ export default function ({ users, setSearch }: UserList & Props): JSX.Element {
 
     // const [usersChat, setUserChat] = useState<any[]>([]);
 
-    const usersChat : USER[] = []
-
-    console.log(usersChat);
+    const usersChat: USER[] = [];
 
     return (
         <>

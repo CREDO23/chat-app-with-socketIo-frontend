@@ -85,6 +85,17 @@ const chatsSlice = createSlice({
             state.newChat = action.payload as Chat;
         },
 
+        newMsg : (state , action : PayloadAction<Chat>) => {
+            const index = state.chats.findIndex(
+                (chat) => chat._id == action.payload._id,
+            );
+
+            state.chats.splice(index, 1);
+
+            state.chats.unshift(action.payload);
+            state.currentChat?.messages.push(action.payload.messages[action.payload.messages.length -1]);
+        },
+
         setNewMessage: (state, action: PayloadAction<Message>) => {
             state.newChat?.messages.push(action.payload);
             state.currentChat?.messages.push(action.payload);
@@ -154,4 +165,4 @@ const chatsSlice = createSlice({
 });
 
 export default chatsSlice.reducer;
-export const { setCurrentChat, setNewChat, setNewMessage } = chatsSlice.actions;
+export const { setCurrentChat, setNewChat, setNewMessage , newMsg } = chatsSlice.actions;

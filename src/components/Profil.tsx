@@ -14,12 +14,14 @@ export default function (): JSX.Element {
 
     const currentUser = useAppSelector((state) => state.currentUser);
 
+
     const [updateForm, setUpdateForm] = useState({
         userName: currentUser.user?.userName as string,
         firstName: currentUser.user?.firstName as string,
         lastName: currentUser.user?.lastName as string,
         email: currentUser.user?.email as string,
         bio: currentUser.user?.bio as string,
+        avatar : currentUser.user?.avatar as string,
         password: '',
         confirmPassword: '',
     });
@@ -79,12 +81,16 @@ export default function (): JSX.Element {
                     <div className="relative self-center flex my-3 items-center justify-center">
                         <img
                             ref={profilLink}
-                            src={currentUser.user?.avatar || logo}
+                            src={updateForm.avatar || logo}
                             className="h-[10rem] rounded-full border w-[10rem]"
                             alt=""
                         />
-                        <div  className="h-8 flex items-center justify-center  w-8 cursor-pointer bottom-5 right-1 absolute rounded-full border p-2  text-sky-800  bg-sky-100">
-                            <input type="file" className='bg-transparent h-5 w-5' />
+                        <div className="h-8 flex items-center justify-center  w-8 cursor-pointer bottom-5 right-1 absolute rounded-full border p-2  text-sky-800  bg-sky-100">
+                            <input
+                                type="file"
+                                onChange={(e) => uploadImg(e.target?.files as FileList)}
+                                className="bg-transparent h-5 w-5"
+                            />
                             {/* <FontAwesomeIcon
                                
                                 icon={faPen}

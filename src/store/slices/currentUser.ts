@@ -7,12 +7,14 @@ import type {
     SingupResponse,
     CurrentUserState,
     UpdateResponse,
+    UploadImg
 } from '../../types/user';
 
 const initialState: CurrentUserState = {
     loading: false,
     user: JSON.parse(localStorage.getItem('user') as string),
     accessToken: JSON.parse(localStorage.getItem('accessToken') as string),
+    avatarLoading: false,
 };
 
 export const singup = createAsyncThunk<AxiosResponse, USER>(
@@ -43,6 +45,42 @@ export const singin = createAsyncThunk<AxiosResponse, USER>(
                 data: user,
             });
             return result;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            return rejectWithValue(error?.response?.data?.message);
+        }
+    },
+);
+
+export const uploadImage = createAsyncThunk<AxiosResponse, FileList>(
+    'user/uploadImage',
+    async (file, { rejectWithValue }) => {
+        try {
+            const toMb = 1024 * 1024;
+            if (!file[0]) {
+                toast.error('No image provided');
+            } else if (
+                file[0].type === 'image/pjeg' ||
+                file[0].type === 'image/png' ||
+                file[0].type === 'image/jpg'
+            ) {
+                toast.error('Image type not supported');
+            } else if (file[0].size / toMb > 1.5) {
+                toast.error('Image must be less than 1.5MB');
+            }
+            const data = new FormData();
+
+            data.append('file', file[0]);
+            data.append('upload_preset', 'chat-app');
+            data.append('cloud_name', 'dyj1vowdv');
+
+            const result: AxiosResponse = await axios({
+                method: 'POST',
+                url: 'https://api.cloudinary.com/v1_1/dyj1vowdv/image/upload',
+                data,
+            });
+            return result;
+
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             return rejectWithValue(error?.response?.data?.message);
@@ -151,6 +189,20 @@ export const currentUserSlice = createSlice({
             state.loading = false;
             toast.error(action.payload as string);
         });
+
+        builder.addCase(uploadImage.pending ,(state) => {
+            state.avatarLoading = true
+        })
+
+        builder.addCase(uploadImage.fulfilled , (state , action : PayloadAction<AxiosResponse<UploadImg>>) => {
+            state.avatarLoading = false;
+            state.user.avatar = action.payload.data.data.secure_url
+        })
+
+        builder.addCase(uploadImage.rejected , (state , action)=>{
+            state.avatarLoading = false;
+            toast.error(action.payload as string);
+        })
     },
 });
 

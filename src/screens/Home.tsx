@@ -221,7 +221,9 @@ function home(): JSX.Element {
                                             newChat({
                                                 name: chats.currentChat
                                                     ?.name as string,
-                                                isPrivate : chats.currentChat?.isPrivate,
+                                                isPrivate:
+                                                    chats.currentChat
+                                                        ?.isPrivate,
                                                 users: chats.newChat
                                                     ?.users as string[],
                                                 message: {

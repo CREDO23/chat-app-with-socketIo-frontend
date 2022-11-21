@@ -13,7 +13,8 @@ interface USER {
 
 type CurrentUserState = {
     loading: boolean;
-    user: USER | null;
+    avatarLoading: boolean;
+    user: USER | any;
     accessToken: unknown;
 };
 
@@ -49,6 +50,12 @@ type UpdateResponse = {
     data: USER;
 };
 
+type UploadImg = {
+    data: {
+        secure_url: string;
+    };
+};
+
 export default USER;
 export type {
     SigninResponse,
@@ -57,4 +64,5 @@ export type {
     UpdateResponse,
     UsersListResponse,
     UsersState,
+    UploadImg
 };

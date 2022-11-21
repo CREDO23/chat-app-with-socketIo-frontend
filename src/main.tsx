@@ -8,9 +8,9 @@ import SocketContext from '../src/context/index';
 import { SocketIO } from '../src/context/index';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-        <Provider store={store}>
-            <SocketContext.Provider value={new SocketIO()}>
-                <App />
-            </SocketContext.Provider>
-        </Provider>
+    <Provider store={store}>
+        <SocketContext.Provider value={new SocketIO()}>
+            <App />
+        </SocketContext.Provider>
+    </Provider>,
 );

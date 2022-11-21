@@ -1,9 +1,8 @@
 import UserItem from '../types/props/userItem';
 import logo from '../assets/logo.png';
 import { parseContent } from '../utils/parser/index';
-import { useAppDispatch } from '../store/hooks/index';
+import { useAppDispatch , useAppSelector } from '../store/hooks/index';
 import { setCurrentChat, setNewChat } from '../store/slices/chats';
-import { useAppSelector } from '../store/hooks/index';
 import { parseName } from '../utils/parser/chat';
 import type USER from '../types/user';
 
@@ -13,8 +12,8 @@ export default function ({
     mode,
     id,
     avatar,
-    userChats,
-}: // setUserChat,
+    setUserChat,
+}: 
 UserItem): JSX.Element {
     const dispatch = useAppDispatch();
 
@@ -102,26 +101,21 @@ UserItem): JSX.Element {
                             id={userName}
                             onChange={(e) => {
                                 if (e.target.checked) {
-                                    userChats.push({
-                                        _id: id,
-                                        userName,
+                                    setUserChat((prevSate): any[] => {
+                                        return [
+                                            ...prevSate,
+                                            {
+                                                _id: id,
+                                                userName,
+                                            },
+                                        ];
                                     });
-                                    // setUserChat((prevSate): any[] => {
-                                    //     return [
-                                    //         ...prevSate,
-                                    //         {
-                                    //             _id: id,
-                                    //             userName,
-                                    //         },
-                                    //     ];
-                                    // });
                                 } else {
-                                    userChats.filter((user) => user._id != id);
-                                    // setUserChat((prevSate): any[] => {
-                                    //     return prevSate.filter(
-                                    //         (user) => user._id != id,
-                                    //     );
-                                    // });
+                                    setUserChat((prevSate): any[] => {
+                                        return prevSate.filter(
+                                            (user) => user._id != id,
+                                        );
+                                    });
                                 }
                             }}
                             type="checkbox"

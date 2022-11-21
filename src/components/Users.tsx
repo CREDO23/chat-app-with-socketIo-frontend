@@ -2,17 +2,54 @@ import UserItem from './UserItem';
 import React, { useState } from 'react';
 import type UserList from '../types/props/userChatList';
 import type USER from '../types/user';
+import { setCurrentChat, setNewChat } from '../store/slices/chats';
+import { parseName } from '../utils/parser/chat';
+import { useAppSelector, useAppDispatch } from '../store/hooks/index';
 
 type Props = {
     setSearch: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export default function ({ users, setSearch }: UserList & Props): JSX.Element {
+function users({ users, setSearch }: UserList & Props): JSX.Element {
     const [mode, setMode] = useState<'private' | 'channel'>('private');
 
-    // const [usersChat, setUserChat] = useState<any[]>([]);
+    const [chatName, setChatName] = useState<string>('');
 
-    const usersChat: USER[] = [];
+    const currentUser = useAppSelector((state) => state.currentUser.user);
+
+    const [usersChat, setUsersChat] = useState<USER[]>([]);
+
+    const chats = useAppSelector((state) => state.chats);
+
+    const dispatch = useAppDispatch();
+
+    const statrtChannelChat = (): void => {
+        if (
+            chats.chats.filter(
+                (chat) => parseName(chat, currentUser as USER)[0] == chatName,
+            )[0]
+        ) {
+            setChatName((prev) => prev + new Date().toTimeString());
+        }
+        dispatch(
+            setCurrentChat({
+                name: chatName,
+                users: usersChat,
+                isPrivate: false,
+                messages: [],
+                updatedAt: new Date().toISOString(),
+            }),
+        );
+        dispatch(
+            setNewChat({
+                name: chatName,
+                users:[currentUser?._id , ...usersChat.map((user) => user._id)]  as string[],
+                isPrivate: false,
+                messages: [],
+                updatedAt: new Date().toISOString(),
+            }),
+        );
+    };
 
     return (
         <>
@@ -41,7 +78,10 @@ export default function ({ users, setSearch }: UserList & Props): JSX.Element {
                     <option value="channel">Channel Chat</option>
                 </select>
                 {mode == 'channel' && (
-                    <p className="w-1/5 font-medium bg-sky-200 text-center  text-sky-800 p-1 rounded-lg cursor-pointer">
+                    <p
+                        onClick={() => statrtChannelChat()}
+                        className="w-1/5 font-medium bg-sky-200 text-center  text-sky-800 p-1 rounded-lg cursor-pointer"
+                    >
                         Start
                     </p>
                 )}
@@ -50,7 +90,7 @@ export default function ({ users, setSearch }: UserList & Props): JSX.Element {
                 <div className=" w-full px-2">
                     <input
                         type="text"
-                        onChange={(e) => setSearch(e.target.value)}
+                        onChange={(e) => setChatName(e.target.value)}
                         placeholder="Chat name"
                         className="w-full px-3 py-1 flex text-slate-900 placeholder-gray-300 border border-gray-100 rounded-md  focus:outline-none  focus:ring-indigo-100 focus:border-indigo-200"
                     />
@@ -61,8 +101,7 @@ export default function ({ users, setSearch }: UserList & Props): JSX.Element {
                 {users.map((item) => {
                     return (
                         <UserItem
-                            // setUserChat={setUserChat}
-                            userChats={usersChat}
+                            setUserChat={setUsersChat}
                             mode={mode}
                             key={item.userName}
                             avatar={item.avatar as string}
@@ -76,3 +115,5 @@ export default function ({ users, setSearch }: UserList & Props): JSX.Element {
         </>
     );
 }
+
+export default React.memo(users);

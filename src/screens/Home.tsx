@@ -210,7 +210,7 @@ function home(): JSX.Element {
                                             updatedAt: new Date().toISOString(),
                                         }),
                                     );
-                                    if (!chats.currentChat?.messages[0]) {
+                                    if (!chats.chats.some(chat => chat.name == chats.currentChat?.name)) {
                                         dispatch(
                                             newChat({
                                                 name: chats.currentChat
@@ -220,18 +220,13 @@ function home(): JSX.Element {
                                                 message: {
                                                     sender: user?._id as string,
                                                     content: message,
-                                                    recipient: parseRecipient(
-                                                        chats.newChat
-                                                            ?.users as USER[],
-                                                        user?.userName as string,
-                                                    ),
                                                 },
                                             }),
                                         );
                                     } else {
                                         dispatch(
                                             newMessage({
-                                                id: chats.currentChat._id,
+                                                id: chats.currentChat?._id,
                                                 message: {
                                                     sender: user?._id,
                                                     content: message,
@@ -240,7 +235,7 @@ function home(): JSX.Element {
                                         );
                                     }
 
-                                    setTimeout(() => setMessage(''), 1000);
+                                    // setTimeout(() => setMessage(''), 1000);
                                 }}
                                 icon={faPaperPlane}
                                 size={'2x'}

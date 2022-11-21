@@ -7,6 +7,7 @@ import { updateUser } from '../store/slices/currentUser';
 import { useAppDispatch } from '../store/hooks/index';
 import toast from '../utils/toasty';
 import { isFill, isMatch } from '../utils/validation/index';
+import uploadImg from '../utils/upload/image';
 
 export default function (): JSX.Element {
     const [update, setUpdate] = useState<boolean>(false);
@@ -82,10 +83,13 @@ export default function (): JSX.Element {
                             className="h-[10rem] rounded-full border w-[10rem]"
                             alt=""
                         />
-                        <FontAwesomeIcon
-                            className=" cursor-pointer bottom-5 right-1 absolute rounded-full border p-2  text-sky-800  bg-sky-100"
-                            icon={faPen}
-                        />
+                        <div  className="h-8 flex items-center justify-center  w-8 cursor-pointer bottom-5 right-1 absolute rounded-full border p-2  text-sky-800  bg-sky-100">
+                            <input type="file" className='bg-transparent h-5 w-5' />
+                            {/* <FontAwesomeIcon
+                               
+                                icon={faPen}
+                            /> */}
+                        </div>
                     </div>
 
                     <div>

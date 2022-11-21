@@ -210,11 +210,18 @@ function home(): JSX.Element {
                                             updatedAt: new Date().toISOString(),
                                         }),
                                     );
-                                    if (!chats.chats.some(chat => chat.name == chats.currentChat?.name)) {
+                                    if (
+                                        !chats.chats.some(
+                                            (chat) =>
+                                                chat.name ==
+                                                chats.currentChat?.name,
+                                        )
+                                    ) {
                                         dispatch(
                                             newChat({
                                                 name: chats.currentChat
                                                     ?.name as string,
+                                                isPrivate : chats.currentChat?.isPrivate,
                                                 users: chats.newChat
                                                     ?.users as string[],
                                                 message: {

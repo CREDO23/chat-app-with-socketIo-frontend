@@ -101,4 +101,4 @@ function leftSide({ setMainSide, setRightSide }: Props): JSX.Element {
     );
 }
 
-export default React.memo(leftSide);
+export default leftSide;

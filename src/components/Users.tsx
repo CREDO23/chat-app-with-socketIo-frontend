@@ -43,7 +43,10 @@ function users({ users, setSearch }: UserList & Props): JSX.Element {
         dispatch(
             setNewChat({
                 name: chatName,
-                users:[currentUser?._id , ...usersChat.map((user) => user._id)]  as string[],
+                users: [
+                    currentUser?._id,
+                    ...usersChat.map((user) => user._id),
+                ] as string[],
                 isPrivate: false,
                 messages: [],
                 updatedAt: new Date().toISOString(),

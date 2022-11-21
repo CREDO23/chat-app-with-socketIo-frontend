@@ -1,7 +1,7 @@
 import UserItem from '../types/props/userItem';
 import logo from '../assets/logo.png';
 import { parseContent } from '../utils/parser/index';
-import { useAppDispatch , useAppSelector } from '../store/hooks/index';
+import { useAppDispatch, useAppSelector } from '../store/hooks/index';
 import { setCurrentChat, setNewChat } from '../store/slices/chats';
 import { parseName } from '../utils/parser/chat';
 import type USER from '../types/user';
@@ -13,8 +13,7 @@ export default function ({
     id,
     avatar,
     setUserChat,
-}: 
-UserItem): JSX.Element {
+}: UserItem): JSX.Element {
     const dispatch = useAppDispatch();
 
     const currentUser = useAppSelector((state) => state.currentUser.user);

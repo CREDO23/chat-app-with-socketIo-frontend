@@ -66,4 +66,4 @@ function chat({
     );
 }
 
-export default React.memo(chat);
+export default chat;

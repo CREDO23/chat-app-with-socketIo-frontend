@@ -8,7 +8,6 @@ import { isFill } from '../utils/validation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
-
 type Form = 'singin' | 'singup';
 type Props = {
     setForm: React.Dispatch<React.SetStateAction<Form>>;

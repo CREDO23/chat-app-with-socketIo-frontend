@@ -25,7 +25,7 @@ import type Chat from '../types/chat';
 import { setNewMessage, newChat, newMessage } from '../store/slices/chats';
 import React from 'react';
 
- function mobile (): JSX.Element {
+function mobile(): JSX.Element {
     const [content, setContent] = useState<'messages' | 'participants'>(
         'messages',
     );
@@ -318,5 +318,4 @@ import React from 'react';
     );
 }
 
-
-export default React.memo(mobile)
+export default React.memo(mobile);

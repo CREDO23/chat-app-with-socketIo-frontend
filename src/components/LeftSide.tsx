@@ -19,7 +19,7 @@ type Props = {
     setRightSide: React.Dispatch<React.SetStateAction<'users' | 'me'>>;
 };
 
- function leftSide ({ setMainSide, setRightSide }: Props): JSX.Element {
+function leftSide({ setMainSide, setRightSide }: Props): JSX.Element {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
     const user = useAppSelector((state) => state.currentUser.user);
@@ -31,7 +31,7 @@ type Props = {
     const handleUsersSide = useCallback(() => {
         setMainSide('users');
         setRightSide('users');
-    },[])
+    }, []);
 
     const fetchChats = useCallback(() => {
         try {
@@ -41,10 +41,10 @@ type Props = {
         } catch (error) {
             toast.error(error as string);
         }
-    },[user])
+    }, []);
 
     useEffect(() => {
-       fetchChats()
+        fetchChats();
     }, []);
 
     return (
@@ -101,6 +101,4 @@ type Props = {
     );
 }
 
-
-
-export default React.memo(leftSide)
+export default React.memo(leftSide);

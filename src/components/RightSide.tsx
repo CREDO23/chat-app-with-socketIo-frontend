@@ -19,7 +19,6 @@ export default function ({ setRightSide, rightSide }: Props): JSX.Element {
     useEffect(() => {
         dispatch(getUsers({ search }));
     }, [search]);
- 
 
     return (
         <div className=" md:w-[25%] px-1 h-[97%] ">

@@ -85,15 +85,20 @@ const chatsSlice = createSlice({
             state.newChat = action.payload as Chat;
         },
 
-        newMsg : (state , action : PayloadAction<Chat>) => {
+        newMsg: (state, action: PayloadAction<Chat>) => {
             const index = state.chats.findIndex(
                 (chat) => chat._id == action.payload._id,
             );
 
             state.chats.splice(index, 1);
-
             state.chats.unshift(action.payload);
-            state.currentChat?.messages.push(action.payload.messages[action.payload.messages.length -1]);
+
+            if (
+                state.currentChat &&
+                state.currentChat.name == action.payload.name
+            ) {
+                state.currentChat = action.payload;
+            }
         },
 
         setNewMessage: (state, action: PayloadAction<Message>) => {
@@ -152,7 +157,6 @@ const chatsSlice = createSlice({
                 );
 
                 state.chats.splice(index, 1);
-
                 state.chats.unshift(action.payload.data.data);
             },
         );
@@ -165,4 +169,5 @@ const chatsSlice = createSlice({
 });
 
 export default chatsSlice.reducer;
-export const { setCurrentChat, setNewChat, setNewMessage , newMsg } = chatsSlice.actions;
+export const { setCurrentChat, setNewChat, setNewMessage, newMsg } =
+    chatsSlice.actions;

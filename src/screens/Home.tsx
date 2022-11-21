@@ -13,13 +13,18 @@ import { useAppSelector, useAppDispatch } from '../store/hooks/index';
 import { parseMessage, parseRecipient } from '../utils/parser/message';
 import { parseName } from '../utils/parser/chat';
 import homeImage from '../assets/home.svg';
-import { setNewMessage, newChat, newMessage , newMsg} from '../store/slices/chats';
+import {
+    setNewMessage,
+    newChat,
+    newMessage,
+    newMsg,
+} from '../store/slices/chats';
 import type Chat from '../types/chat';
 import { useNavigate } from 'react-router-dom';
 import socketContext from '../context';
 import React from 'react';
 
- function home (): JSX.Element {
+function home(): JSX.Element {
     const [content, setContent] = useState<'messages' | 'participants'>(
         'messages',
     );
@@ -49,13 +54,11 @@ import React from 'react';
                 top: 0,
             });
         }
-    }, [content , chats.currentChat]);
+    }, [content, chats.currentChat]);
 
     const [chevronDown, setChevronDonw] = useState<boolean>(false);
 
     const [message, setMessage] = useState<string>('');
-
-    
 
     const navigate = useNavigate();
 
@@ -67,16 +70,15 @@ import React from 'react';
 
     const io = useContext(socketContext);
 
-    const socket = io?.getSocket()
+    const socket = io?.getSocket();
 
     useEffect(() => {
-        if(socket){
-            socket.on('newChat' , (chat) => {
-                dispatch(newMsg(chat))
-                console.log('newChat')
-            })
+        if (socket) {
+            socket.on('newChat', (chat) => {
+                dispatch(newMsg(chat));
+            });
         }
-    },[socket])
+    }, [socket]);
 
     return (
         <>
@@ -146,7 +148,7 @@ import React from 'react';
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         setContent('participants');
-                                        socket?.emit('salut')
+                                        socket?.emit('salut');
                                     }}
                                 >
                                     Participants
@@ -268,5 +270,4 @@ import React from 'react';
     );
 }
 
-
-export default React.memo(home)
+export default React.memo(home);

@@ -5,7 +5,7 @@ import { setCurrentChat } from '../store/slices/chats';
 import { useAppDispatch } from '../store/hooks/index';
 import React, { useCallback } from 'react';
 
- function chat ({
+function chat({
     newMessageCount,
     name,
     id,
@@ -18,7 +18,7 @@ import React, { useCallback } from 'react';
     const handleMessageSide = useCallback(() => {
         dispatch(setCurrentChat(id));
         showMessages('messages');
-    },[])
+    }, []);
 
     return (
         <div
@@ -66,4 +66,4 @@ import React, { useCallback } from 'react';
     );
 }
 
-export default React.memo(chat)
+export default React.memo(chat);

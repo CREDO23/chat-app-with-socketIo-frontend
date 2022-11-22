@@ -5,10 +5,15 @@ import {
     faDiamond,
     faArrowLeft,
     faChevronDown,
-    faMessage,
-    faUserFriends,
 } from '@fortawesome/free-solid-svg-icons';
-import { useRef, useState, useEffect } from 'react';
+import {
+    useRef,
+    useState,
+    useEffect,
+    useCallback,
+    useContext,
+    useMemo,
+} from 'react';
 import { useNavigate } from 'react-router-dom';
 import Message from '../components/Message';
 import UserChatList from '../components/UserChatList';
@@ -16,14 +21,19 @@ import Users from '../components/Users';
 import LeftSide from '../components/LeftSide';
 import Profil from '../components/Profil';
 import { useAppSelector, useAppDispatch } from '../store/hooks/index';
-import { parseMessage, parseRecipient } from '../utils/parser/message';
+import { parseMessage } from '../utils/parser/message';
 import type USER from '../types/user';
 import { getUsers } from '../store/slices/users';
 import homeImage from '../assets/home.svg';
 import { parseName } from '../utils/parser/chat';
 import type Chat from '../types/chat';
-import { setNewMessage, newChat, newMessage } from '../store/slices/chats';
-import React from 'react';
+import {
+    setNewMessage,
+    newChat,
+    newMessage,
+    newMsg,
+} from '../store/slices/chats';
+import socketContext from '../context';
 
 function mobile(): JSX.Element {
     const [content, setContent] = useState<'messages' | 'participants'>(
@@ -78,6 +88,36 @@ function mobile(): JSX.Element {
         }
     }, []);
 
+    const io = useContext(socketContext);
+
+    const socket = io?.getSocket();
+
+    useEffect(() => {
+        if (socket) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            socket.on('newChat', (chat: any) => {
+                dispatch(newMsg(chat));
+            });
+
+            socket.on('ask_to_join', (chatName) => {
+                console.log(chatName);
+                socket.emit('join_chat', chatName);
+            });
+        }
+    }, [socket]);
+
+    const connectedUser = useMemo(() => localStorage.getItem('user'), []);
+
+    const connection = useCallback(() => {
+        io?.connect(user?._id as string, 'http://localhost:5500');
+    }, [connectedUser]);
+
+    useEffect(() => {
+        if (user?._id) {
+            connection();
+        }
+    }, [user]);
+
     return (
         <div
             onClick={() => setContent('messages')}
@@ -108,34 +148,34 @@ function mobile(): JSX.Element {
                             </span>
                         </div>
                     ) : (
-                        <div className="md:w-[65%] bg-[#e9effc] h-full rounded-md">
+                        <div
+                            onClick={() => setContent('messages')}
+                            className="md:w-[60%] bg-[#e9effc] h-[97%] rounded-md"
+                        >
                             <div className="h-[4rem] border-b-2 px-2  flex items-center justify-between">
-                                <FontAwesomeIcon
-                                    onClick={() => setMainSide('chats')}
-                                    className="p-3 rounded-full bg-sky-800 text-sky-100"
-                                    icon={faArrowLeft}
-                                />
                                 <div className="w-3/5 flex items-center justify-start ">
                                     <img
                                         className="h-[3rem] cursor-pointer  w-[3rem] rounded-full border"
                                         src={logo}
                                         alt=""
                                     />
-                                    {chats.currentChat && (
-                                        <>
-                                            <p className="text-sky-900">
-                                                {
-                                                    parseName(
-                                                        chats.currentChat,
-                                                        user as USER,
-                                                    )[0]
-                                                }
-                                            </p>
-                                        </>
-                                    )}
+                                    <div className="flex mx-3 flex-col items-start justify-between">
+                                        {chats.currentChat && (
+                                            <>
+                                                <p className="text-sky-900">
+                                                    {
+                                                        parseName(
+                                                            chats.currentChat,
+                                                            user as USER,
+                                                        )[0]
+                                                    }
+                                                </p>
+                                            </>
+                                        )}
+                                    </div>
                                 </div>
 
-                                <div className=" flex items-center justify-end h-full w-1/5">
+                                <div className=" flex items-center justify-end h-full w-2/5">
                                     <span
                                         className={`px-3 cursor-pointer ${
                                             content == 'messages'
@@ -144,26 +184,21 @@ function mobile(): JSX.Element {
                                         } font-semibold py-1 text-xs border rounded-lg`}
                                         onClick={() => setContent('messages')}
                                     >
-                                        <FontAwesomeIcon icon={faMessage} />
+                                        Messages
                                     </span>
                                     <span
                                         className={`px-3 ${
                                             content == 'participants'
                                                 ? ' text-sky-800  bg-sky-200'
                                                 : ' text-gray-400 bg-transparent'
-                                        } cursor-pointer font-semibold py-1 mx-3  text-xs border rounded-3xl`}
+                                        } cursor-pointer relative font-semibold py-1 mx-3  text-xs border rounded-3xl`}
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             setContent('participants');
+                                            socket?.emit('salut');
                                         }}
                                     >
-                                        <FontAwesomeIcon
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                setContent('participants');
-                                            }}
-                                            icon={faUserFriends}
-                                        />
+                                        Participants
                                     </span>
                                 </div>
                             </div>
@@ -176,7 +211,7 @@ function mobile(): JSX.Element {
                                         setChevronDonw(false);
                                     }
                                 }}
-                                className="h-[calc(100%-7.5rem)] no-scrollbar overflow-y-auto p-4 flex flex-col "
+                                className="h-[calc(100%-7.5rem)] relative no-scrollbar overflow-y-auto  p-4 flex flex-col "
                             >
                                 {content == 'participants' && (
                                     <UserChatList
@@ -191,22 +226,42 @@ function mobile(): JSX.Element {
                                         user?.userName as string,
                                         chats.currentChat as Chat,
                                     );
-                                    return (
-                                        <Message
-                                            key={message.id}
-                                            time={parsedMessage.time}
-                                            isForeign={parsedMessage.isForeign}
-                                            isPrivate={parsedMessage.isPrivate}
-                                            content={parsedMessage.content}
-                                            sender={parsedMessage.sender}
-                                        />
-                                    );
+                                    if (message.content) {
+                                        return (
+                                            <Message
+                                                key={message.id}
+                                                time={parsedMessage.time}
+                                                isForeign={
+                                                    parsedMessage.isForeign
+                                                }
+                                                isPrivate={
+                                                    parsedMessage.isPrivate
+                                                }
+                                                content={parsedMessage.content}
+                                                sender={parsedMessage.sender}
+                                            />
+                                        );
+                                    }
                                 })}
+                                {chats.newMessageLoading ? (
+                                    <div className="self-end w-[16rem] md:w-md my-2">
+                                        <div className="animate-pulse flex space-x-4">
+                                            <div className="flex-1 space-y-2 py-1">
+                                                <div className="h-2 w-8/12 bg-slate-200 rounded"></div>
+                                                <div className="h-2 bg-slate-200 rounded"></div>
+                                                <div className="h-2 bg-slate-200 rounded"></div>
+                                                <div className="h-2 w-10/12 bg-slate-200 rounded"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ) : null}
                             </div>
                             <div className="h-[3.5rem] items-center relative flex p-1 border-t-2 ">
                                 <input
                                     type="text"
+                                    value={message}
                                     id="message"
+                                    onChange={(e) => setMessage(e.target.value)}
                                     placeholder="Here your message ..."
                                     className="w-11/12 px-3 py-2 flex text-slate-900 placeholder-gray-300 border border-gray-100 rounded-md  focus:outline-none  focus:ring-indigo-100 focus:border-indigo-200"
                                 />
@@ -221,29 +276,32 @@ function mobile(): JSX.Element {
                                                     new Date().toISOString(),
                                             }),
                                         );
-                                        if (!chats.currentChat?.messages[0]) {
+                                        if (
+                                            !chats.chats.some(
+                                                (chat) =>
+                                                    chat.name ==
+                                                    chats.currentChat?.name,
+                                            )
+                                        ) {
                                             dispatch(
                                                 newChat({
                                                     name: chats.currentChat
                                                         ?.name as string,
+                                                    isPrivate:
+                                                        chats.currentChat
+                                                            ?.isPrivate,
                                                     users: chats.newChat
                                                         ?.users as string[],
                                                     message: {
                                                         sender: user?._id as string,
                                                         content: message,
-                                                        recipient:
-                                                            parseRecipient(
-                                                                chats.newChat
-                                                                    ?.users as USER[],
-                                                                user?.userName as string,
-                                                            ),
                                                     },
                                                 }),
                                             );
                                         } else {
                                             dispatch(
                                                 newMessage({
-                                                    id: chats.currentChat._id,
+                                                    id: chats.currentChat?._id,
                                                     message: {
                                                         sender: user?._id,
                                                         content: message,
@@ -259,13 +317,13 @@ function mobile(): JSX.Element {
                                 />
                                 {chevronDown && content == 'messages' && (
                                     <FontAwesomeIcon
-                                        onClick={() =>
+                                        onClick={() => {
                                             messagesDiv.current?.scrollTo({
                                                 behavior: 'auto',
                                                 top: messagesDiv.current
                                                     .scrollHeight,
-                                            })
-                                        }
+                                            });
+                                        }}
                                         className="text-sky-700 absolute cursor-pointer right-3 animate-bounce bg-white -top-[4rem] rounded-full p-3 border"
                                         icon={faChevronDown}
                                     />
@@ -322,4 +380,4 @@ function mobile(): JSX.Element {
     );
 }
 
-export default React.memo(mobile);
+export default mobile;

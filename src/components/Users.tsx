@@ -1,5 +1,5 @@
 import UserItem from './UserItem';
-import React, { useState , useEffect , useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import socketContext from '../context';
 import type UserList from '../types/props/userChatList';
 import type USER from '../types/user';
@@ -53,9 +53,7 @@ function users({
         dispatch(
             setNewChat({
                 name: chatName,
-                users: [
-                    ...usersChat.map((user) => user._id),
-                ] as string[],
+                users: [...usersChat.map((user) => user._id)] as string[],
                 isPrivate: false,
                 messages: [],
                 updatedAt: new Date().toISOString(),
@@ -63,11 +61,9 @@ function users({
         );
     };
 
-
     const io = useContext(socketContext);
 
     const socket = io?.getSocket();
-
 
     return (
         <>
@@ -100,10 +96,14 @@ function users({
                         disabled={chatName.length < 5 || usersChat.length < 2}
                         onClick={() => {
                             statrtChannelChat();
-                            socket?.emit('join_users' , usersChat.map(user => user._id) , chatName )
+                            socket?.emit(
+                                'join_users',
+                                usersChat.map((user) => user._id),
+                                chatName,
+                            );
                             if (setMainSide) setMainSide('messages');
                             if (setRightSide) setRightSide('me');
-                            setSearch('')
+                            setSearch('');
                         }}
                         className="w-1/5 font-medium bg-sky-200 disabled:hidden text-center  text-sky-800 p-1 rounded-lg cursor-pointer"
                     >

@@ -33,6 +33,7 @@ export const getChats = createAsyncThunk<AxiosResponse, string>(
     },
 );
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const newChat = createAsyncThunk<AxiosResponse, any>(
     'chat/new',
     async (chat, { rejectWithValue }) => {
@@ -130,13 +131,10 @@ const chatsSlice = createSlice({
             state.newMessageLoading = true;
         });
 
-        builer.addCase(
-            newChat.fulfilled,
-            (state) => {
-                state.newMessageLoading = false;
-                toast.susscess('Chat created')
-            },
-        );
+        builer.addCase(newChat.fulfilled, (state) => {
+            state.newMessageLoading = false;
+            toast.susscess('Chat created');
+        });
 
         builer.addCase(newChat.rejected, (state, action) => {
             state.newMessageLoading = false;
@@ -145,14 +143,12 @@ const chatsSlice = createSlice({
 
         builer.addCase(newMessage.pending, (state) => {
             state.newMessageLoading = true;
-            console.log('start');
         });
 
         builer.addCase(
             newMessage.fulfilled,
             (state, action: PayloadAction<AxiosResponse<AddChatResponse>>) => {
                 state.newMessageLoading = false;
-                console.log('okay');
                 const index = state.chats.findIndex(
                     (chat) => chat._id == action.payload.data.data._id,
                 );

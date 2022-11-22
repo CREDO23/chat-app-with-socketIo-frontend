@@ -85,10 +85,10 @@ function home(): JSX.Element {
                 dispatch(newMsg(chat));
             });
 
-            socket.on('ask_to_join' , (chatName) => {
-                console.log(chatName)
-                socket.emit('join_chat' , chatName)
-            })
+            socket.on('ask_to_join', (chatName) => {
+                console.log(chatName);
+                socket.emit('join_chat', chatName);
+            });
         }
     }, [socket]);
 

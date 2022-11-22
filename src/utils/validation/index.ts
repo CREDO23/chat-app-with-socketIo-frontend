@@ -4,8 +4,9 @@ import USER from '../../types/user';
 export const isFill = (form: USER): Promise<void> => {
     return new Promise((resolve, reject) => {
         let countFieds = 0;
-
+        console.log(form)
         for (const input of Object.values(form)) {
+            console.log(input)
             if (validator.isEmpty(input)) {
                 reject('Please , Fill in all required fields');
             } else {

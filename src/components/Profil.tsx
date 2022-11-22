@@ -1,17 +1,21 @@
 import logo from '../assets/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import {
+    faSpinner,
+} from '@fortawesome/free-solid-svg-icons';
 import React, { useRef, useState } from 'react';
 import { useAppSelector } from '../store/hooks/index';
 import { updateUser, uploadImage } from '../store/slices/currentUser';
 import { useAppDispatch } from '../store/hooks/index';
 import toast from '../utils/toasty';
-import { isFill, isMatch } from '../utils/validation/index';
+import { isFill } from '../utils/validation';
 
 export default function (): JSX.Element {
     const [update, setUpdate] = useState<boolean>(false);
 
     const currentUser = useAppSelector((state) => state.currentUser);
+
+    const profilLink = useRef<HTMLImageElement>(null);
 
     const [updateForm, setUpdateForm] = useState({
         userName: currentUser.user?.userName as string,
@@ -19,12 +23,10 @@ export default function (): JSX.Element {
         lastName: currentUser.user?.lastName as string,
         email: currentUser.user?.email as string,
         bio: currentUser.user?.bio as string,
-        avatar: currentUser.user?.avatar as string,
-        password: '',
-        confirmPassword: '',
+        avatar: currentUser.user?.avatar as string  || '',
     });
 
-    const profilLink = useRef<HTMLImageElement>(null);
+    
 
     const dispatch = useAppDispatch();
 
@@ -40,10 +42,11 @@ export default function (): JSX.Element {
     ): Promise<void> => {
         e.preventDefault();
 
-        try {
-            await isFill(updateForm);
+        console.log('oks')
 
-            await isMatch(updateForm.password, updateForm.confirmPassword);
+        try {
+
+            await isFill(updateForm)
 
             dispatch(
                 updateUser({
@@ -53,8 +56,7 @@ export default function (): JSX.Element {
                         lastName: updateForm.lastName,
                         email: updateForm.email,
                         bio: updateForm.bio,
-                        password: updateForm.password,
-                        avatar: profilLink.current?.src,
+                        avatar: currentUser.user?.avatar,
                     },
                 }),
             );
@@ -65,6 +67,7 @@ export default function (): JSX.Element {
                 }
             }, 2000);
         } catch (error) {
+            console.log(error)
             toast.error(error as string);
         }
     };
@@ -88,7 +91,7 @@ export default function (): JSX.Element {
                             <img
                                 ref={profilLink}
                                 src={currentUser.user.avatar || logo}
-                                className="h-[10rem] object-contain rounded-full border w-[10rem]"
+                                className="h-[10rem] object-cover rounded-full border w-[10rem]"
                                 alt=""
                             />
                         )}
@@ -161,38 +164,6 @@ export default function (): JSX.Element {
                     </div>
                     <div>
                         <label
-                            htmlFor="password"
-                            className="block my-1 text-sm font-medium text-gray-500 dark:text-gray-300"
-                        >
-                            Password
-                        </label>
-                        <input
-                            type="password"
-                            name="password"
-                            onChange={(
-                                e: React.ChangeEvent<HTMLInputElement>,
-                            ) => handleUpdateForm(e, 'password')}
-                            className="w-full px-3 py-1  text-slate-900 placeholder-gray-300 border border-gray-300 rounded-md  focus:outline-none  focus:ring-indigo-100 focus:border-indigo-200"
-                        />
-                    </div>
-                    <div>
-                        <label
-                            htmlFor="confirmPassword"
-                            className="block my-1 text-sm font-medium text-gray-500 dark:text-gray-300"
-                        >
-                            Confirm Password
-                        </label>
-                        <input
-                            type="password"
-                            name="confirmPassword"
-                            onChange={(
-                                e: React.ChangeEvent<HTMLInputElement>,
-                            ) => handleUpdateForm(e, 'confirmPassword')}
-                            className="w-full px-3 py-1  text-slate-900 placeholder-gray-300 border border-gray-300 rounded-md  focus:outline-none  focus:ring-indigo-100 focus:border-indigo-200"
-                        />
-                    </div>
-                    <div>
-                        <label
                             htmlFor="bio"
                             className="block my-1 text-sm font-medium text-gray-500 dark:text-gray-300"
                         >
@@ -209,10 +180,9 @@ export default function (): JSX.Element {
                             className="w-full px-3 py-1 text-slate-900 placeholder-gray-300 border border-gray-300 rounded-md  focus:outline-none  focus:ring-indigo-100 focus:border-indigo-200"
                         />
                     </div>
-
                     <button
                         type="submit"
-                        className=" self-center my-3 w-11/12 p-2 text-white bg-sky-700 rounded-md hover:bg-sky-800  focus:bg-sky-700 focus:outline-none"
+                        className=" self-start my-3 w-11/12 p-2 text-white bg-sky-700 rounded-md hover:bg-sky-800  focus:bg-sky-700 focus:outline-none"
                     >
                         {currentUser.loading ? (
                             <FontAwesomeIcon
@@ -229,7 +199,7 @@ export default function (): JSX.Element {
                     <div className=" flex my-3 items-center justify-center">
                         <img
                             src={currentUser.user?.avatar || logo}
-                            className="h-[10rem] rounded-full border w-[10rem]"
+                            className="h-[10rem] object-cover  rounded-full border w-[10rem]"
                             alt=""
                         />
                     </div>
@@ -252,7 +222,6 @@ export default function (): JSX.Element {
                     <div className="w-full flex items-center justify-center">
                         <button
                             onClick={() => setUpdate(true)}
-                            type="submit"
                             className=" w-11/12 p-2 text-white bg-sky-700 rounded-md hover:bg-sky-800  focus:bg-sky-700 focus:outline-none"
                         >
                             {currentUser.loading ? (

@@ -1,5 +1,7 @@
 import UserItem from '../types/props/userItem';
 import logo from '../assets/logo.png';
+import { useContext } from 'react';
+import socketContext from '../context';
 import { parseContent } from '../utils/parser/index';
 import { useAppDispatch, useAppSelector } from '../store/hooks/index';
 import { setCurrentChat, setNewChat } from '../store/slices/chats';
@@ -38,6 +40,11 @@ export default function ({
                     dispatch(setCurrentChat(id));
                 }
             } else {
+                socket?.emit(
+                    'join_users',
+                    [currentUser.id, id],
+                    `${currentUser?.userName}-${userName}`,
+                );
                 dispatch(
                     setCurrentChat({
                         name: `${currentUser?.userName}-${userName}`,
@@ -73,6 +80,10 @@ export default function ({
         }
     };
 
+    const io = useContext(socketContext);
+
+    const socket = io?.getSocket();
+
     return (
         <div
             onClick={() => {
@@ -104,6 +115,7 @@ export default function ({
                             id={userName}
                             onChange={(e) => {
                                 if (e.target.checked) {
+                                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                     setUserChat((prevSate): any[] => {
                                         return [
                                             ...prevSate,
@@ -114,6 +126,7 @@ export default function ({
                                         ];
                                     });
                                 } else {
+                                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                     setUserChat((prevSate): any[] => {
                                         return prevSate.filter(
                                             (user) => user._id != id,

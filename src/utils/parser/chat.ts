@@ -63,3 +63,18 @@ export const parseName = (chat: Chat, user: USER): string[] => {
 
     return [name, context];
 };
+
+export const parseAvatar = (chat: Chat, currentUser: USER): string => {
+    let avatar: string;
+
+    if (chat.isPrivate) {
+        const users = chat.users as USER[];
+
+        avatar = users.filter((user) => user._id != currentUser._id)[0]
+            .avatar as string;
+    } else {
+        avatar = chat.avatar as string;
+    }
+
+    return avatar;
+};

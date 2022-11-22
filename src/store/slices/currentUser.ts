@@ -60,7 +60,7 @@ export const uploadImage = createAsyncThunk<AxiosResponse, FileList>(
             if (!file[0]) {
                 toast.error('No image provided');
             } else if (
-                file[0].type === 'image/pjeg' ||
+                file[0].type === 'image/jpeg' ||
                 file[0].type === 'image/png' ||
                 file[0].type === 'image/jpg'
             ) {

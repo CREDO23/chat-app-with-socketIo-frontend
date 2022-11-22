@@ -153,26 +153,29 @@ function mobile(): JSX.Element {
                             className="md:w-[60%] bg-[#e9effc] h-[97%] rounded-md"
                         >
                             <div className="h-[4rem] border-b-2 px-2  flex items-center justify-between">
+                                <FontAwesomeIcon
+                                    onClick={() => setMainSide('chats')}
+                                    className="p-3 rounded-full bg-sky-800 text-sky-100"
+                                    icon={faArrowLeft}
+                                />
                                 <div className="w-3/5 flex items-center justify-start ">
                                     <img
                                         className="h-[3rem] cursor-pointer  w-[3rem] rounded-full border"
                                         src={logo}
                                         alt=""
                                     />
-                                    <div className="flex mx-3 flex-col items-start justify-between">
-                                        {chats.currentChat && (
-                                            <>
-                                                <p className="text-sky-900">
-                                                    {
-                                                        parseName(
-                                                            chats.currentChat,
-                                                            user as USER,
-                                                        )[0]
-                                                    }
-                                                </p>
-                                            </>
-                                        )}
-                                    </div>
+                                    {chats.currentChat && (
+                                        <>
+                                            <p className="text-sky-900">
+                                                {
+                                                    parseName(
+                                                        chats.currentChat,
+                                                        user as USER,
+                                                    )[0]
+                                                }
+                                            </p>
+                                        </>
+                                    )}
                                 </div>
 
                                 <div className=" flex items-center justify-end h-full w-2/5">

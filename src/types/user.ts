@@ -1,4 +1,6 @@
 interface USER {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    id?: any;
     _id?: string;
     userName: string;
     firstName?: string;

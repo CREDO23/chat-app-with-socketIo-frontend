@@ -29,7 +29,6 @@ import {
 import type Chat from '../types/chat';
 import { useNavigate } from 'react-router-dom';
 import socketContext from '../context';
-import React from 'react';
 
 function home(): JSX.Element {
     const [content, setContent] = useState<'messages' | 'participants'>(
@@ -133,7 +132,7 @@ function home(): JSX.Element {
                             <div className="w-3/5 flex items-center justify-start ">
                                 <img
                                     className="h-[3rem] cursor-pointer  w-[3rem] rounded-full border"
-                                    src={logo}
+                                    src={chats.currentChat.avatar || logo}
                                     alt=""
                                 />
                                 <div className="flex mx-3 flex-col items-start justify-between">

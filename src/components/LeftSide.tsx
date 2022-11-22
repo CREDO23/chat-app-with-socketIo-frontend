@@ -3,6 +3,7 @@ import { useAppSelector } from '../store/hooks';
 import {
     parseLastMessage,
     parseName,
+    parseAvatar,
     parseNewMessageCount,
 } from '../utils/parser/chat';
 import type USER from '../types/user';
@@ -97,6 +98,7 @@ function leftSide({ setMainSide, setRightSide }: Props): JSX.Element {
                 {chatState.chats?.map((chat) => {
                     return (
                         <Chat
+                            avatar={parseAvatar(chat , user)}
                             key={chat.name}
                             messages={chat?.messages}
                             name={parseName(chat, user as USER)[0]}

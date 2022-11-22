@@ -4,6 +4,7 @@ import type MessageProps from './message';
 type ChatProps = {
     name: string;
     id: string;
+    avatar: string;
     lastMessage: MessageProps;
     newMessageCount: number;
     messages: Message[];

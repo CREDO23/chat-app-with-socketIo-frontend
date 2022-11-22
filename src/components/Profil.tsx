@@ -51,7 +51,7 @@ export default function (): JSX.Element {
                         lastName: updateForm.lastName,
                         email: updateForm.email,
                         bio: updateForm.bio,
-                        avatar: currentUser.user?.avatar,
+                        avatar: currentUser.user?.avatar || profilLink.current?.src,
                     },
                 }),
             );

@@ -10,6 +10,7 @@ function chat({
     name,
     id,
     lastMessage,
+    avatar,
     showMessages,
 }: ChatProps): JSX.Element {
     const dateParsed = parseDate(lastMessage.time);
@@ -29,7 +30,7 @@ function chat({
         >
             <img
                 className="h-[3rem] m-1 border  w-[3rem]  rounded-full"
-                src={logo}
+                src={avatar || logo}
                 alt=""
             />
             <div className="flex h-full w-full  pr-1 ml-auto justify-around items-center flex-col">

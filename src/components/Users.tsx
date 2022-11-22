@@ -81,12 +81,13 @@ function users({ users, setSearch }: UserList & Props): JSX.Element {
                     <option value="channel">Channel Chat</option>
                 </select>
                 {mode == 'channel' && (
-                    <p
+                    <button
+                        disabled={chatName.length < 5 || usersChat.length < 2}
                         onClick={() => statrtChannelChat()}
-                        className="w-1/5 font-medium bg-sky-200 text-center  text-sky-800 p-1 rounded-lg cursor-pointer"
+                        className="w-1/5 font-medium bg-sky-200 disabled:hidden text-center  text-sky-800 p-1 rounded-lg cursor-pointer"
                     >
                         Start
-                    </p>
+                    </button>
                 )}
             </div>
             {mode == 'channel' && (

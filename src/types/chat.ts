@@ -14,7 +14,7 @@ type Chat = {
 
 export type ChatState = {
     loading: boolean;
-    newMessageLoading : boolean;
+    newMessageLoading: boolean;
     currentChat: Chat | null;
     newChat: Chat | null;
     chats: Chat[];

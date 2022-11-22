@@ -11,7 +11,7 @@ import type Message from '../../types/messages';
 
 const initialState: ChatState = {
     loading: false,
-    newMessageLoading : false,
+    newMessageLoading: false,
     currentChat: null,
     newChat: null,
     chats: [],
@@ -127,13 +127,13 @@ const chatsSlice = createSlice({
         });
 
         builer.addCase(newChat.pending, (state) => {
-            state.loading = true;
+            state.newMessageLoading = true;
         });
 
         builer.addCase(
             newChat.fulfilled,
             (state, action: PayloadAction<AxiosResponse<AddChatResponse>>) => {
-                state.loading = false;
+                state.newMessageLoading = false;
                 const index = state.chats.findIndex(
                     (chat) => chat._id == action.payload.data.data._id,
                 );
@@ -148,20 +148,20 @@ const chatsSlice = createSlice({
         );
 
         builer.addCase(newChat.rejected, (state, action) => {
-            state.loading = false;
+            state.newMessageLoading = false;
             toast.error(action.payload as string);
         });
 
         builer.addCase(newMessage.pending, (state) => {
             state.newMessageLoading = true;
-            console.log('start')
+            console.log('start');
         });
 
         builer.addCase(
             newMessage.fulfilled,
             (state, action: PayloadAction<AxiosResponse<AddChatResponse>>) => {
                 state.newMessageLoading = false;
-                console.log('okay')
+                console.log('okay');
                 const index = state.chats.findIndex(
                     (chat) => chat._id == action.payload.data.data._id,
                 );

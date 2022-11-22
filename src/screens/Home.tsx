@@ -1,7 +1,7 @@
 import logo from '../assets/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane, faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import { useRef, useState, useEffect, useContext } from 'react';
+import { useRef, useState, useEffect, useContext, useCallback, useMemo } from 'react';
 import type USER from '../types/user';
 import Message from '../components/Message';
 import UserChatList from '../components/UserChatList';
@@ -10,7 +10,7 @@ import LeftSide from '../components/LeftSide';
 import RightSide from '../components/RightSide';
 import { ToastContainer } from 'react-toastify';
 import { useAppSelector, useAppDispatch } from '../store/hooks/index';
-import { parseMessage, parseRecipient } from '../utils/parser/message';
+import { parseMessage } from '../utils/parser/message';
 import { parseName } from '../utils/parser/chat';
 import homeImage from '../assets/home.svg';
 import {
@@ -79,6 +79,18 @@ function home(): JSX.Element {
             });
         }
     }, [socket]);
+
+    const connectedUser = useMemo(() => localStorage.getItem('user') , [])
+
+    const connection = useCallback(() => {
+        io?.connect(user?._id as string, 'http://localhost:5500');
+    }, [connectedUser]);
+
+    useEffect(() => {
+        if (user?._id) {
+            connection();
+        }
+    }, [user]);
 
     return (
         <>
@@ -256,7 +268,7 @@ function home(): JSX.Element {
                                         );
                                     }
 
-                                    // setTimeout(() => setMessage(''), 1000);
+                                    setTimeout(() => setMessage(''), 1000);
                                 }}
                                 icon={faPaperPlane}
                                 size={'2x'}

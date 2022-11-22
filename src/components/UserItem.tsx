@@ -13,6 +13,8 @@ export default function ({
     id,
     avatar,
     setUserChat,
+    setMainSide,
+    setRightSide,
 }: UserItem): JSX.Element {
     const dispatch = useAppDispatch();
 
@@ -65,6 +67,8 @@ export default function ({
                         updatedAt: new Date().toISOString(),
                     }),
                 );
+                if (setMainSide) setMainSide('messages');
+                if (setRightSide) setRightSide('me');
             }
         }
     };

@@ -6,10 +6,11 @@ import { useEffect, useState } from 'react';
 
 type Props = {
     setRightSide: React.Dispatch<React.SetStateAction<'users' | 'me'>>;
+    setMainSide? : React.Dispatch<React.SetStateAction<'chats' | 'users' | 'messages' | 'profil'>>
     rightSide: 'me' | 'users';
 };
 
-export default function ({ setRightSide, rightSide }: Props): JSX.Element {
+export default function ({ setRightSide, rightSide , setMainSide }: Props): JSX.Element {
     const dispatch = useAppDispatch();
 
     const users = useAppSelector((state) => state.users.users);
@@ -48,7 +49,7 @@ export default function ({ setRightSide, rightSide }: Props): JSX.Element {
                 {rightSide == 'me' ? (
                     <Profil />
                 ) : rightSide == 'users' ? (
-                    <Users setSearch={setSearch} users={users} />
+                    <Users setMainSide={setMainSide} setRightSide={setRightSide} setSearch={setSearch} users={users} />
                 ) : null}
             </div>
         </div>

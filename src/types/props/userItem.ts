@@ -8,6 +8,10 @@ type UserItem = {
     online: boolean;
     mode?: 'private' | 'channel';
     setUserChat: React.Dispatch<React.SetStateAction<USER[]>>;
+    setRightSide?: React.Dispatch<React.SetStateAction<'users' | 'me'>>;
+    setMainSide?: React.Dispatch<
+        React.SetStateAction<'chats' | 'users' | 'messages' | 'profil'>
+    >;
 };
 
 export default UserItem;

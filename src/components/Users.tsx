@@ -8,9 +8,18 @@ import { useAppSelector, useAppDispatch } from '../store/hooks/index';
 
 type Props = {
     setSearch: React.Dispatch<React.SetStateAction<string>>;
+    setRightSide?: React.Dispatch<React.SetStateAction<'users' | 'me'>>;
+    setMainSide?: React.Dispatch<
+        React.SetStateAction<'chats' | 'users' | 'messages' | 'profil'>
+    >;
 };
 
-function users({ users, setSearch }: UserList & Props): JSX.Element {
+function users({
+    users,
+    setSearch,
+    setMainSide,
+    setRightSide,
+}: UserList & Props): JSX.Element {
     const [mode, setMode] = useState<'private' | 'channel'>('private');
 
     const [chatName, setChatName] = useState<string>('');
@@ -83,7 +92,11 @@ function users({ users, setSearch }: UserList & Props): JSX.Element {
                 {mode == 'channel' && (
                     <button
                         disabled={chatName.length < 5 || usersChat.length < 2}
-                        onClick={() => statrtChannelChat()}
+                        onClick={() => {
+                            statrtChannelChat();
+                            if (setMainSide) setMainSide('messages');
+                            if (setRightSide) setRightSide('me');
+                        }}
                         className="w-1/5 font-medium bg-sky-200 disabled:hidden text-center  text-sky-800 p-1 rounded-lg cursor-pointer"
                     >
                         Start
@@ -105,6 +118,8 @@ function users({ users, setSearch }: UserList & Props): JSX.Element {
                 {users.map((item) => {
                     return (
                         <UserItem
+                            setMainSide={setMainSide}
+                            setRightSide={setRightSide}
                             setUserChat={setUsersChat}
                             mode={mode}
                             key={item.userName}

@@ -132,18 +132,9 @@ const chatsSlice = createSlice({
 
         builer.addCase(
             newChat.fulfilled,
-            (state, action: PayloadAction<AxiosResponse<AddChatResponse>>) => {
+            (state) => {
                 state.newMessageLoading = false;
-                const index = state.chats.findIndex(
-                    (chat) => chat._id == action.payload.data.data._id,
-                );
-
-                if (index) {
-                    state.chats.splice(index, 1);
-                }
-
-                state.chats.unshift(action.payload.data.data);
-                state.currentChat = action.payload.data.data;
+                toast.susscess('Chat created')
             },
         );
 

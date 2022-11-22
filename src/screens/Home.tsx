@@ -1,7 +1,14 @@
 import logo from '../assets/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane, faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import { useRef, useState, useEffect, useContext, useCallback, useMemo } from 'react';
+import {
+    useRef,
+    useState,
+    useEffect,
+    useContext,
+    useCallback,
+    useMemo,
+} from 'react';
 import type USER from '../types/user';
 import Message from '../components/Message';
 import UserChatList from '../components/UserChatList';
@@ -77,10 +84,15 @@ function home(): JSX.Element {
             socket.on('newChat', (chat) => {
                 dispatch(newMsg(chat));
             });
+
+            socket.on('ask_to_join' , (chatName) => {
+                console.log(chatName)
+                socket.emit('join_chat' , chatName)
+            })
         }
     }, [socket]);
 
-    const connectedUser = useMemo(() => localStorage.getItem('user') , [])
+    const connectedUser = useMemo(() => localStorage.getItem('user'), []);
 
     const connection = useCallback(() => {
         io?.connect(user?._id as string, 'http://localhost:5500');

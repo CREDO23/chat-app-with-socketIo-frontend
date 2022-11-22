@@ -1,5 +1,6 @@
 import UserItem from './UserItem';
-import React, { useState } from 'react';
+import React, { useState , useEffect , useContext } from 'react';
+import socketContext from '../context';
 import type UserList from '../types/props/userChatList';
 import type USER from '../types/user';
 import { setCurrentChat, setNewChat } from '../store/slices/chats';
@@ -26,7 +27,7 @@ function users({
 
     const currentUser = useAppSelector((state) => state.currentUser.user);
 
-    const [usersChat, setUsersChat] = useState<USER[]>([]);
+    const [usersChat, setUsersChat] = useState<USER[]>([currentUser]);
 
     const chats = useAppSelector((state) => state.chats);
 
@@ -53,7 +54,6 @@ function users({
             setNewChat({
                 name: chatName,
                 users: [
-                    currentUser?._id,
                     ...usersChat.map((user) => user._id),
                 ] as string[],
                 isPrivate: false,
@@ -62,6 +62,12 @@ function users({
             }),
         );
     };
+
+
+    const io = useContext(socketContext);
+
+    const socket = io?.getSocket();
+
 
     return (
         <>
@@ -94,8 +100,10 @@ function users({
                         disabled={chatName.length < 5 || usersChat.length < 2}
                         onClick={() => {
                             statrtChannelChat();
+                            socket?.emit('join_users' , usersChat.map(user => user._id) , chatName )
                             if (setMainSide) setMainSide('messages');
                             if (setRightSide) setRightSide('me');
+                            setSearch('')
                         }}
                         className="w-1/5 font-medium bg-sky-200 disabled:hidden text-center  text-sky-800 p-1 rounded-lg cursor-pointer"
                     >

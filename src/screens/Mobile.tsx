@@ -275,7 +275,11 @@ function mobile(): JSX.Element {
                     )}
                 </>
             ) : mainSide == 'users' ? (
-                <Users setMainSide={setMainSide} setSearch={setSearch} users={users} />
+                <Users
+                    setMainSide={setMainSide}
+                    setSearch={setSearch}
+                    users={users}
+                />
             ) : mainSide == 'profil' ? (
                 <Profil />
             ) : null}

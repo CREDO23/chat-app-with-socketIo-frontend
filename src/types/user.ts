@@ -51,9 +51,7 @@ type UpdateResponse = {
 };
 
 type UploadImg = {
-    data: {
         secure_url: string;
-    };
 };
 
 export default USER;
@@ -64,5 +62,5 @@ export type {
     UpdateResponse,
     UsersListResponse,
     UsersState,
-    UploadImg
+    UploadImg,
 };

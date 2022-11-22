@@ -7,7 +7,7 @@ import type {
     SingupResponse,
     CurrentUserState,
     UpdateResponse,
-    UploadImg
+    UploadImg,
 } from '../../types/user';
 
 const initialState: CurrentUserState = {
@@ -79,6 +79,7 @@ export const uploadImage = createAsyncThunk<AxiosResponse, FileList>(
                 url: 'https://api.cloudinary.com/v1_1/dyj1vowdv/image/upload',
                 data,
             });
+
             return result;
 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -190,19 +191,23 @@ export const currentUserSlice = createSlice({
             toast.error(action.payload as string);
         });
 
-        builder.addCase(uploadImage.pending ,(state) => {
-            state.avatarLoading = true
-        })
+        builder.addCase(uploadImage.pending, (state) => {
+            state.avatarLoading = true;
+        });
 
-        builder.addCase(uploadImage.fulfilled , (state , action : PayloadAction<AxiosResponse<UploadImg>>) => {
-            state.avatarLoading = false;
-            state.user.avatar = action.payload.data.data.secure_url
-        })
+        builder.addCase(
+            uploadImage.fulfilled,
+            (state, action: PayloadAction<AxiosResponse<UploadImg>>) => {
+                state.avatarLoading = false;
+                console.log(action.payload.data)
+                state.user.avatar = action.payload.data.secure_url;
+            },
+        );
 
-        builder.addCase(uploadImage.rejected , (state , action)=>{
+        builder.addCase(uploadImage.rejected, (state, action) => {
             state.avatarLoading = false;
             toast.error(action.payload as string);
-        })
+        });
     },
 });
 

@@ -87,8 +87,10 @@ const chatsSlice = createSlice({
 
         newMsg: (state, action: PayloadAction<Chat>) => {
             const index = state.chats.findIndex(
-                (chat) => chat._id == action.payload._id,
+                (chat) => chat.name == action.payload.name,
             );
+
+            console.log(index)
 
             state.chats.splice(index, 1);
             state.chats.unshift(action.payload);
@@ -103,7 +105,7 @@ const chatsSlice = createSlice({
 
         setNewMessage: (state, action: PayloadAction<Message>) => {
             state.newChat?.messages.push(action.payload);
-            state.currentChat?.messages.push(action.payload);
+            // state.currentChat?.messages.push(action.payload);
         },
     },
     extraReducers: (builer) => {
@@ -133,6 +135,14 @@ const chatsSlice = createSlice({
             newChat.fulfilled,
             (state, action: PayloadAction<AxiosResponse<AddChatResponse>>) => {
                 state.loading = false;
+                const index = state.chats.findIndex(
+                    (chat) => chat._id == action.payload.data.data._id,
+                );
+
+                if (index) {
+                    state.chats.splice(index, 1);
+                }
+
                 state.chats.unshift(action.payload.data.data);
                 state.currentChat = action.payload.data.data;
             },

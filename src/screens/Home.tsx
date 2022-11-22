@@ -274,4 +274,4 @@ function home(): JSX.Element {
     );
 }
 
-export default React.memo(home);
+export default home;

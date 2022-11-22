@@ -76,9 +76,10 @@ function leftSide({ setMainSide, setRightSide }: Props): JSX.Element {
                         </span>
                     </div>
                 )}
-                {chatState.chats?.map((chat) => {
+                {chatState.chats?.map((chat ) => {
                     return (
                         <Chat
+                            key={chat.name}
                             messages={chat?.messages}
                             name={parseName(chat, user as USER)[0]}
                             id={chat._id as string}

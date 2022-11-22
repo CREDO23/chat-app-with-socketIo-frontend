@@ -1,19 +1,17 @@
 import logo from '../assets/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPen, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import React, { useRef, useState } from 'react';
 import { useAppSelector } from '../store/hooks/index';
-import { updateUser } from '../store/slices/currentUser';
+import { updateUser, uploadImage } from '../store/slices/currentUser';
 import { useAppDispatch } from '../store/hooks/index';
 import toast from '../utils/toasty';
 import { isFill, isMatch } from '../utils/validation/index';
-import uploadImg from '../utils/upload/image';
 
 export default function (): JSX.Element {
     const [update, setUpdate] = useState<boolean>(false);
 
     const currentUser = useAppSelector((state) => state.currentUser);
-
 
     const [updateForm, setUpdateForm] = useState({
         userName: currentUser.user?.userName as string,
@@ -21,7 +19,7 @@ export default function (): JSX.Element {
         lastName: currentUser.user?.lastName as string,
         email: currentUser.user?.email as string,
         bio: currentUser.user?.bio as string,
-        avatar : currentUser.user?.avatar as string,
+        avatar: currentUser.user?.avatar as string,
         password: '',
         confirmPassword: '',
     });
@@ -79,22 +77,34 @@ export default function (): JSX.Element {
                     className="flex flex-col items-start"
                 >
                     <div className="relative self-center flex my-3 items-center justify-center">
-                        <img
-                            ref={profilLink}
-                            src={updateForm.avatar || logo}
-                            className="h-[10rem] rounded-full border w-[10rem]"
-                            alt=""
-                        />
+                        {currentUser.avatarLoading ? (
+                            <div className="h-[10rem] flex items-center justify-center rounded-full border w-[10rem]">
+                                <FontAwesomeIcon
+                                    className=" animate-spin"
+                                    icon={faSpinner}
+                                />
+                            </div>
+                        ) : (
+                            <img
+                                ref={profilLink}
+                                src={currentUser.user.avatar || logo}
+                                className="h-[10rem] object-contain rounded-full border w-[10rem]"
+                                alt=""
+                            />
+                        )}
+
                         <div className="h-8 flex items-center justify-center  w-8 cursor-pointer bottom-5 right-1 absolute rounded-full border p-2  text-sky-800  bg-sky-100">
                             <input
                                 type="file"
-                                onChange={(e) => uploadImg(e.target?.files as FileList)}
+                                onChange={(e) =>
+                                    dispatch(
+                                        uploadImage(
+                                            e.target?.files as FileList,
+                                        ),
+                                    )
+                                }
                                 className="bg-transparent h-5 w-5"
                             />
-                            {/* <FontAwesomeIcon
-                               
-                                icon={faPen}
-                            /> */}
                         </div>
                     </div>
 

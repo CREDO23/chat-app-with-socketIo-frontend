@@ -5,6 +5,8 @@ import {
     faDiamond,
     faArrowLeft,
     faChevronDown,
+    faUserFriends,
+    faMessage
 } from '@fortawesome/free-solid-svg-icons';
 import {
     useRef,
@@ -178,7 +180,7 @@ function mobile(): JSX.Element {
                                     )}
                                 </div>
 
-                                <div className=" flex items-center justify-end h-full w-2/5">
+                                <div className=" flex items-center justify-end h-full w-1/5">
                                     <span
                                         className={`px-3 cursor-pointer ${
                                             content == 'messages'
@@ -187,21 +189,26 @@ function mobile(): JSX.Element {
                                         } font-semibold py-1 text-xs border rounded-lg`}
                                         onClick={() => setContent('messages')}
                                     >
-                                        Messages
+                                        <FontAwesomeIcon icon={faMessage} />
                                     </span>
                                     <span
                                         className={`px-3 ${
                                             content == 'participants'
                                                 ? ' text-sky-800  bg-sky-200'
                                                 : ' text-gray-400 bg-transparent'
-                                        } cursor-pointer relative font-semibold py-1 mx-3  text-xs border rounded-3xl`}
+                                        } cursor-pointer font-semibold py-1 mx-3  text-xs border rounded-3xl`}
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             setContent('participants');
-                                            socket?.emit('salut');
                                         }}
                                     >
-                                        Participants
+                                        <FontAwesomeIcon
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setContent('participants');
+                                            }}
+                                            icon={faUserFriends}
+                                        />
                                     </span>
                                 </div>
                             </div>

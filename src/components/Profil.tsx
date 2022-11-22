@@ -1,8 +1,6 @@
 import logo from '../assets/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faSpinner,
-} from '@fortawesome/free-solid-svg-icons';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import React, { useRef, useState } from 'react';
 import { useAppSelector } from '../store/hooks/index';
 import { updateUser, uploadImage } from '../store/slices/currentUser';
@@ -23,10 +21,8 @@ export default function (): JSX.Element {
         lastName: currentUser.user?.lastName as string,
         email: currentUser.user?.email as string,
         bio: currentUser.user?.bio as string,
-        avatar: currentUser.user?.avatar as string  || '',
+        avatar: (currentUser.user?.avatar as string) || '',
     });
-
-    
 
     const dispatch = useAppDispatch();
 
@@ -42,11 +38,10 @@ export default function (): JSX.Element {
     ): Promise<void> => {
         e.preventDefault();
 
-        console.log('oks')
+        console.log('oks');
 
         try {
-
-            await isFill(updateForm)
+            await isFill(updateForm);
 
             dispatch(
                 updateUser({
@@ -67,7 +62,7 @@ export default function (): JSX.Element {
                 }
             }, 2000);
         } catch (error) {
-            console.log(error)
+            console.log(error);
             toast.error(error as string);
         }
     };

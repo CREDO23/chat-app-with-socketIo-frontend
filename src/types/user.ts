@@ -14,6 +14,7 @@ interface USER {
 type CurrentUserState = {
     loading: boolean;
     avatarLoading: boolean;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     user: USER | any;
     accessToken: unknown;
 };

@@ -1,5 +1,5 @@
 import UserItem from './UserItem';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import socketContext from '../context';
 import type UserList from '../types/props/userChatList';
 import type USER from '../types/user';

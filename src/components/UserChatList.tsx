@@ -7,7 +7,7 @@ export default function ({ users }: ChatListProps): JSX.Element {
             <ul className="py-1 no-scrollbar overflow-y-auto max-h-[30rem] text-gray-700 dark:text-gray-200">
                 {users.map((user) => {
                     return (
-                        <li>
+                        <li key={user.userName}>
                             <span className="flex items-center py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                 <span className="relative h-[1.5rem] mr-1  w-[1.5rem]">
                                     <img

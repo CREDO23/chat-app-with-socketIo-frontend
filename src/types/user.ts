@@ -51,7 +51,7 @@ type UpdateResponse = {
 };
 
 type UploadImg = {
-        secure_url: string;
+    secure_url: string;
 };
 
 export default USER;

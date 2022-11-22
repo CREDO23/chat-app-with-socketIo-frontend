@@ -199,7 +199,7 @@ export const currentUserSlice = createSlice({
             uploadImage.fulfilled,
             (state, action: PayloadAction<AxiosResponse<UploadImg>>) => {
                 state.avatarLoading = false;
-                console.log(action.payload.data)
+                console.log(action.payload.data);
                 state.user.avatar = action.payload.data.secure_url;
             },
         );

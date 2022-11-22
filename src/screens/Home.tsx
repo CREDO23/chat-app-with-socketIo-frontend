@@ -190,6 +190,18 @@ function home(): JSX.Element {
                                     );
                                 }
                             })}
+                            {chats.newMessageLoading ? (
+                                <div className="self-end w-[16rem] md:w-md my-2">
+                                    <div className="animate-pulse flex space-x-4">
+                                        <div className="flex-1 space-y-2 py-1">
+                                            <div className="h-2 w-8/12 bg-slate-200 rounded"></div>
+                                            <div className="h-2 bg-slate-200 rounded"></div>
+                                            <div className="h-2 bg-slate-200 rounded"></div>
+                                            <div className="h-2 w-10/12 bg-slate-200 rounded"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : null}
                         </div>
                         <div className="h-[3.5rem] items-center relative flex p-1 border-t-2 ">
                             <input

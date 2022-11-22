@@ -6,12 +6,12 @@ import type {
     GetChatResponse,
     AddChatResponse,
 } from '../../types/chat';
-import type USER from '../../types/user';
 import type Chat from '../../types/chat';
 import type Message from '../../types/messages';
 
 const initialState: ChatState = {
     loading: false,
+    newMessageLoading : false,
     currentChat: null,
     newChat: null,
     chats: [],
@@ -90,7 +90,7 @@ const chatsSlice = createSlice({
                 (chat) => chat.name == action.payload.name,
             );
 
-            console.log(index)
+            console.log(index);
 
             state.chats.splice(index, 1);
             state.chats.unshift(action.payload);
@@ -105,7 +105,6 @@ const chatsSlice = createSlice({
 
         setNewMessage: (state, action: PayloadAction<Message>) => {
             state.newChat?.messages.push(action.payload);
-            // state.currentChat?.messages.push(action.payload);
         },
     },
     extraReducers: (builer) => {
@@ -154,14 +153,15 @@ const chatsSlice = createSlice({
         });
 
         builer.addCase(newMessage.pending, (state) => {
-            state.loading = true;
+            state.newMessageLoading = true;
+            console.log('start')
         });
 
         builer.addCase(
             newMessage.fulfilled,
             (state, action: PayloadAction<AxiosResponse<AddChatResponse>>) => {
-                state.loading = false;
-
+                state.newMessageLoading = false;
+                console.log('okay')
                 const index = state.chats.findIndex(
                     (chat) => chat._id == action.payload.data.data._id,
                 );
@@ -172,7 +172,7 @@ const chatsSlice = createSlice({
         );
 
         builer.addCase(newMessage.rejected, (state, action) => {
-            state.loading = false;
+            state.newMessageLoading = false;
             toast.error(action.payload as string);
         });
     },

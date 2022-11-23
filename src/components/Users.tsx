@@ -47,7 +47,7 @@ function users({
                 users: usersChat,
                 isPrivate: false,
                 messages: [],
-                lastViews : new Map()
+                lastViews: new Map(),
             }),
         );
         dispatch(
@@ -56,7 +56,7 @@ function users({
                 users: [...usersChat.map((user) => user._id)] as string[],
                 isPrivate: false,
                 messages: [],
-                lastViews : new Map()
+                lastViews: new Map(),
             }),
         );
     };

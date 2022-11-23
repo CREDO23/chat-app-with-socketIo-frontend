@@ -21,10 +21,9 @@ function chat({
 
     const handleMessageSide = useCallback(() => {
         dispatch(setCurrentChat(id));
-        handleLastView(id,  userId);
+        handleLastView(id, userId);
         showMessages('messages');
     }, []);
-
 
     return (
         <div

@@ -97,11 +97,7 @@ function leftSide({ setMainSide, setRightSide }: Props): JSX.Element {
                 ) : null}
 
                 {chatState.chats?.map((chat) => {
-                    console.log(
-                            parseLastUpdate(chat, user),
-                            chat?.messages,
-                        
-                    );
+                    console.log(parseLastUpdate(chat, user), chat?.messages);
                     return (
                         <Chat
                             avatar={parseAvatar(chat, user)}

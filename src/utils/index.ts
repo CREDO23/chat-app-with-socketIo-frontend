@@ -1,12 +1,7 @@
-
 import toast from './toasty';
 import axios from 'axios';
 
-export const handleLastView = async (
-    chatId: string,
-    userId: string,
-) => {
-
+export const handleLastView = async (chatId: string, userId: string) => {
     try {
         const result = await axios({
             method: 'PUT',

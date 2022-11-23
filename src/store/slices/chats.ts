@@ -75,7 +75,9 @@ export const updateLastView = createAsyncThunk<AxiosResponse, any>(
         try {
             const result: AxiosResponse = await axios({
                 method: 'PUT',
-                url: `${import.meta.env.VITE_BACKEND_URL}/api/chats/${chatId}/${userId}`,
+                url: `${
+                    import.meta.env.VITE_BACKEND_URL
+                }/api/chats/${chatId}/${userId}`,
             });
             return result;
             // eslint-disable-next-line @typescript-eslint/no-explicit-any

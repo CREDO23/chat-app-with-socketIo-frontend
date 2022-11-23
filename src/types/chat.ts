@@ -9,7 +9,7 @@ type Chat = {
     avatar?: string;
     users: USER[] | string[];
     messages: Message[];
-    lastViews : Map<string, string>;
+    lastViews: Map<string, string>;
 };
 
 export type ChatState = {

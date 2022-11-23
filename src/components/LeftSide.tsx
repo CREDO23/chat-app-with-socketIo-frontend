@@ -71,7 +71,7 @@ function leftSide({ setMainSide, setRightSide }: Props): JSX.Element {
                 </span>
             </div>
             <div className="h-[calc(100%-8rem)]  flex flex-col items-center  no-scrollbar overflow-y-auto">
-                { !chatState.loading &&  chatState.chats?.length < 1 && (
+                {!chatState.loading && chatState.chats?.length < 1 && (
                     <div>
                         <span className="h-5 text-lg py-5 text-gray-400">
                             Not chat yet
@@ -96,7 +96,12 @@ function leftSide({ setMainSide, setRightSide }: Props): JSX.Element {
                     </div>
                 ) : null}
 
-                {chatState.loading && chatState.chats?.length < 1 &&  <span className="h-5 text-lg py-5 text-gray-400"> Fetching chats ...</span>}
+                {chatState.loading && chatState.chats?.length < 1 && (
+                    <span className="h-5 text-lg py-5 text-gray-400">
+                        {' '}
+                        Fetching chats ...
+                    </span>
+                )}
 
                 {chatState.chats?.map((chat) => {
                     console.log(parseLastUpdate(chat, user), chat?.messages);

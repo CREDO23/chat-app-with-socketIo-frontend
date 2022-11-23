@@ -62,7 +62,7 @@ export default function ({
                         ],
                         isPrivate: true,
                         messages: [],
-                        lastViews : new Map()
+                        lastViews: new Map(),
                     } as Chat),
                 );
                 dispatch(
@@ -72,7 +72,7 @@ export default function ({
                         users: [currentUser?._id as string, id as string],
                         isPrivate: true,
                         messages: [],
-                        lastViews : new Map()
+                        lastViews: new Map(),
                     } as Chat),
                 );
                 if (setMainSide) setMainSide('messages');

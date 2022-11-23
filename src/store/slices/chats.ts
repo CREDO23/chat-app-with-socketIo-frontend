@@ -69,6 +69,22 @@ export const newMessage = createAsyncThunk<AxiosResponse, any>(
     },
 );
 
+export const updateLastView = createAsyncThunk<AxiosResponse, any>(
+    'chat/updateLastView',
+    async ({ userId, chatId }, { rejectWithValue }) => {
+        try {
+            const result: AxiosResponse = await axios({
+                method: 'PUT',
+                url: `${import.meta.env.VITE_BACKEND_URL}/api/chats/${chatId}/${userId}`,
+            });
+            return result;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            return rejectWithValue(error?.response?.data?.message);
+        }
+    },
+);
+
 const chatsSlice = createSlice({
     name: 'chats',
     initialState,

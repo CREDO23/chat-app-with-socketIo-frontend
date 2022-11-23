@@ -5,6 +5,7 @@ import {
     parseName,
     parseAvatar,
     parseNewMessageCount,
+    parseLastUpdate,
 } from '../utils/parser/chat';
 import type USER from '../types/user';
 import { getChats } from '../store/slices/chats';
@@ -96,6 +97,11 @@ function leftSide({ setMainSide, setRightSide }: Props): JSX.Element {
                 ) : null}
 
                 {chatState.chats?.map((chat) => {
+                    console.log(
+                            parseLastUpdate(chat, user),
+                            chat?.messages,
+                        
+                    );
                     return (
                         <Chat
                             avatar={parseAvatar(chat, user)}
@@ -104,7 +110,7 @@ function leftSide({ setMainSide, setRightSide }: Props): JSX.Element {
                             name={parseName(chat, user as USER)[0]}
                             id={chat._id as string}
                             newMessageCount={parseNewMessageCount(
-                                new Date().toISOString(),
+                                parseLastUpdate(chat, user),
                                 chat?.messages,
                             )}
                             lastMessage={parseLastMessage(

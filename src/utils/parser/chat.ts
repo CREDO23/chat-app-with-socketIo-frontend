@@ -78,3 +78,17 @@ export const parseAvatar = (chat: Chat, currentUser: USER): string => {
 
     return avatar;
 };
+
+export const parseLastUpdate = (chat: Chat, currentUser: USER): string => {
+    if (chat.lastViews) {
+        if (Object.keys(chat.lastViews).length >= 1) {
+            const lastUpdate = chat.lastViews.get(currentUser._id as string);
+
+            return lastUpdate as string;
+        } else {
+            return new Date(Date.now()).toDateString();
+        }
+    }
+
+    return new Date(Date.now()).toISOString();
+};

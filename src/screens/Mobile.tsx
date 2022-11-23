@@ -6,7 +6,7 @@ import {
     faArrowLeft,
     faChevronDown,
     faUserFriends,
-    faMessage
+    faMessage,
 } from '@fortawesome/free-solid-svg-icons';
 import {
     useRef,

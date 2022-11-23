@@ -2,8 +2,9 @@ import logo from '../assets/logo.png';
 import type ChatProps from '../types/props/chat';
 import { parseDate, parseContent } from '../utils/parser/index';
 import { setCurrentChat } from '../store/slices/chats';
-import { useAppDispatch } from '../store/hooks/index';
-import React, { useCallback } from 'react';
+import { useAppDispatch, useAppSelector } from '../store/hooks/index';
+import { useCallback } from 'react';
+import { handleLastView } from '../utils/index';
 
 function chat({
     newMessageCount,
@@ -16,10 +17,14 @@ function chat({
     const dateParsed = parseDate(lastMessage.time);
     const dispatch = useAppDispatch();
 
+    const userId = useAppSelector((state) => state.currentUser.user._id);
+
     const handleMessageSide = useCallback(() => {
         dispatch(setCurrentChat(id));
+        handleLastView(id,  userId);
         showMessages('messages');
     }, []);
+
 
     return (
         <div

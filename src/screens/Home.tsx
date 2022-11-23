@@ -94,7 +94,7 @@ function home(): JSX.Element {
     const connectedUser = useMemo(() => localStorage.getItem('user'), []);
 
     const connection = useCallback(() => {
-        io?.connect(user?._id as string, 'http://localhost:5500');
+        io?.connect(user?._id as string, `${import.meta.env.VITE_BACKEND_URL}`);
     }, [connectedUser]);
 
     useEffect(() => {

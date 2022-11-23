@@ -26,7 +26,6 @@ export const singup = createAsyncThunk<AxiosResponse, USER>(
                 url: `${import.meta.env.VITE_BACKEND_URL}/api/users/singup`,
                 data: user,
             });
-            console.log(result);
             return result;
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
@@ -199,7 +198,6 @@ export const currentUserSlice = createSlice({
             uploadImage.fulfilled,
             (state, action: PayloadAction<AxiosResponse<UploadImg>>) => {
                 state.avatarLoading = false;
-                console.log(action.payload.data);
                 state.user.avatar = action.payload.data.secure_url;
             },
         );

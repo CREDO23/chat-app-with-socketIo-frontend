@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '../store/hooks/index';
 import { setCurrentChat, setNewChat } from '../store/slices/chats';
 import { parseName } from '../utils/parser/chat';
 import type USER from '../types/user';
+import Chat from '../types/chat';
 
 export default function ({
     online,
@@ -61,8 +62,8 @@ export default function ({
                         ],
                         isPrivate: true,
                         messages: [],
-                        updatedAt: new Date().toISOString(),
-                    }),
+                        lastViews : new Map()
+                    } as Chat),
                 );
                 dispatch(
                     setNewChat({
@@ -71,8 +72,8 @@ export default function ({
                         users: [currentUser?._id as string, id as string],
                         isPrivate: true,
                         messages: [],
-                        updatedAt: new Date().toISOString(),
-                    }),
+                        lastViews : new Map()
+                    } as Chat),
                 );
                 if (setMainSide) setMainSide('messages');
                 if (setRightSide) setRightSide('me');

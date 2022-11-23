@@ -69,6 +69,7 @@ export const newMessage = createAsyncThunk<AxiosResponse, any>(
     },
 );
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const updateLastView = createAsyncThunk<AxiosResponse, any>(
     'chat/updateLastView',
     async ({ userId, chatId }, { rejectWithValue }) => {

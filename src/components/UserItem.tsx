@@ -43,7 +43,7 @@ export default function ({
             } else {
                 socket?.emit(
                     'join_users',
-                    [currentUser.id, id],
+                    [currentUser._id, id],
                     `${currentUser?.userName}-${userName}`,
                 );
                 dispatch(

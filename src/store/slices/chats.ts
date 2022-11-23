@@ -112,8 +112,12 @@ const chatsSlice = createSlice({
 
             console.log(index);
 
-            state.chats.splice(index, 1);
-            state.chats.unshift(action.payload);
+            if (index >= 0) {
+                state.chats.splice(index, 1);
+                state.chats.unshift(action.payload);
+            }else{
+                state.chats.unshift(action.payload);
+            }
 
             if (
                 state.currentChat &&
@@ -167,13 +171,20 @@ const chatsSlice = createSlice({
         builer.addCase(
             newMessage.fulfilled,
             (state, action: PayloadAction<AxiosResponse<AddChatResponse>>) => {
+                console.log('ok');
                 state.newMessageLoading = false;
                 const index = state.chats.findIndex(
                     (chat) => chat._id == action.payload.data.data._id,
                 );
 
-                state.chats.splice(index, 1);
-                state.chats.unshift(action.payload.data.data);
+                console.log(index);
+
+                if (index >= 0) {
+                    state.chats.splice(index, 1);
+                    state.chats.unshift(action.payload.data.data);
+                }else{
+                    state.chats.unshift(action.payload.data.data);
+                }
             },
         );
 

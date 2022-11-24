@@ -89,9 +89,9 @@ function home(): JSX.Element {
                 socket.emit('join_chat', chatName);
             });
 
-            socket.on('user_connected' , () => {
-                toast.info("You're online")
-            })
+            socket.on('user_connected', () => {
+                toast.info("You're online");
+            });
         }
     }, [socket]);
 

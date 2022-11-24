@@ -156,7 +156,6 @@ const chatsSlice = createSlice({
 
         builer.addCase(newChat.fulfilled, (state) => {
             state.newMessageLoading = false;
-            toast.susscess('Chat created');
         });
 
         builer.addCase(newChat.rejected, (state, action) => {
@@ -171,7 +170,7 @@ const chatsSlice = createSlice({
         builer.addCase(
             newMessage.fulfilled,
             (state, action: PayloadAction<AxiosResponse<AddChatResponse>>) => {
-                console.log('ok');
+            
                 state.newMessageLoading = false;
                 const index = state.chats.findIndex(
                     (chat) => chat._id == action.payload.data.data._id,

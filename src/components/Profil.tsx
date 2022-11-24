@@ -38,10 +38,9 @@ export default function (): JSX.Element {
     ): Promise<void> => {
         e.preventDefault();
 
-        console.log('oks');
-
         try {
-            await isFill(updateForm);
+
+            console.log(currentUser.user?.avatar , profilLink.current?.src)
 
             dispatch(
                 updateUser({
@@ -63,7 +62,6 @@ export default function (): JSX.Element {
                 }
             }, 2000);
         } catch (error) {
-            console.log(error);
             toast.error(error as string);
         }
     };

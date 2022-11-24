@@ -115,7 +115,7 @@ const chatsSlice = createSlice({
             if (index >= 0) {
                 state.chats.splice(index, 1);
                 state.chats.unshift(action.payload);
-            }else{
+            } else {
                 state.chats.unshift(action.payload);
             }
 
@@ -182,7 +182,7 @@ const chatsSlice = createSlice({
                 if (index >= 0) {
                     state.chats.splice(index, 1);
                     state.chats.unshift(action.payload.data.data);
-                }else{
+                } else {
                     state.chats.unshift(action.payload.data.data);
                 }
             },

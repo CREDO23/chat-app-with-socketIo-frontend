@@ -93,7 +93,11 @@ export default function ({
             className="w-full relative cursor-pointer my-1 bg-white px-2 h-[3.5rem] rounded flex items-center"
         >
             <span className="relative h-[3rem] mr-1  w-[3rem]">
-                <img className=" border  rounded-full" src={avatar || logo} alt="" />
+                <img
+                    className=" border  rounded-full"
+                    src={avatar || logo}
+                    alt=""
+                />
                 {online && (
                     <span className="bottom-0 left-7 absolute  w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
                 )}

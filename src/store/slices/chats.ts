@@ -170,7 +170,6 @@ const chatsSlice = createSlice({
         builer.addCase(
             newMessage.fulfilled,
             (state, action: PayloadAction<AxiosResponse<AddChatResponse>>) => {
-            
                 state.newMessageLoading = false;
                 const index = state.chats.findIndex(
                     (chat) => chat._id == action.payload.data.data._id,

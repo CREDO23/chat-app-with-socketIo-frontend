@@ -29,7 +29,6 @@ import {
 import type Chat from '../types/chat';
 import { useNavigate } from 'react-router-dom';
 import socketContext from '../context';
-import toast from '../utils/toasty';
 
 function home(): JSX.Element {
     const [content, setContent] = useState<'messages' | 'participants'>(
@@ -87,10 +86,6 @@ function home(): JSX.Element {
 
             socket.on('ask_to_join', (chatName) => {
                 socket.emit('join_chat', chatName);
-            });
-
-            socket.on('user_connected', () => {
-                toast.info("You're online");
             });
         }
     }, [socket]);
@@ -308,7 +303,7 @@ function home(): JSX.Element {
                 <RightSide rightSide={rightSide} setRightSide={setRightSide} />
             </div>
             <Mobile />
-            <ToastContainer />
+            <ToastContainer limit={1} />
         </>
     );
 }

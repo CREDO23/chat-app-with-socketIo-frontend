@@ -105,7 +105,7 @@ export default function ({ setForm }: Props): JSX.Element {
                     )}
                 </button>
             </div>
-            <ToastContainer />
+            <ToastContainer limit={1} />
         </form>
     );
 }

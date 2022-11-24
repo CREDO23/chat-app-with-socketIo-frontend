@@ -102,7 +102,6 @@ function mobile(): JSX.Element {
             });
 
             socket.on('ask_to_join', (chatName) => {
-                console.log(chatName);
                 socket.emit('join_chat', chatName);
             });
         }
@@ -123,7 +122,7 @@ function mobile(): JSX.Element {
     return (
         <div
             onClick={() => setContent('messages')}
-            className=" md:hidden w-screen relative flex-col  pt-2 bg-white items-center flex h-full"
+            className=" md:hidden w-[100vw] relative flex-col  pt-2 bg-white items-center flex h-[100vh]"
         >
             {mainSide == 'chats' ? (
                 <LeftSide

@@ -1,12 +1,14 @@
 import logo from '../assets/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import {
+    faSpinner,
+    faArrowRightFromBracket,
+} from '@fortawesome/free-solid-svg-icons';
 import React, { useRef, useState } from 'react';
 import { useAppSelector } from '../store/hooks/index';
 import { updateUser, uploadImage } from '../store/slices/currentUser';
 import { useAppDispatch } from '../store/hooks/index';
 import toast from '../utils/toasty';
-import { isFill } from '../utils/validation';
 
 export default function (): JSX.Element {
     const [update, setUpdate] = useState<boolean>(false);
@@ -38,10 +40,8 @@ export default function (): JSX.Element {
     ): Promise<void> => {
         e.preventDefault();
 
-        console.log('oks');
-
         try {
-            await isFill(updateForm);
+            console.log(currentUser.user?.avatar, profilLink.current?.src);
 
             dispatch(
                 updateUser({
@@ -63,7 +63,6 @@ export default function (): JSX.Element {
                 }
             }, 2000);
         } catch (error) {
-            console.log(error);
             toast.error(error as string);
         }
     };
@@ -192,6 +191,7 @@ export default function (): JSX.Element {
                 </form>
             ) : (
                 <>
+
                     <div className=" flex my-3 items-center justify-center">
                         <img
                             src={currentUser.user?.avatar || logo}
@@ -215,10 +215,10 @@ export default function (): JSX.Element {
                             {currentUser.user?.bio}
                         </span>
                     </div>
-                    <div className="w-full flex items-center justify-center">
+                    <div className="w-full flex items-center justify-around">
                         <button
                             onClick={() => setUpdate(true)}
-                            className=" w-11/12 p-2 text-white bg-sky-700 rounded-md hover:bg-sky-800  focus:bg-sky-700 focus:outline-none"
+                            className=" w-9/12 p-2 text-white bg-sky-700 rounded-md hover:bg-sky-800  focus:bg-sky-700 focus:outline-none"
                         >
                             {currentUser.loading ? (
                                 <FontAwesomeIcon
@@ -229,6 +229,14 @@ export default function (): JSX.Element {
                                 'Edit your profil'
                             )}
                         </button>
+                        <FontAwesomeIcon
+                            onClick={() => {
+                                window.location.reload()
+                                localStorage.clear()
+                            }}
+                            className=" w-1/12 self-start border font-light cursor-pointer h-6 p-2 bg-white text-sky-700 rounded-md  focus:bg-sky-700 focus:outline-none"
+                            icon={faArrowRightFromBracket}
+                        />
                     </div>
                 </>
             )}

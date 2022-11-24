@@ -44,12 +44,15 @@ function home(): JSX.Element {
 
     const messagesDiv = useRef<HTMLDivElement>(null);
 
+    const messageINput = useRef<HTMLInputElement>(null);
+
     const chats = useAppSelector((state) => state.chats);
     const user = useAppSelector((state) => state.currentUser.user);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
         if (content == 'messages') {
+            messageINput.current?.focus()
             messagesDiv.current?.scrollTo({
                 behavior: 'auto',
                 top: messagesDiv.current.scrollHeight,
@@ -102,6 +105,51 @@ function home(): JSX.Element {
         }
     }, [user]);
 
+    const handleMessage = () => {
+        dispatch(
+            setNewMessage({
+                sender: user as USER,
+                content: message,
+                updatedAt: new Date().toISOString(),
+            }),
+        );
+        if (
+            !chats.chats.some(
+                (chat) =>
+                    chat.name ==
+                    chats.currentChat?.name,
+            )
+        ) {
+            dispatch(
+                newChat({
+                    name: chats.currentChat
+                        ?.name as string,
+                    isPrivate:
+                        chats.currentChat
+                            ?.isPrivate,
+                    users: chats.newChat
+                        ?.users as string[],
+                    message: {
+                        sender: user?._id as string,
+                        content: message,
+                    },
+                }),
+            );
+        } else {
+            dispatch(
+                newMessage({
+                    id: chats.currentChat?._id,
+                    message: {
+                        sender: user?._id,
+                        content: message,
+                    },
+                }),
+            );
+        }
+
+        setTimeout(() => setMessage(''), 1000);
+    }
+
     return (
         <>
             <div className="w-full md:w-[1360px] hidden  bg-white items-center md:flex h-full">
@@ -130,7 +178,7 @@ function home(): JSX.Element {
                         <div className="h-[4rem] border-b-2 px-2  flex items-center justify-between">
                             <div className="w-3/5 flex items-center justify-start ">
                                 <img
-                                    className="h-[3rem] cursor-pointer  w-[3rem] rounded-full border"
+                                    className="h-[3rem] cursor-pointer object-cover  w-[3rem] rounded-full border"
                                     src={chats.currentChat.avatar || logo}
                                     alt=""
                                 />
@@ -228,58 +276,22 @@ function home(): JSX.Element {
                         <div className="h-[3.5rem] items-center relative flex p-1 border-t-2 ">
                             <input
                                 type="text"
+                                ref={messageINput}
                                 value={message}
+                                onKeyDown={(e) => {
+                                    if(e.keyCode === 13){
+                                        handleMessage()
+                                    }
+                                }}
                                 id="message"
                                 onChange={(e) => setMessage(e.target.value)}
+                                
                                 placeholder="Here your message ..."
                                 className="w-11/12 px-3 py-2 flex text-slate-900 placeholder-gray-300 border border-gray-100 rounded-md  focus:outline-none  focus:ring-indigo-100 focus:border-indigo-200"
                             />
                             <FontAwesomeIcon
                                 className="w-1/12 cursor-pointer text-sky-600"
-                                onClick={() => {
-                                    dispatch(
-                                        setNewMessage({
-                                            sender: user as USER,
-                                            content: message,
-                                            updatedAt: new Date().toISOString(),
-                                        }),
-                                    );
-                                    if (
-                                        !chats.chats.some(
-                                            (chat) =>
-                                                chat.name ==
-                                                chats.currentChat?.name,
-                                        )
-                                    ) {
-                                        dispatch(
-                                            newChat({
-                                                name: chats.currentChat
-                                                    ?.name as string,
-                                                isPrivate:
-                                                    chats.currentChat
-                                                        ?.isPrivate,
-                                                users: chats.newChat
-                                                    ?.users as string[],
-                                                message: {
-                                                    sender: user?._id as string,
-                                                    content: message,
-                                                },
-                                            }),
-                                        );
-                                    } else {
-                                        dispatch(
-                                            newMessage({
-                                                id: chats.currentChat?._id,
-                                                message: {
-                                                    sender: user?._id,
-                                                    content: message,
-                                                },
-                                            }),
-                                        );
-                                    }
-
-                                    setTimeout(() => setMessage(''), 1000);
-                                }}
+                                onClick={() => handleMessage()}
                                 icon={faPaperPlane}
                                 size={'2x'}
                             />

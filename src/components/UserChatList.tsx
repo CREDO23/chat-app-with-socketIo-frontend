@@ -11,7 +11,7 @@ export default function ({ users }: ChatListProps): JSX.Element {
                             <span className="flex items-center py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                 <span className="relative h-[1.5rem] mr-1  w-[1.5rem]">
                                     <img
-                                        className=" border  rounded-full"
+                                        className=" border object-cover rounded-full"
                                         src={user.avatar || logo}
                                         alt={user.userName}
                                     />

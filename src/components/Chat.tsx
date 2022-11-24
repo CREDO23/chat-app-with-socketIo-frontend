@@ -33,7 +33,7 @@ function chat({
             } px-1 h-[4rem] rounded flex items-center `}
         >
             <img
-                className="h-[3rem] m-1 border  w-[3rem]  rounded-full"
+                className="h-[3rem] m-1 border  w-[3rem] object-cover  rounded-full"
                 src={avatar || logo}
                 alt=""
             />

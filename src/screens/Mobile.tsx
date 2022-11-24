@@ -102,7 +102,6 @@ function mobile(): JSX.Element {
             });
 
             socket.on('ask_to_join', (chatName) => {
-                console.log(chatName);
                 socket.emit('join_chat', chatName);
             });
         }
@@ -111,7 +110,7 @@ function mobile(): JSX.Element {
     const connectedUser = useMemo(() => localStorage.getItem('user'), []);
 
     const connection = useCallback(() => {
-        io?.connect(user?._id as string, 'http://localhost:5500');
+        io?.connect(user?._id as string, `${import.meta.env.VITE_BACKEND_URL}`);
     }, [connectedUser]);
 
     useEffect(() => {
@@ -123,7 +122,7 @@ function mobile(): JSX.Element {
     return (
         <div
             onClick={() => setContent('messages')}
-            className=" md:hidden w-screen relative flex-col  pt-2 bg-white items-center flex h-full"
+            className=" md:hidden w-[100vw] relative flex-col  pt-2 bg-white items-center flex h-[100vh]"
         >
             {mainSide == 'chats' ? (
                 <LeftSide

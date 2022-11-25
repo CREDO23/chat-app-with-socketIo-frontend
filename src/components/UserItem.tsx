@@ -102,7 +102,7 @@ export default function ({
         >
             <span className="relative h-[3rem] mr-1  w-[3rem]">
                 <img
-                    className=" border  rounded-full"
+                    className=" border w-[3rem] object-cover h-[3rem] rounded-full"
                     src={avatar || logo}
                     alt=""
                 />

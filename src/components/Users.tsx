@@ -34,6 +34,7 @@ function users({
     const dispatch = useAppDispatch();
 
     const statrtChannelChat = (): void => {
+        setSearch('');
         if (
             chats.chats.filter(
                 (chat) => parseName(chat, currentUser as USER)[0] == chatName,
@@ -126,10 +127,12 @@ function users({
                 {users.map((item) => {
                     return (
                         <UserItem
+                            setSearch={setSearch}
                             setMainSide={setMainSide}
                             setRightSide={setRightSide}
                             setUserChat={setUsersChat}
                             mode={mode}
+                            email={item.email as string}
                             key={item.userName}
                             avatar={item.avatar as string}
                             online={item.isLogged as boolean}

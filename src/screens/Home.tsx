@@ -52,7 +52,7 @@ function home(): JSX.Element {
 
     useEffect(() => {
         if (content == 'messages') {
-            messageINput.current?.focus()
+            messageINput.current?.focus();
             messagesDiv.current?.scrollTo({
                 behavior: 'auto',
                 top: messagesDiv.current.scrollHeight,
@@ -83,11 +83,11 @@ function home(): JSX.Element {
 
     useEffect(() => {
         if (socket) {
-            socket.on('newChat', (chat) => {
+            socket.on('newChat', (chat: Chat) => {
                 dispatch(newMsg(chat));
             });
 
-            socket.on('ask_to_join', (chatName) => {
+            socket.on('ask_to_join', (chatName: string) => {
                 socket.emit('join_chat', chatName);
             });
         }
@@ -113,22 +113,12 @@ function home(): JSX.Element {
                 updatedAt: new Date().toISOString(),
             }),
         );
-        if (
-            !chats.chats.some(
-                (chat) =>
-                    chat.name ==
-                    chats.currentChat?.name,
-            )
-        ) {
+        if (!chats.chats.some((chat) => chat.name == chats.currentChat?.name)) {
             dispatch(
                 newChat({
-                    name: chats.currentChat
-                        ?.name as string,
-                    isPrivate:
-                        chats.currentChat
-                            ?.isPrivate,
-                    users: chats.newChat
-                        ?.users as string[],
+                    name: chats.currentChat?.name as string,
+                    isPrivate: chats.currentChat?.isPrivate,
+                    users: chats.newChat?.users as string[],
                     message: {
                         sender: user?._id as string,
                         content: message,
@@ -148,7 +138,7 @@ function home(): JSX.Element {
         }
 
         setTimeout(() => setMessage(''), 1000);
-    }
+    };
 
     return (
         <>
@@ -279,13 +269,12 @@ function home(): JSX.Element {
                                 ref={messageINput}
                                 value={message}
                                 onKeyDown={(e) => {
-                                    if(e.keyCode === 13){
-                                        handleMessage()
+                                    if (e.keyCode === 13) {
+                                        handleMessage();
                                     }
                                 }}
                                 id="message"
                                 onChange={(e) => setMessage(e.target.value)}
-                                
                                 placeholder="Here your message ..."
                                 className="w-11/12 px-3 py-2 flex text-slate-900 placeholder-gray-300 border border-gray-100 rounded-md  focus:outline-none  focus:ring-indigo-100 focus:border-indigo-200"
                             />

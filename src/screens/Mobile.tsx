@@ -97,11 +97,11 @@ function mobile(): JSX.Element {
     useEffect(() => {
         if (socket) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            socket.on('newChat', (chat: any) => {
+            socket.on('newChat', (chat: Chat) => {
                 dispatch(newMsg(chat));
             });
 
-            socket.on('ask_to_join', (chatName) => {
+            socket.on('ask_to_join', (chatName: string) => {
                 socket.emit('join_chat', chatName);
             });
         }

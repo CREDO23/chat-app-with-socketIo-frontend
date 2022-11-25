@@ -13,12 +13,14 @@ export default function ({
     online,
     userName,
     mode,
+    email,
     id,
     avatar,
     setUserChat,
     setMainSide,
     setRightSide,
-}: UserItem): JSX.Element {
+    setSearch,
+}: UserItem): JSX.Element | null {
     const dispatch = useAppDispatch();
 
     const currentUser = useAppSelector((state) => state.currentUser.user);
@@ -26,6 +28,7 @@ export default function ({
     const chats = useAppSelector((state) => state.chats);
 
     const startChat = () => {
+        setSearch('');
         if (mode == 'private') {
             if (
                 chats.chats.filter(
@@ -39,6 +42,7 @@ export default function ({
                 )[0]._id;
                 if (id) {
                     dispatch(setCurrentChat(id));
+                    setMainSide && setMainSide('messages');
                 }
             } else {
                 socket?.emit(
@@ -85,6 +89,10 @@ export default function ({
 
     const socket = io?.getSocket();
 
+    if (currentUser.userName == userName) {
+        return null;
+    }
+
     return (
         <div
             onClick={() => {
@@ -109,9 +117,7 @@ export default function ({
                     className="text-sm flex flex-col cursor-pointer items-start justify-between  text-slate-900"
                 >
                     <p> {parseContent(userName, 15)}</p>
-                    <p className="text-gray-400 font-light text-xs">
-                        bakerathierry@gmail.com
-                    </p>
+                    <p className="text-gray-400 font-light text-xs">{email}</p>
                 </label>
 
                 {mode == 'channel' && (

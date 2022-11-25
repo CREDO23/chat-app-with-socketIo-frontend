@@ -191,7 +191,6 @@ export default function (): JSX.Element {
                 </form>
             ) : (
                 <>
-
                     <div className=" flex my-3 items-center justify-center">
                         <img
                             src={currentUser.user?.avatar || logo}
@@ -231,8 +230,8 @@ export default function (): JSX.Element {
                         </button>
                         <FontAwesomeIcon
                             onClick={() => {
-                                window.location.reload()
-                                localStorage.clear()
+                                window.location.reload();
+                                localStorage.clear();
                             }}
                             className=" w-1/12 self-start border font-light cursor-pointer h-6 p-2 bg-white text-sky-700 rounded-md  focus:bg-sky-700 focus:outline-none"
                             icon={faArrowRightFromBracket}

@@ -8,9 +8,9 @@ import {
     parseLastUpdate,
 } from '../utils/parser/chat';
 import type USER from '../types/user';
-import { getChats } from '../store/slices/chats';
+import { getChats, searchChat } from '../store/slices/chats';
 import { useAppDispatch } from '../store/hooks/index';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import toast from '../utils/toasty/index';
 import React from 'react';
 
@@ -29,6 +29,8 @@ function leftSide({ setMainSide, setRightSide }: Props): JSX.Element {
     const chatState = useAppSelector((state) => state.chats);
 
     const dispatch = useAppDispatch();
+
+    const searchInput = useRef<HTMLInputElement>(null);
 
     const handleUsersSide = useCallback(() => {
         setMainSide('users');
@@ -60,6 +62,8 @@ function leftSide({ setMainSide, setRightSide }: Props): JSX.Element {
                 <input
                     type="text"
                     id="message"
+                    ref={searchInput}
+                    onChange={(e) => dispatch(searchChat(e.target.value))}
                     placeholder="Search a chat here ..."
                     className="w-5/6 px-3 py-2 flex text-slate-900 placeholder-gray-300 border border-gray-100 rounded-md  focus:outline-none  focus:ring-indigo-100 focus:border-indigo-200"
                 />
@@ -103,28 +107,53 @@ function leftSide({ setMainSide, setRightSide }: Props): JSX.Element {
                     </span>
                 )}
 
-                {chatState.chats?.map((chat) => {
-                    return (
-                        <Chat
-                            avatar={parseAvatar(chat, user)}
-                            key={chat.name}
-                            messages={chat?.messages}
-                            name={parseName(chat, user as USER)[0]}
-                            id={chat._id as string}
-                            newMessageCount={parseNewMessageCount(
-                                parseLastUpdate(chat, user),
-                                chat?.messages,
-                            )}
-                            lastMessage={parseLastMessage(
-                                chat,
-                                user?.userName as string,
-                            )}
-                            showMessages={() => {
-                                setMainSide('messages');
-                            }}
-                        />
-                    );
-                })}
+                {searchInput.current?.value
+                    ? chatState.filteredChats[0]
+                        ? chatState.filteredChats?.map((chat) => {
+                            return (
+                                <Chat
+                                    avatar={parseAvatar(chat, user)}
+                                    key={chat.name}
+                                    messages={chat?.messages}
+                                    name={parseName(chat, user as USER)[0]}
+                                    id={chat._id as string}
+                                    newMessageCount={parseNewMessageCount(
+                                        parseLastUpdate(chat, user),
+                                        chat?.messages,
+                                    )}
+                                    lastMessage={parseLastMessage(
+                                        chat,
+                                          user?.userName as string,
+                                    )}
+                                    showMessages={() => {
+                                        setMainSide('messages');
+                                    }}
+                                />
+                            );
+                        })
+                        : null
+                    : chatState.chats?.map((chat) => {
+                        return (
+                            <Chat
+                                avatar={parseAvatar(chat, user)}
+                                key={chat.name}
+                                messages={chat?.messages}
+                                name={parseName(chat, user as USER)[0]}
+                                id={chat._id as string}
+                                newMessageCount={parseNewMessageCount(
+                                    parseLastUpdate(chat, user),
+                                    chat?.messages,
+                                )}
+                                lastMessage={parseLastMessage(
+                                    chat,
+                                      user?.userName as string,
+                                )}
+                                showMessages={() => {
+                                    setMainSide('messages');
+                                }}
+                            />
+                        );
+                    })}
             </div>
         </div>
     );

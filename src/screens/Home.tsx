@@ -168,173 +168,173 @@ function home(): JSX.Element {
 
                 {(mainSideDiv.current?.scrollWidth as number) > 500 &&
                 !chats.currentChat?.messages ? (
-                        <div className="md:w-[60%] bg-transparent h-[97%] rounded-md flex flex-col items-center justify-center">
-                            <img src={homeImage} className="h-48 w-48" alt="home" />
-                            <span
-                                className="px-5 mx-1 py-3 cursor-pointer  bg-sky-200  flex items-center justify-center  text-xs  font-semibold text-sky-800   border border-gray-100 rounded-md  focus:outline-none  focus:ring-sky-100 focus:border-sky-100"
-                                onClick={() => {
-                                    setMainSide('users');
-                                    setRightSide('users');
-                                }}
-                            >
-                            Start a chat
-                            </span>
-                        </div>
-                    ) : (
-                        <div
-                            onClick={() => setContent('messages')}
-                            className={` ${
-                                (mainSideDiv.current?.scrollWidth as number) < 500
-                                    ? mainSide == 'messages'
-                                        ? 'md:w-[60%] bg-[#e9effc] h-full rounded-md'
-                                        : 'hidden'
-                                    : 'md:w-[60%] bg-[#e9effc] h-[97%] rounded-md'
-                            }  `}
+                    <div className="md:w-[60%] bg-transparent h-[97%] rounded-md flex flex-col items-center justify-center">
+                        <img src={homeImage} className="h-48 w-48" alt="home" />
+                        <span
+                            className="px-5 mx-1 py-3 cursor-pointer  bg-sky-200  flex items-center justify-center  text-xs  font-semibold text-sky-800   border border-gray-100 rounded-md  focus:outline-none  focus:ring-sky-100 focus:border-sky-100"
+                            onClick={() => {
+                                setMainSide('users');
+                                setRightSide('users');
+                            }}
                         >
-                            <div className="h-[4rem] border-b-2 px-2  flex items-center justify-between">
-                                <span
-                                    onClick={() => setMainSide('chats')}
-                                    className="h-[2rem] w-[2rem] flex items-center md:hidden justify-center mr-2 bg-sky-800 text-sky-100 p-1 rounded-full"
-                                >
-                                    <FontAwesomeIcon icon={faArrowLeft} />
-                                </span>
+                            Start a chat
+                        </span>
+                    </div>
+                ) : (
+                    <div
+                        onClick={() => setContent('messages')}
+                        className={` ${
+                            (mainSideDiv.current?.scrollWidth as number) < 500
+                                ? mainSide == 'messages'
+                                    ? 'md:w-[60%] bg-[#e9effc] h-full rounded-md'
+                                    : 'hidden'
+                                : 'md:w-[60%] bg-[#e9effc] h-[97%] rounded-md'
+                        }  `}
+                    >
+                        <div className="h-[4rem] border-b-2 px-2  flex items-center justify-between">
+                            <span
+                                onClick={() => setMainSide('chats')}
+                                className="h-[2rem] w-[2rem] flex items-center md:hidden justify-center mr-2 bg-sky-800 text-sky-100 p-1 rounded-full"
+                            >
+                                <FontAwesomeIcon icon={faArrowLeft} />
+                            </span>
 
-                                <div className="w-3/5 flex items-center justify-start ">
-                                    <img
-                                        className="h-[3rem] cursor-pointer object-cover  w-[3rem] rounded-full border"
-                                        src={chats.currentChat?.avatar || logo}
-                                        alt=""
-                                    />
-                                    <div className="flex mx-3 flex-col items-start justify-between">
-                                        {chats.currentChat && (
-                                            <>
-                                                <p className="text-sky-900">
-                                                    {
-                                                        parseName(
-                                                            chats.currentChat,
+                            <div className="w-3/5 flex items-center justify-start ">
+                                <img
+                                    className="h-[3rem] cursor-pointer object-cover  w-[3rem] rounded-full border"
+                                    src={chats.currentChat?.avatar || logo}
+                                    alt=""
+                                />
+                                <div className="flex mx-3 flex-col items-start justify-between">
+                                    {chats.currentChat && (
+                                        <>
+                                            <p className="text-sky-900">
+                                                {
+                                                    parseName(
+                                                        chats.currentChat,
                                                         user as USER,
-                                                        )[0]
-                                                    }
-                                                </p>
-                                            </>
-                                        )}
-                                    </div>
-                                </div>
-
-                                <div className="flex items-center justify-end h-full w-2/5">
-                                    <span
-                                        className={`px-3 hidden md:block cursor-pointer ${
-                                            content == 'messages'
-                                                ? ' text-sky-800  bg-sky-200'
-                                                : ' text-gray-400 bg-transparent'
-                                        } font-semibold py-1 text-xs border rounded-lg`}
-                                        onClick={() => setContent('messages')}
-                                    >
-                                    Messages
-                                    </span>
-                                    <span
-                                        className={`px-3 hidden md:block ${
-                                            content == 'participants'
-                                                ? ' text-sky-800  bg-sky-200'
-                                                : ' text-gray-400 bg-transparent'
-                                        } cursor-pointer relative font-semibold py-1 mx-3  text-xs border rounded-3xl`}
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            setContent('participants');
-                                            socket?.emit('salut');
-                                        }}
-                                    >
-                                    Participants
-                                    </span>
+                                                    )[0]
+                                                }
+                                            </p>
+                                        </>
+                                    )}
                                 </div>
                             </div>
-                            <div
-                                ref={messagesDiv}
-                                onScroll={(e) => {
-                                    if (e.currentTarget.scrollTop < 50) {
-                                        setChevronDonw(true);
-                                    } else {
-                                        setChevronDonw(false);
-                                    }
-                                }}
-                                className="h-[calc(100%-7.5rem)] no-scrollbar overflow-y-auto  p-4 flex flex-col "
-                            >
-                                {content == 'participants' && (
-                                    <UserChatList
-                                        users={chats.currentChat?.users as USER[]}
-                                    />
-                                )}
-                                {chats.currentChat?.messages.map((message) => {
-                                    const parsedMessage = parseMessage(
-                                        message,
+
+                            <div className="flex items-center justify-end h-full w-2/5">
+                                <span
+                                    className={`px-3 hidden md:block cursor-pointer ${
+                                        content == 'messages'
+                                            ? ' text-sky-800  bg-sky-200'
+                                            : ' text-gray-400 bg-transparent'
+                                    } font-semibold py-1 text-xs border rounded-lg`}
+                                    onClick={() => setContent('messages')}
+                                >
+                                    Messages
+                                </span>
+                                <span
+                                    className={`px-3 hidden md:block ${
+                                        content == 'participants'
+                                            ? ' text-sky-800  bg-sky-200'
+                                            : ' text-gray-400 bg-transparent'
+                                    } cursor-pointer relative font-semibold py-1 mx-3  text-xs border rounded-3xl`}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setContent('participants');
+                                        socket?.emit('salut');
+                                    }}
+                                >
+                                    Participants
+                                </span>
+                            </div>
+                        </div>
+                        <div
+                            ref={messagesDiv}
+                            onScroll={(e) => {
+                                if (e.currentTarget.scrollTop < 50) {
+                                    setChevronDonw(true);
+                                } else {
+                                    setChevronDonw(false);
+                                }
+                            }}
+                            className="h-[calc(100%-7.5rem)] no-scrollbar overflow-y-auto  p-4 flex flex-col "
+                        >
+                            {content == 'participants' && (
+                                <UserChatList
+                                    users={chats.currentChat?.users as USER[]}
+                                />
+                            )}
+                            {chats.currentChat?.messages.map((message) => {
+                                const parsedMessage = parseMessage(
+                                    message,
                                     user?.userName as string,
                                     chats.currentChat as Chat,
+                                );
+                                if (message.content) {
+                                    return (
+                                        <Message
+                                            key={message.id}
+                                            time={parsedMessage.time}
+                                            isForeign={parsedMessage.isForeign}
+                                            isPrivate={parsedMessage.isPrivate}
+                                            content={parsedMessage.content}
+                                            sender={parsedMessage.sender}
+                                        />
                                     );
-                                    if (message.content) {
-                                        return (
-                                            <Message
-                                                key={message.id}
-                                                time={parsedMessage.time}
-                                                isForeign={parsedMessage.isForeign}
-                                                isPrivate={parsedMessage.isPrivate}
-                                                content={parsedMessage.content}
-                                                sender={parsedMessage.sender}
-                                            />
-                                        );
-                                    }
-                                })}
-                                {chats.newMessageLoading ? (
-                                    <div className="self-end w-[16rem] md:w-md my-2">
-                                        <div className="animate-pulse flex space-x-4">
-                                            <div className="flex-1 space-y-2 py-1">
-                                                <div className="h-2 w-8/12 bg-slate-200 rounded"></div>
-                                                <div className="h-2 bg-slate-200 rounded"></div>
-                                                <div className="h-2 bg-slate-200 rounded"></div>
-                                                <div className="h-2 w-10/12 bg-slate-200 rounded"></div>
-                                            </div>
+                                }
+                            })}
+                            {chats.newMessageLoading ? (
+                                <div className="self-end w-[16rem] md:w-md my-2">
+                                    <div className="animate-pulse flex space-x-4">
+                                        <div className="flex-1 space-y-2 py-1">
+                                            <div className="h-2 w-8/12 bg-slate-200 rounded"></div>
+                                            <div className="h-2 bg-slate-200 rounded"></div>
+                                            <div className="h-2 bg-slate-200 rounded"></div>
+                                            <div className="h-2 w-10/12 bg-slate-200 rounded"></div>
                                         </div>
                                     </div>
-                                ) : null}
-                            </div>
-                            <div className="h-[3.5rem] items-center relative flex p-1 border-t-2 ">
-                                <input
-                                    type="text"
-                                    ref={messageINput}
-                                    autoComplete="off"
-                                    autoCorrect="off"
-                                    value={message}
-                                    onKeyDown={(e) => {
-                                        if (e.keyCode === 13) {
-                                            handleMessage();
-                                        }
-                                    }}
-                                    id="message"
-                                    onChange={(e) => setMessage(e.target.value)}
-                                    placeholder="Here your message ..."
-                                    className="w-11/12 px-3 py-2 flex text-slate-900 placeholder-gray-300 border border-gray-100 rounded-md  focus:outline-none  focus:ring-indigo-100 focus:border-indigo-200"
-                                />
-                                <FontAwesomeIcon
-                                    className="w-1/12 cursor-pointer text-sky-600"
-                                    onClick={() => handleMessage()}
-                                    icon={faPaperPlane}
-                                    size={'2x'}
-                                />
-                                {chevronDown && content == 'messages' && (
-                                    <FontAwesomeIcon
-                                        onClick={() => {
-                                            messagesDiv.current?.scrollTo({
-                                                behavior: 'auto',
-                                                top: messagesDiv.current
-                                                    .scrollHeight,
-                                            });
-                                        }}
-                                        className="text-sky-700 absolute cursor-pointer right-3 animate-bounce bg-white -top-[4rem] rounded-full p-3 border"
-                                        icon={faChevronDown}
-                                    />
-                                )}
-                            </div>
+                                </div>
+                            ) : null}
                         </div>
-                    )}
+                        <div className="h-[3.5rem] items-center relative flex p-1 border-t-2 ">
+                            <input
+                                type="text"
+                                ref={messageINput}
+                                autoComplete="off"
+                                autoCorrect="off"
+                                value={message}
+                                onKeyDown={(e) => {
+                                    if (e.keyCode === 13) {
+                                        handleMessage();
+                                    }
+                                }}
+                                id="message"
+                                onChange={(e) => setMessage(e.target.value)}
+                                placeholder="Here your message ..."
+                                className="w-11/12 px-3 py-2 flex text-slate-900 placeholder-gray-300 border border-gray-100 rounded-md  focus:outline-none  focus:ring-indigo-100 focus:border-indigo-200"
+                            />
+                            <FontAwesomeIcon
+                                className="w-1/12 cursor-pointer text-sky-600"
+                                onClick={() => handleMessage()}
+                                icon={faPaperPlane}
+                                size={'2x'}
+                            />
+                            {chevronDown && content == 'messages' && (
+                                <FontAwesomeIcon
+                                    onClick={() => {
+                                        messagesDiv.current?.scrollTo({
+                                            behavior: 'auto',
+                                            top: messagesDiv.current
+                                                .scrollHeight,
+                                        });
+                                    }}
+                                    className="text-sky-700 absolute cursor-pointer right-3 animate-bounce bg-white -top-[4rem] rounded-full p-3 border"
+                                    icon={faChevronDown}
+                                />
+                            )}
+                        </div>
+                    </div>
+                )}
                 <div
                     className={`${
                         (mainSideDiv.current?.scrollWidth as number) < 500

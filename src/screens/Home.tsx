@@ -42,8 +42,8 @@ function home(): JSX.Element {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [mainSide, setMainSide] = useState<
-        'chats' | 'users' | 'messages' | 'profil' | null
-    >(null);
+        'chats' | 'users' | 'messages' | 'profil'
+    >('chats');
 
     const mainSideDiv = useRef<HTMLDivElement>(null);
 
@@ -151,14 +151,23 @@ function home(): JSX.Element {
                 ref={mainSideDiv}
                 className="w-full md:w-[1360px]  relative overflow-hidden  bg-white items-center md:flex h-full"
             >
-                <div className={`relative px-1 w-sreen md:w-[28%] h-[97%] `}>
+                <div
+                    className={`${
+                        (mainSideDiv.current?.scrollWidth as number) < 400
+                            ? mainSide == 'chats'
+                                ? 'relative px-1 w-sreen md:w-[28%] h-[100%]'
+                                : 'hidden'
+                            : 'relative px-1 w-sreen md:w-[28%] h-[97%]'
+                    } `}
+                >
                     <LeftSide
                         setRightSide={setRightSide}
                         setMainSide={setMainSide}
                     />
                 </div>
 
-                {!chats.currentChat?.messages ? (
+                {(mainSideDiv.current?.scrollWidth as number) > 400 &&
+                !chats.currentChat?.messages ? (
                     <div className="md:w-[60%] bg-transparent h-[97%] rounded-md flex flex-col items-center justify-center">
                         <img src={homeImage} className="h-48 w-48" alt="home" />
                         <span
@@ -174,17 +183,26 @@ function home(): JSX.Element {
                 ) : (
                     <div
                         onClick={() => setContent('messages')}
-                        className="md:w-[60%] bg-[#e9effc] h-[97%] rounded-md"
+                        className={` ${
+                            (mainSideDiv.current?.scrollWidth as number) < 400
+                                ? mainSide == 'messages'
+                                    ? 'md:w-[60%] bg-[#e9effc] h-full rounded-md'
+                                    : 'hidden'
+                                : 'md:w-[60%] bg-[#e9effc] h-[97%] rounded-md'
+                        }  `}
                     >
                         <div className="h-[4rem] border-b-2 px-2  flex items-center justify-between">
-                            <span className="h-[2rem] w-[2rem] flex items-center md:hidden justify-center mr-2 bg-sky-800 text-sky-100 p-1 rounded-full">
+                            <span
+                                onClick={() => setMainSide('chats')}
+                                className="h-[2rem] w-[2rem] flex items-center md:hidden justify-center mr-2 bg-sky-800 text-sky-100 p-1 rounded-full"
+                            >
                                 <FontAwesomeIcon icon={faArrowLeft} />
                             </span>
 
                             <div className="w-3/5 flex items-center justify-start ">
                                 <img
                                     className="h-[3rem] cursor-pointer object-cover  w-[3rem] rounded-full border"
-                                    src={chats.currentChat.avatar || logo}
+                                    src={chats.currentChat?.avatar || logo}
                                     alt=""
                                 />
                                 <div className="flex mx-3 flex-col items-start justify-between">
@@ -243,7 +261,7 @@ function home(): JSX.Element {
                         >
                             {content == 'participants' && (
                                 <UserChatList
-                                    users={chats.currentChat.users as USER[]}
+                                    users={chats.currentChat?.users as USER[]}
                                 />
                             )}
                             {chats.currentChat?.messages.map((message) => {
@@ -317,10 +335,19 @@ function home(): JSX.Element {
                         </div>
                     </div>
                 )}
-                <div className=" md:w-[25%] px-1 h-[97%] ">
+                <div
+                    className={`${
+                        (mainSideDiv.current?.scrollWidth as number) < 400
+                            ? mainSide == 'profil' || mainSide == 'users'
+                                ? 'md:w-[25%] px-1 h-[100%] '
+                                : 'hidden'
+                            : 'md:w-[25%] px-1 h-[97%] '
+                    } `}
+                >
                     <RightSide
                         rightSide={rightSide}
                         setRightSide={setRightSide}
+                        setMainSide={setMainSide}
                     />
                 </div>
             </div>

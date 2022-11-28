@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 type Props = {
     setRightSide: React.Dispatch<React.SetStateAction<'users' | 'me'>>;
-    setMainSide?: React.Dispatch<
+    setMainSide: React.Dispatch<
         React.SetStateAction<'chats' | 'users' | 'messages' | 'profil'>
     >;
     rightSide: 'me' | 'users';
@@ -32,7 +32,10 @@ export default function ({
     return (
         <>
             <div className="h-[2.5rem] flex items-center relative justify-end">
-                <span className="h-[2rem] w-[2rem] flex absolute left-0 md:hidden  items-center justify-center mr-2 bg-sky-800 text-sky-100 p-1 rounded-full">
+                <span
+                    onClick={() => setMainSide('chats')}
+                    className="h-[2rem] w-[2rem] flex absolute left-0 md:hidden  items-center justify-center mr-2 bg-sky-800 text-sky-100 p-1 rounded-full"
+                >
                     <FontAwesomeIcon icon={faArrowLeft} />
                 </span>
                 <span

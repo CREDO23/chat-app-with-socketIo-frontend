@@ -18,7 +18,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 type Props = {
     setMainSide: React.Dispatch<
-        React.SetStateAction<'users' | 'profil' | 'chats' | 'messages' | null>
+        React.SetStateAction<'users' | 'profil' | 'chats' | 'messages'>
     >;
     setRightSide: React.Dispatch<React.SetStateAction<'users' | 'me'>>;
 };
@@ -55,9 +55,22 @@ function leftSide({ setMainSide, setRightSide }: Props): JSX.Element {
 
     return (
         <>
-            <div className="h-[4rem] flex items-center px-2 ">
+            <div className="h-[4rem] flex justify-between items-center px-2 ">
                 <span className="bg-clip-text  text-4xl text-transparent bg-gradient-to-r from-[rgba(12,74,130,1)] to-[rgba(253,216,45,1)] font-bold">
                     Chataw
+                </span>
+                <span
+                    onClick={() => {
+                        setMainSide('profil');
+                        setRightSide('me');
+                    }}
+                    className="h-[2.5rem] w-[2.5rem] flex items-center md:hidden justify-center mr-2 rounded-full"
+                >
+                    <img
+                        src={user?.avatar}
+                        className="h-full object-cover  rounded-full border w-full"
+                        alt=""
+                    />
                 </span>
             </div>
             <div className="flex items-center justify-between h-[4rem]">
@@ -159,7 +172,13 @@ function leftSide({ setMainSide, setRightSide }: Props): JSX.Element {
                           );
                       })}
             </div>
-            <span className="h-[2rem] w-[2rem] md:hidden flex absolute right-4 bottom-4  items-center justify-center mr-2 bg-sky-800 text-sky-100 p-1 rounded-full">
+            <span
+                onClick={() => {
+                    setMainSide('users');
+                    setRightSide('users');
+                }}
+                className="h-[2.5rem] w-[2.5rem] md:hidden flex absolute right-4 bottom-4  items-center justify-center mr-2 bg-sky-800 text-sky-100 p-2 rounded-full"
+            >
                 <FontAwesomeIcon icon={faDiamond} />
             </span>
         </>

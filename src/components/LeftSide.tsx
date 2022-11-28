@@ -54,7 +54,7 @@ function leftSide({ setMainSide, setRightSide }: Props): JSX.Element {
     }, []);
 
     return (
-        <div className="relative px-1 w-sreen md:w-[28%] h-[97%] ">
+        <>
             <div className="h-[4rem] flex items-center px-2 ">
                 <span className="bg-clip-text  text-4xl text-transparent bg-gradient-to-r from-[rgba(12,74,130,1)] to-[rgba(253,216,45,1)] font-bold">
                     Chataw
@@ -65,6 +65,8 @@ function leftSide({ setMainSide, setRightSide }: Props): JSX.Element {
                     type="text"
                     id="message"
                     ref={searchInput}
+                    autoComplete="off"
+                    autoCorrect="off"
                     onChange={(e) => dispatch(searchChat(e.target.value))}
                     placeholder="Search a chat here ..."
                     className="w-5/6 px-3 py-2 flex text-slate-900 placeholder-gray-300 border border-gray-100 rounded-md  focus:outline-none  focus:ring-indigo-100 focus:border-indigo-200"
@@ -160,7 +162,7 @@ function leftSide({ setMainSide, setRightSide }: Props): JSX.Element {
             <span className="h-[2rem] w-[2rem] md:hidden flex absolute right-4 bottom-4  items-center justify-center mr-2 bg-sky-800 text-sky-100 p-1 rounded-full">
                 <FontAwesomeIcon icon={faDiamond} />
             </span>
-        </div>
+        </>
     );
 }
 

@@ -4,7 +4,6 @@ import {
     faPaperPlane,
     faChevronDown,
     faArrowLeft,
-    faDiamond,
 } from '@fortawesome/free-solid-svg-icons';
 import {
     useRef,
@@ -17,7 +16,6 @@ import {
 import type USER from '../types/user';
 import Message from '../components/Message';
 import UserChatList from '../components/UserChatList';
-import Mobile from './Mobile';
 import LeftSide from '../components/LeftSide';
 import RightSide from '../components/RightSide';
 import { ToastContainer } from 'react-toastify';
@@ -46,6 +44,8 @@ function home(): JSX.Element {
     const [mainSide, setMainSide] = useState<
         'chats' | 'users' | 'messages' | 'profil' | null
     >(null);
+
+    const mainSideDiv = useRef<HTMLDivElement>(null);
 
     const messagesDiv = useRef<HTMLDivElement>(null);
 
@@ -147,11 +147,17 @@ function home(): JSX.Element {
 
     return (
         <>
-            <div className="w-full md:w-[1360px] relative  bg-white items-center md:flex h-full">
-                <LeftSide
-                    setRightSide={setRightSide}
-                    setMainSide={setMainSide}
-                />
+            <div
+                ref={mainSideDiv}
+                className="w-full md:w-[1360px]  relative overflow-hidden  bg-white items-center md:flex h-full"
+            >
+                <div className={`relative px-1 w-sreen md:w-[28%] h-[97%] `}>
+                    <LeftSide
+                        setRightSide={setRightSide}
+                        setMainSide={setMainSide}
+                    />
+                </div>
+
                 {!chats.currentChat?.messages ? (
                     <div className="md:w-[60%] bg-transparent h-[97%] rounded-md flex flex-col items-center justify-center">
                         <img src={homeImage} className="h-48 w-48" alt="home" />
@@ -276,6 +282,8 @@ function home(): JSX.Element {
                             <input
                                 type="text"
                                 ref={messageINput}
+                                autoComplete="off"
+                                autoCorrect="off"
                                 value={message}
                                 onKeyDown={(e) => {
                                     if (e.keyCode === 13) {
@@ -309,8 +317,12 @@ function home(): JSX.Element {
                         </div>
                     </div>
                 )}
-
-                <RightSide rightSide={rightSide} setRightSide={setRightSide} />
+                <div className=" md:w-[25%] px-1 h-[97%] ">
+                    <RightSide
+                        rightSide={rightSide}
+                        setRightSide={setRightSide}
+                    />
+                </div>
             </div>
             <ToastContainer limit={1} />
         </>

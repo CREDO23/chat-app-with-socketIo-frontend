@@ -30,7 +30,7 @@ export default function ({
     }, [search]);
 
     return (
-        <div className=" md:w-[25%] px-1 h-[97%] ">
+        <>
             <div className="h-[2.5rem] flex items-center relative justify-end">
                 <span className="h-[2rem] w-[2rem] flex absolute left-0 md:hidden  items-center justify-center mr-2 bg-sky-800 text-sky-100 p-1 rounded-full">
                     <FontAwesomeIcon icon={faArrowLeft} />
@@ -68,6 +68,6 @@ export default function ({
                     />
                 ) : null}
             </div>
-        </div>
+        </>
     );
 }

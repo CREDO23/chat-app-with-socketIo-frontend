@@ -153,7 +153,7 @@ function home(): JSX.Element {
             >
                 <div
                     className={`${
-                        (mainSideDiv.current?.scrollWidth as number) < 400
+                        (mainSideDiv.current?.scrollWidth as number) < 500
                             ? mainSide == 'chats'
                                 ? 'relative px-1 w-sreen md:w-[28%] h-[100%]'
                                 : 'hidden'
@@ -166,7 +166,7 @@ function home(): JSX.Element {
                     />
                 </div>
 
-                {(mainSideDiv.current?.scrollWidth as number) > 400 &&
+                {(mainSideDiv.current?.scrollWidth as number) > 500 &&
                 !chats.currentChat?.messages ? (
                     <div className="md:w-[60%] bg-transparent h-[97%] rounded-md flex flex-col items-center justify-center">
                         <img src={homeImage} className="h-48 w-48" alt="home" />
@@ -184,7 +184,7 @@ function home(): JSX.Element {
                     <div
                         onClick={() => setContent('messages')}
                         className={` ${
-                            (mainSideDiv.current?.scrollWidth as number) < 400
+                            (mainSideDiv.current?.scrollWidth as number) < 500
                                 ? mainSide == 'messages'
                                     ? 'md:w-[60%] bg-[#e9effc] h-full rounded-md'
                                     : 'hidden'
@@ -337,7 +337,7 @@ function home(): JSX.Element {
                 )}
                 <div
                     className={`${
-                        (mainSideDiv.current?.scrollWidth as number) < 400
+                        (mainSideDiv.current?.scrollWidth as number) < 500
                             ? mainSide == 'profil' || mainSide == 'users'
                                 ? 'md:w-[25%] px-1 h-[100%] '
                                 : 'hidden'

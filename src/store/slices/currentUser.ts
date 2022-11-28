@@ -106,6 +106,24 @@ export const updateUser = createAsyncThunk<AxiosResponse, any>(
     },
 );
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const forgotPassword = createAsyncThunk<AxiosResponse, any>(
+    'user/forgotPassword',
+    async (body, { rejectWithValue }) => {
+        try {
+            const result: AxiosResponse = await axios({
+                method: 'POST',
+                url: `${import.meta.env.VITE_BACKEND_URL}/api/resetPassword`,
+                data: body,
+            });
+            return result;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            return rejectWithValue(error?.response?.data?.message);
+        }
+    },
+);
+
 export const currentUserSlice = createSlice({
     name: 'currentUser',
     initialState,
@@ -206,6 +224,21 @@ export const currentUserSlice = createSlice({
             state.avatarLoading = false;
             toast.error(action.payload as string);
         });
+
+
+        builder.addCase(forgotPassword.pending , (state) => {
+            state.loading = true
+        })
+
+        builder.addCase(forgotPassword.fulfilled , (state) => {
+            state.loading = false;
+            toast.susscess('We have sent a recovery password . Please check your mail box')
+        })
+
+        builder.addCase(forgotPassword.rejected , (state , action) => {
+            state.avatarLoading = false;
+            toast.error(action.payload as string); 
+        })
     },
 });
 

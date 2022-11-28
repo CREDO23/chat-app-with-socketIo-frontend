@@ -10,7 +10,7 @@ export default function (): JSX.Element {
 
             <Route path="/home" element={<Home />} />
 
-            <Route path='/reset-password' element={<ForgotPassword/>}/>
+            <Route path="/reset-password" element={<ForgotPassword />} />
         </Routes>
     );
 }

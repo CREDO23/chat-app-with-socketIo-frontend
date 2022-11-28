@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { isFill } from '../utils/validation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 type Form = 'singin' | 'singup';
 type Props = {
@@ -80,10 +80,11 @@ export default function ({ setForm }: Props): JSX.Element {
             </div>
             <div className=" my-3 font-light text-xs flex items-center justify-between">
                 <div>
-                    <Link to='/reset-password'>
-                    <span className=" font-ligth cursor-pointer text-[rgba(253,216,45,1)]">Forgot password ?</span>
+                    <Link to="/reset-password">
+                        <span className=" font-ligth cursor-pointer text-[rgba(253,216,45,1)]">
+                            Forgot password ?
+                        </span>
                     </Link>
-                    
                 </div>
                 <div>
                     <span className=" text-slate-900">

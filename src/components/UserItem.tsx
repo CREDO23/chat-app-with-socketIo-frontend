@@ -19,7 +19,6 @@ export default function ({
     setUserChat,
     setMainSide,
     setRightSide,
-    setSearch,
 }: UserItem): JSX.Element | null {
     const dispatch = useAppDispatch();
 
@@ -28,7 +27,6 @@ export default function ({
     const chats = useAppSelector((state) => state.chats);
 
     const startChat = () => {
-        setSearch('');
         if (mode == 'private') {
             if (
                 chats.chats.filter(
@@ -100,9 +98,9 @@ export default function ({
             }}
             className="w-full relative cursor-pointer my-1 bg-white px-2 h-[3.5rem] rounded flex items-center"
         >
-            <span className="relative h-[3rem] mr-1  w-[3rem]">
+            <span className="relative   mr-1  w-[3rem]">
                 <img
-                    className=" border w-[3rem] object-cover h-[3rem] rounded-full"
+                    className=" border h-[3rem]  w-[3rem] object-cover  rounded-full"
                     src={avatar || logo}
                     alt=""
                 />

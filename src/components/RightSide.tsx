@@ -34,7 +34,7 @@ export default function ({
             <div className="h-[2.5rem] flex items-center relative justify-end">
                 <span
                     onClick={() => setMainSide('chats')}
-                    className="h-[2rem] w-[2rem] flex absolute left-0 md:hidden  items-center justify-center mr-2 bg-sky-800 text-sky-100 p-1 rounded-full"
+                    className="h-[2rem] w-[2rem] flex absolute mx-3 left-0 md:hidden  items-center justify-center mr-2 bg-sky-800 text-sky-100 p-1 rounded-full"
                 >
                     <FontAwesomeIcon icon={faArrowLeft} />
                 </span>

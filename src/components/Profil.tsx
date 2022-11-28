@@ -115,6 +115,8 @@ export default function (): JSX.Element {
                         </label>
                         <input
                             type="text"
+                            autoComplete="off"
+                            autoCorrect="off"
                             name="firstName"
                             value={updateForm.firstName}
                             onChange={(
@@ -132,6 +134,8 @@ export default function (): JSX.Element {
                         </label>
                         <input
                             type="text"
+                            autoComplete="off"
+                            autoCorrect="off"
                             name="lastName"
                             value={updateForm.lastName}
                             onChange={(
@@ -149,6 +153,8 @@ export default function (): JSX.Element {
                         </label>
                         <input
                             type="text"
+                            autoComplete="off"
+                            autoCorrect="off"
                             name="email"
                             value={updateForm.email}
                             onChange={(
@@ -166,6 +172,8 @@ export default function (): JSX.Element {
                         </label>
                         <textarea
                             cols={21}
+                            autoComplete="off"
+                            autoCorrect="off"
                             rows={4}
                             name="bio"
                             value={updateForm.bio}

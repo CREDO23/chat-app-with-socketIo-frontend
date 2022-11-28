@@ -315,7 +315,9 @@ function home(): JSX.Element {
                             />
                             <FontAwesomeIcon
                                 className="w-1/12 cursor-pointer text-sky-600"
-                                onClick={() => handleMessage()}
+                                onClick={() => {
+                                    message && handleMessage();
+                                }}
                                 icon={faPaperPlane}
                                 size={'2x'}
                             />

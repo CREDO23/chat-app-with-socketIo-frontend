@@ -225,20 +225,21 @@ export const currentUserSlice = createSlice({
             toast.error(action.payload as string);
         });
 
+        builder.addCase(forgotPassword.pending, (state) => {
+            state.loading = true;
+        });
 
-        builder.addCase(forgotPassword.pending , (state) => {
-            state.loading = true
-        })
-
-        builder.addCase(forgotPassword.fulfilled , (state) => {
+        builder.addCase(forgotPassword.fulfilled, (state) => {
             state.loading = false;
-            toast.susscess('We have sent a recovery password . Please check your mail box')
-        })
+            toast.susscess(
+                'We have sent a recovery password . Please check your mail box',
+            );
+        });
 
-        builder.addCase(forgotPassword.rejected , (state , action) => {
+        builder.addCase(forgotPassword.rejected, (state, action) => {
             state.avatarLoading = false;
-            toast.error(action.payload as string); 
-        })
+            toast.error(action.payload as string);
+        });
     },
 });
 

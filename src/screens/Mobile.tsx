@@ -38,93 +38,93 @@ import {
 import socketContext from '../context';
 
 function mobile(): JSX.Element {
-    const [content, setContent] = useState<'messages' | 'participants'>(
-        'messages',
-    );
+    // const [content, setContent] = useState<'messages' | 'participants'>(
+    //     'messages',
+    // );
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [rightSide, setRightSide] = useState<'me' | 'users'>('me');
+    // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // const [rightSide, setRightSide] = useState<'me' | 'users'>('me');
 
-    const [mainSide, setMainSide] = useState<
-        'chats' | 'users' | 'messages' | 'profil'
-    >('chats');
+    // const [mainSide, setMainSide] = useState<
+    //     'chats' | 'users' | 'messages' | 'profil'
+    // >('chats');
 
-    const [search, setSearch] = useState('');
+    // const [search, setSearch] = useState('');
 
-    const messagesDiv = useRef<HTMLDivElement>(null);
+    // const messagesDiv = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        if (content == 'messages') {
-            messagesDiv.current?.scrollTo({
-                behavior: 'auto',
-                top: messagesDiv.current.scrollHeight,
-            });
-        } else if (content == 'participants') {
-            messagesDiv.current?.scrollTo({
-                behavior: 'auto',
-                top: 0,
-            });
-        }
-    }, [content, content, mainSide]);
+    // useEffect(() => {
+    //     if (content == 'messages') {
+    //         messagesDiv.current?.scrollTo({
+    //             behavior: 'auto',
+    //             top: messagesDiv.current.scrollHeight,
+    //         });
+    //     } else if (content == 'participants') {
+    //         messagesDiv.current?.scrollTo({
+    //             behavior: 'auto',
+    //             top: 0,
+    //         });
+    //     }
+    // }, [content, content, mainSide]);
 
-    const dispatch = useAppDispatch();
+    // const dispatch = useAppDispatch();
 
-    const users = useAppSelector((state) => state.users.users);
+    // const users = useAppSelector((state) => state.users.users);
 
-    useEffect(() => {
-        dispatch(getUsers({ search }));
-    }, [search]);
+    // useEffect(() => {
+    //     dispatch(getUsers({ search }));
+    // }, [search]);
 
-    const [chevronDown, setChevronDonw] = useState<boolean>(false);
+    // const [chevronDown, setChevronDonw] = useState<boolean>(false);
 
-    const [message, setMessage] = useState<string>('');
+    // const [message, setMessage] = useState<string>('');
 
-    const chats = useAppSelector((state) => state.chats);
-    const user = useAppSelector((state) => state.currentUser.user);
+    // const chats = useAppSelector((state) => state.chats);
+    // const user = useAppSelector((state) => state.currentUser.user);
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
-    useEffect(() => {
-        if (!localStorage.getItem('accessToken')) {
-            navigate('/');
-        }
-    }, []);
+    // useEffect(() => {
+    //     if (!localStorage.getItem('accessToken')) {
+    //         navigate('/');
+    //     }
+    // }, []);
 
-    const io = useContext(socketContext);
+    // const io = useContext(socketContext);
 
-    const socket = io?.getSocket();
+    // const socket = io?.getSocket();
 
-    useEffect(() => {
-        if (socket) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            socket.on('newChat', (chat: Chat) => {
-                dispatch(newMsg(chat));
-            });
+    // useEffect(() => {
+    //     if (socket) {
+    //         // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    //         socket.on('newChat', (chat: Chat) => {
+    //             dispatch(newMsg(chat));
+    //         });
 
-            socket.on('ask_to_join', (chatName: string) => {
-                socket.emit('join_chat', chatName);
-            });
-        }
-    }, [socket]);
+    //         socket.on('ask_to_join', (chatName: string) => {
+    //             socket.emit('join_chat', chatName);
+    //         });
+    //     }
+    // }, [socket]);
 
-    const connectedUser = useMemo(() => localStorage.getItem('user'), []);
+    // const connectedUser = useMemo(() => localStorage.getItem('user'), []);
 
-    const connection = useCallback(() => {
-        io?.connect(user?._id as string, `${import.meta.env.VITE_BACKEND_URL}`);
-    }, [connectedUser]);
+    // const connection = useCallback(() => {
+    //     io?.connect(user?._id as string, `${import.meta.env.VITE_BACKEND_URL}`);
+    // }, [connectedUser]);
 
-    useEffect(() => {
-        if (user?._id) {
-            connection();
-        }
-    }, [user]);
+    // useEffect(() => {
+    //     if (user?._id) {
+    //         connection();
+    //     }
+    // }, [user]);
 
     return (
         <div
-            onClick={() => setContent('messages')}
+            // onClick={() => setContent('messages')}
             className=" md:hidden w-[100vw] relative flex-col  pt-2 bg-white items-center flex h-[100vh]"
         >
-            {mainSide == 'chats' ? (
+            {/* {mainSide == 'chats' ? (
                 <LeftSide
                     setRightSide={setRightSide}
                     setMainSide={setMainSide}
@@ -384,7 +384,7 @@ function mobile(): JSX.Element {
                         }
                     />
                 </span>
-            )}
+            )} */}
         </div>
     );
 }

@@ -1,6 +1,11 @@
 import logo from '../assets/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperPlane, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import {
+    faPaperPlane,
+    faChevronDown,
+    faArrowLeft,
+    faDiamond,
+} from '@fortawesome/free-solid-svg-icons';
 import {
     useRef,
     useState,
@@ -39,8 +44,8 @@ function home(): JSX.Element {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [mainSide, setMainSide] = useState<
-        'chats' | 'users' | 'messages' | 'profil'
-    >('chats');
+        'chats' | 'users' | 'messages' | 'profil' | null
+    >(null);
 
     const messagesDiv = useRef<HTMLDivElement>(null);
 
@@ -142,7 +147,7 @@ function home(): JSX.Element {
 
     return (
         <>
-            <div className="w-full md:w-[1360px] hidden  bg-white items-center md:flex h-full">
+            <div className="w-full md:w-[1360px] relative  bg-white items-center md:flex h-full">
                 <LeftSide
                     setRightSide={setRightSide}
                     setMainSide={setMainSide}
@@ -166,6 +171,10 @@ function home(): JSX.Element {
                         className="md:w-[60%] bg-[#e9effc] h-[97%] rounded-md"
                     >
                         <div className="h-[4rem] border-b-2 px-2  flex items-center justify-between">
+                            <span className="h-[2rem] w-[2rem] flex items-center md:hidden justify-center mr-2 bg-sky-800 text-sky-100 p-1 rounded-full">
+                                <FontAwesomeIcon icon={faArrowLeft} />
+                            </span>
+
                             <div className="w-3/5 flex items-center justify-start ">
                                 <img
                                     className="h-[3rem] cursor-pointer object-cover  w-[3rem] rounded-full border"
@@ -188,9 +197,9 @@ function home(): JSX.Element {
                                 </div>
                             </div>
 
-                            <div className=" flex items-center justify-end h-full w-2/5">
+                            <div className="flex items-center justify-end h-full w-2/5">
                                 <span
-                                    className={`px-3 cursor-pointer ${
+                                    className={`px-3 hidden md:block cursor-pointer ${
                                         content == 'messages'
                                             ? ' text-sky-800  bg-sky-200'
                                             : ' text-gray-400 bg-transparent'
@@ -200,7 +209,7 @@ function home(): JSX.Element {
                                     Messages
                                 </span>
                                 <span
-                                    className={`px-3 ${
+                                    className={`px-3 hidden md:block ${
                                         content == 'participants'
                                             ? ' text-sky-800  bg-sky-200'
                                             : ' text-gray-400 bg-transparent'
@@ -224,7 +233,7 @@ function home(): JSX.Element {
                                     setChevronDonw(false);
                                 }
                             }}
-                            className="h-[calc(100%-7.5rem)] relative no-scrollbar overflow-y-auto  p-4 flex flex-col "
+                            className="h-[calc(100%-7.5rem)] no-scrollbar overflow-y-auto  p-4 flex flex-col "
                         >
                             {content == 'participants' && (
                                 <UserChatList
@@ -303,7 +312,6 @@ function home(): JSX.Element {
 
                 <RightSide rightSide={rightSide} setRightSide={setRightSide} />
             </div>
-            <Mobile />
             <ToastContainer limit={1} />
         </>
     );

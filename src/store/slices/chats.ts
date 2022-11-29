@@ -25,10 +25,17 @@ export const getChats = createAsyncThunk<AxiosResponse, string>(
             const result: AxiosResponse = await axios({
                 method: 'GET',
                 url: `${import.meta.env.VITE_BACKEND_URL}/api/chats/${id}`,
+                headers : {
+                    Authorization:`Bearer ${JSON.parse(localStorage.getItem('accessToken') as string)}` 
+                }
             });
             return result;
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
+            if (error.response.status == 401) {
+                localStorage.clear();
+                location.reload();
+            }
             return rejectWithValue(error?.response?.data?.message);
         }
     },
@@ -43,10 +50,17 @@ export const newChat = createAsyncThunk<AxiosResponse, any>(
                 method: 'POST',
                 url: `${import.meta.env.VITE_BACKEND_URL}/api/chats`,
                 data: chat,
+                headers : {
+                    Authorization:`Bearer ${JSON.parse(localStorage.getItem('accessToken') as string)}` 
+                }
             });
             return result;
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
+            if (error.response.status == 401) {
+                localStorage.clear();
+                location.reload();
+            }
             return rejectWithValue(error?.response?.data?.message);
         }
     },
@@ -61,10 +75,17 @@ export const newMessage = createAsyncThunk<AxiosResponse, any>(
                 method: 'PUT',
                 url: `${import.meta.env.VITE_BACKEND_URL}/api/chats/${id}`,
                 data: message,
+                headers : {
+                    Authorization:`Bearer ${JSON.parse(localStorage.getItem('accessToken') as string)}` 
+                }
             });
             return result;
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
+            if (error.response.status == 401) {
+                localStorage.clear();
+                location.reload();
+            }
             return rejectWithValue(error?.response?.data?.message);
         }
     },
@@ -80,10 +101,17 @@ export const updateLastView = createAsyncThunk<AxiosResponse, any>(
                 url: `${
                     import.meta.env.VITE_BACKEND_URL
                 }/api/chats/${chatId}/${userId}`,
+                headers : {
+                    Authorization:`Bearer ${JSON.parse(localStorage.getItem('accessToken') as string)}` 
+                }
             });
             return result;
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
+            if (error.response.status == 401) {
+                localStorage.clear();
+                location.reload();
+            }
             return rejectWithValue(error?.response?.data?.message);
         }
     },

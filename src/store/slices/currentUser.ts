@@ -77,12 +77,19 @@ export const uploadImage = createAsyncThunk<AxiosResponse, FileList>(
                 method: 'POST',
                 url: 'https://api.cloudinary.com/v1_1/dyj1vowdv/image/upload',
                 data,
+                headers : {
+                    Authorization:`Bearer ${JSON.parse(localStorage.getItem('accessToken') as string)}` 
+                }
             });
 
             return result;
 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
+            if (error.response.status == 401) {
+                localStorage.clear();
+                location.reload();
+            }
             return rejectWithValue(error?.response?.data?.message);
         }
     },
@@ -97,10 +104,17 @@ export const updateUser = createAsyncThunk<AxiosResponse, any>(
                 method: 'PUT',
                 url: `${import.meta.env.VITE_BACKEND_URL}/api/users/${id}`,
                 data: body,
+                headers : {
+                    Authorization:`Bearer ${JSON.parse(localStorage.getItem('accessToken') as string)}` 
+                }
             });
             return result;
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
+            if (error.response.status == 401) {
+                localStorage.clear();
+                location.reload();
+            }
             return rejectWithValue(error?.response?.data?.message);
         }
     },

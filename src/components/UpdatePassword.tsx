@@ -2,8 +2,11 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { updateUser } from '../store/slices/currentUser';
 import logo from '../assets/logo.png';
+import { useState } from 'react';
+import { updatePassword } from '../store/slices/currentUser';
+import { isFill, isMatch } from '../utils/validation/index';
+import USER from '../types/user';
 
 type Props = {
     setCurrentInterface: React.Dispatch<
@@ -16,9 +19,51 @@ export default function ({ setCurrentInterface }: Props): JSX.Element {
 
     const currentUser = useAppSelector((state) => state.currentUser);
 
+    const [updateForm, setUpdateForm] = useState({
+        password: '',
+        confirmPassword: '',
+    });
+
+    const handleUpdateForm = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        input: string,
+    ): void => {
+        setUpdateForm({ ...updateForm, [input]: e.target.value });
+    };
+
+    const handleSubmit = async (
+        e: React.FormEvent<HTMLFormElement>,
+    ): Promise<void> => {
+        e.preventDefault();
+
+        try {
+            await isFill(updateForm as USER);
+
+            await isMatch(updateForm.confirmPassword, updateForm.password);
+
+            dispatch(
+                updatePassword({
+                    id: currentUser?.user?._id,
+                    body: { password: updateForm.password },
+                }),
+            );
+
+            setTimeout(() => {
+                if (!currentUser.loading) {
+                    setCurrentInterface('profil');
+                }
+            }, 2000);
+        } catch (error) {
+            toast.error(error as string);
+        }
+    };
+
     return (
         <div>
-            <form className="flex flex-col items-start">
+            <form
+                onSubmit={(e) => handleSubmit(e)}
+                className="flex flex-col items-start"
+            >
                 <div className=" self-center flex my-3 items-center justify-center">
                     <img
                         src={currentUser.user?.avatar || logo}
@@ -39,6 +84,10 @@ export default function ({ setCurrentInterface }: Props): JSX.Element {
                         autoComplete="off"
                         autoCorrect="off"
                         name="newPassword"
+                        value={updateForm.password}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            handleUpdateForm(e, 'password')
+                        }
                         className="w-full px-3 py-1  text-slate-900 placeholder-gray-300 border border-gray-300 rounded-md  focus:outline-none  focus:ring-indigo-100 focus:border-indigo-200"
                     />
                 </div>
@@ -54,6 +103,10 @@ export default function ({ setCurrentInterface }: Props): JSX.Element {
                         autoComplete="off"
                         autoCorrect="off"
                         name="confirmPassword"
+                        value={updateForm.confirmPassword}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            handleUpdateForm(e, 'confirmPassword')
+                        }
                         className="w-full px-3 py-1  text-slate-900 placeholder-gray-300 border border-gray-300 rounded-md  focus:outline-none  focus:ring-indigo-100 focus:border-indigo-200"
                     />
                 </div>

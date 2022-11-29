@@ -1,7 +1,7 @@
 import validator from 'validator';
 import USER from '../../types/user';
 
-export const isFill = (form: USER): Promise<void> => {
+export const isFill = (form: USER ): Promise<void> => {
     return new Promise((resolve, reject) => {
         let countFieds = 0;
 
@@ -30,19 +30,3 @@ export const isMatch = (arg1: string, arg2: string): Promise<void> => {
     });
 };
 
-export const authError = (message: string) => {
-    switch (message) {
-        case 'No authorization token was found':
-
-        case 'invalid token':
-
-        case 'jwt expired':
-            localStorage.clear();
-            window.location.reload();
-
-            break;
-
-        default:
-            break;
-    }
-};

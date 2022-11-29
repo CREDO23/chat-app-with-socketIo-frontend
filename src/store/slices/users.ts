@@ -18,9 +18,11 @@ export const getUsers = createAsyncThunk<AxiosResponse, any>(
                 method: 'GET',
                 url: `${import.meta.env.VITE_BACKEND_URL}/api/users`,
                 params: query,
-                headers : {
-                    Authorization:`Bearer ${JSON.parse(localStorage.getItem('accessToken') as string)}` 
-                }
+                headers: {
+                    Authorization: `Bearer ${JSON.parse(
+                        localStorage.getItem('accessToken') as string,
+                    )}`,
+                },
             });
             return result;
             // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -77,7 +77,7 @@ export const uploadImage = createAsyncThunk<AxiosResponse, FileList>(
                 method: 'POST',
                 url: 'https://api.cloudinary.com/v1_1/dyj1vowdv/image/upload',
                 data,
-                withCredentials : false
+                withCredentials: false,
             });
 
             return result;

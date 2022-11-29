@@ -77,11 +77,7 @@ export const uploadImage = createAsyncThunk<AxiosResponse, FileList>(
                 method: 'POST',
                 url: 'https://api.cloudinary.com/v1_1/dyj1vowdv/image/upload',
                 data,
-                headers: {
-                    Authorization: `Bearer ${JSON.parse(
-                        localStorage.getItem('accessToken') as string,
-                    )}`,
-                },
+                withCredentials : false
             });
 
             return result;
@@ -157,9 +153,9 @@ export const updatePassword = createAsyncThunk<AxiosResponse, any>(
                     Authorization: `Bearer ${JSON.parse(
                         localStorage.getItem('accessToken') as string,
                     )}`,
-                }
+                },
             });
-    
+
             return result;
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {

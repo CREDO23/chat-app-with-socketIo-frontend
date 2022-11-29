@@ -238,8 +238,8 @@ export default function (): JSX.Element {
                         </button>
                         <FontAwesomeIcon
                             onClick={() => {
-                                window.location.reload();
                                 localStorage.clear();
+                                window.location.reload();
                             }}
                             className=" w-1/12 self-start border font-light cursor-pointer h-6 p-2 bg-white text-sky-700 rounded-md  focus:bg-sky-700 focus:outline-none"
                             icon={faArrowRightFromBracket}

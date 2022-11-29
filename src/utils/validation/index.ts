@@ -29,3 +29,22 @@ export const isMatch = (arg1: string, arg2: string): Promise<void> => {
         }
     });
 };
+
+
+export const authError = (message : string) => {
+    switch (message) {
+    case 'No authorization token was found':
+
+    case 'invalid token':
+
+    case 'jwt expired':
+        localStorage.clear();
+        window.location.reload();
+
+        break;
+
+    default:
+        break
+    } 
+
+}

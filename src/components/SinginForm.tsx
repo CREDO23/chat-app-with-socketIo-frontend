@@ -117,13 +117,8 @@ export default function ({ setForm }: Props): JSX.Element {
                     )}
                 </button>
             </div>
-            <div>
-                <button
-                    disabled={isloading}
-                    className=" w-full px-2 py-4 text-white bg-sky-900 rounded-md hover:bg-sky-800  focus:bg-sky-700 focus:outline-none"
-                >
-                    SING UP
-                </button>
+            <div className=" cursor-pointer text-center w-full px-2 py-3 text-sky-900 border-sky-900 my-4 border bg-white rounded-md  focus:bg-sky-700 focus:outline-none">
+                SING UP
             </div>
             <ToastContainer limit={1} />
         </form>

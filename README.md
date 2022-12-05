@@ -1,6 +1,5 @@
-# chat-app-with-socketIo-frontend
-A chat app in real time with socket Io
-> Built with 
-- ReactJs
-- TailwindCss
-- Redux-toolkit 
+# Table of Contents
+1. About the project
+2. Built with
+3. Getting started
+4. Usage

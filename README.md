@@ -1,5 +1,5 @@
 # Table of Contents
-1. About the project
-2. Built with
-3. Getting started
-4. Usage
+1. [About the project](#about the project)
+2. [Built with](#built with)
+3. [Getting started](#getting stared)
+4. [Usage](#usage)

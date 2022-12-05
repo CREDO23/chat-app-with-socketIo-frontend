@@ -10,8 +10,8 @@ module.exports = {
                 'bleu-4': 'rgba(0,15,85,.6)',
             },
             backgroundImage: {
-                bgApp: "url('./public/background-chat.jpg')",
-                bgLogin: "url('./public/backgroundLogin.jpg')",
+                bgApp: "url('/src/assets/background-chat.jpg')",
+                bgLogin: "url('/src/assets/backgroundLogin.jpg')",
             },
             fontFamily: {
                 Poppins: ['Poppins', 'sans-serif'],

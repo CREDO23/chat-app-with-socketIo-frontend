@@ -18,6 +18,7 @@ export type ChatState = {
     currentChat: Chat | null;
     newChat: Chat | null;
     chats: Chat[];
+    filteredChats: Chat[];
 };
 
 export type GetChatResponse = {

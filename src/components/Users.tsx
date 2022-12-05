@@ -34,6 +34,7 @@ function users({
     const dispatch = useAppDispatch();
 
     const statrtChannelChat = (): void => {
+        setSearch('');
         if (
             chats.chats.filter(
                 (chat) => parseName(chat, currentUser as USER)[0] == chatName,
@@ -70,6 +71,8 @@ function users({
             <div className=" w-full px-2">
                 <input
                     type="text"
+                    autoComplete="off"
+                    autoCorrect="off"
                     onChange={(e) => setSearch(e.target.value)}
                     placeholder="Search a user here ..."
                     className="w-full px-3 py-1 flex text-slate-900 placeholder-gray-300 border border-gray-100 rounded-md  focus:outline-none  focus:ring-indigo-100 focus:border-indigo-200"
@@ -126,10 +129,12 @@ function users({
                 {users.map((item) => {
                     return (
                         <UserItem
+                            setSearch={setSearch}
                             setMainSide={setMainSide}
                             setRightSide={setRightSide}
                             setUserChat={setUsersChat}
                             mode={mode}
+                            email={item.email as string}
                             key={item.userName}
                             avatar={item.avatar as string}
                             online={item.isLogged as boolean}

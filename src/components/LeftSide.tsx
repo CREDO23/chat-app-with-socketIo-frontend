@@ -8,11 +8,13 @@ import {
     parseLastUpdate,
 } from '../utils/parser/chat';
 import type USER from '../types/user';
-import { getChats } from '../store/slices/chats';
+import { getChats, searchChat } from '../store/slices/chats';
 import { useAppDispatch } from '../store/hooks/index';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import toast from '../utils/toasty/index';
 import React from 'react';
+import { faDiamond } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 type Props = {
     setMainSide: React.Dispatch<
@@ -29,6 +31,8 @@ function leftSide({ setMainSide, setRightSide }: Props): JSX.Element {
     const chatState = useAppSelector((state) => state.chats);
 
     const dispatch = useAppDispatch();
+
+    const searchInput = useRef<HTMLInputElement>(null);
 
     const handleUsersSide = useCallback(() => {
         setMainSide('users');
@@ -50,16 +54,33 @@ function leftSide({ setMainSide, setRightSide }: Props): JSX.Element {
     }, []);
 
     return (
-        <div className=" px-1 w-sreen md:w-[28%] h-[97%] ">
-            <div className="h-[4rem] flex items-center px-2 ">
+        <>
+            <div className="h-[4rem] flex justify-between items-center px-2 ">
                 <span className="bg-clip-text  text-4xl text-transparent bg-gradient-to-r from-[rgba(12,74,130,1)] to-[rgba(253,216,45,1)] font-bold">
                     Chataw
+                </span>
+                <span
+                    onClick={() => {
+                        setMainSide('profil');
+                        setRightSide('me');
+                    }}
+                    className="h-[2.5rem] w-[2.5rem] flex items-center md:hidden justify-center mr-2 rounded-full"
+                >
+                    <img
+                        src={user?.avatar}
+                        className="h-full object-cover  rounded-full border w-full"
+                        alt=""
+                    />
                 </span>
             </div>
             <div className="flex items-center justify-between h-[4rem]">
                 <input
                     type="text"
                     id="message"
+                    ref={searchInput}
+                    autoComplete="off"
+                    autoCorrect="off"
+                    onChange={(e) => dispatch(searchChat(e.target.value))}
                     placeholder="Search a chat here ..."
                     className="w-5/6 px-3 py-2 flex text-slate-900 placeholder-gray-300 border border-gray-100 rounded-md  focus:outline-none  focus:ring-indigo-100 focus:border-indigo-200"
                 />
@@ -70,7 +91,7 @@ function leftSide({ setMainSide, setRightSide }: Props): JSX.Element {
                     New
                 </span>
             </div>
-            <div className="h-[calc(100%-8rem)]  flex flex-col items-center  no-scrollbar overflow-y-auto">
+            <div className="h-[calc(100%-8rem)] flex flex-col items-center  no-scrollbar overflow-y-auto">
                 {!chatState.loading && chatState.chats?.length < 1 && (
                     <div>
                         <span className="h-5 text-lg py-5 text-gray-400">
@@ -103,30 +124,64 @@ function leftSide({ setMainSide, setRightSide }: Props): JSX.Element {
                     </span>
                 )}
 
-                {chatState.chats?.map((chat) => {
-                    return (
-                        <Chat
-                            avatar={parseAvatar(chat, user)}
-                            key={chat.name}
-                            messages={chat?.messages}
-                            name={parseName(chat, user as USER)[0]}
-                            id={chat._id as string}
-                            newMessageCount={parseNewMessageCount(
-                                parseLastUpdate(chat, user),
-                                chat?.messages,
-                            )}
-                            lastMessage={parseLastMessage(
-                                chat,
-                                user?.userName as string,
-                            )}
-                            showMessages={() => {
-                                setMainSide('messages');
-                            }}
-                        />
-                    );
-                })}
+                {searchInput.current?.value
+                    ? chatState.filteredChats[0]
+                        ? chatState.filteredChats?.map((chat) => {
+                              return (
+                                  <Chat
+                                      avatar={parseAvatar(chat, user)}
+                                      key={chat.name}
+                                      messages={chat?.messages}
+                                      name={parseName(chat, user as USER)[0]}
+                                      id={chat._id as string}
+                                      newMessageCount={parseNewMessageCount(
+                                          parseLastUpdate(chat, user),
+                                          chat?.messages,
+                                      )}
+                                      lastMessage={parseLastMessage(
+                                          chat,
+                                          user?.userName as string,
+                                      )}
+                                      showMessages={() => {
+                                          setMainSide('messages');
+                                      }}
+                                  />
+                              );
+                          })
+                        : null
+                    : chatState.chats?.map((chat) => {
+                          return (
+                              <Chat
+                                  avatar={parseAvatar(chat, user)}
+                                  key={chat.name}
+                                  messages={chat?.messages}
+                                  name={parseName(chat, user as USER)[0]}
+                                  id={chat._id as string}
+                                  newMessageCount={parseNewMessageCount(
+                                      parseLastUpdate(chat, user),
+                                      chat?.messages,
+                                  )}
+                                  lastMessage={parseLastMessage(
+                                      chat,
+                                      user?.userName as string,
+                                  )}
+                                  showMessages={() => {
+                                      setMainSide('messages');
+                                  }}
+                              />
+                          );
+                      })}
             </div>
-        </div>
+            <span
+                onClick={() => {
+                    setMainSide('users');
+                    setRightSide('users');
+                }}
+                className="h-[2.5rem] w-[2.5rem] md:hidden flex absolute right-4 bottom-4  items-center justify-center mr-2 bg-sky-800 text-sky-100 p-2 rounded-full"
+            >
+                <FontAwesomeIcon icon={faDiamond} />
+            </span>
+        </>
     );
 }
 

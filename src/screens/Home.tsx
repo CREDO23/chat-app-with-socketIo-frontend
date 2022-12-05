@@ -1,6 +1,10 @@
 import logo from '../assets/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperPlane, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import {
+    faPaperPlane,
+    faChevronDown,
+    faArrowLeft,
+} from '@fortawesome/free-solid-svg-icons';
 import {
     useRef,
     useState,
@@ -12,7 +16,6 @@ import {
 import type USER from '../types/user';
 import Message from '../components/Message';
 import UserChatList from '../components/UserChatList';
-import Mobile from './Mobile';
 import LeftSide from '../components/LeftSide';
 import RightSide from '../components/RightSide';
 import { ToastContainer } from 'react-toastify';
@@ -41,6 +44,8 @@ function home(): JSX.Element {
     const [mainSide, setMainSide] = useState<
         'chats' | 'users' | 'messages' | 'profil'
     >('chats');
+
+    const mainSideDiv = useRef<HTMLDivElement>(null);
 
     const messagesDiv = useRef<HTMLDivElement>(null);
 
@@ -83,11 +88,11 @@ function home(): JSX.Element {
 
     useEffect(() => {
         if (socket) {
-            socket.on('newChat', (chat) => {
+            socket.on('newChat', (chat: Chat) => {
                 dispatch(newMsg(chat));
             });
 
-            socket.on('ask_to_join', (chatName) => {
+            socket.on('ask_to_join', (chatName: string) => {
                 socket.emit('join_chat', chatName);
             });
         }
@@ -142,12 +147,27 @@ function home(): JSX.Element {
 
     return (
         <>
-            <div className="w-full md:w-[1360px] hidden  bg-white items-center md:flex h-full">
-                <LeftSide
-                    setRightSide={setRightSide}
-                    setMainSide={setMainSide}
-                />
-                {!chats.currentChat?.messages ? (
+            <div
+                ref={mainSideDiv}
+                className="w-full md:w-[1360px]  relative overflow-hidden  bg-white items-center md:flex h-full"
+            >
+                <div
+                    className={`${
+                        (mainSideDiv.current?.scrollWidth as number) < 500
+                            ? mainSide == 'chats'
+                                ? 'relative px-1 w-sreen md:w-[28%] h-[100%]'
+                                : 'hidden'
+                            : 'relative px-1 w-sreen md:w-[28%] h-[97%]'
+                    } `}
+                >
+                    <LeftSide
+                        setRightSide={setRightSide}
+                        setMainSide={setMainSide}
+                    />
+                </div>
+
+                {(mainSideDiv.current?.scrollWidth as number) > 500 &&
+                !chats.currentChat?.messages ? (
                     <div className="md:w-[60%] bg-transparent h-[97%] rounded-md flex flex-col items-center justify-center">
                         <img src={homeImage} className="h-48 w-48" alt="home" />
                         <span
@@ -163,13 +183,26 @@ function home(): JSX.Element {
                 ) : (
                     <div
                         onClick={() => setContent('messages')}
-                        className="md:w-[60%] bg-[#e9effc] h-[97%] rounded-md"
+                        className={` ${
+                            (mainSideDiv.current?.scrollWidth as number) < 500
+                                ? mainSide == 'messages'
+                                    ? 'md:w-[60%] bg-[#e9effc] h-full rounded-md'
+                                    : 'hidden'
+                                : 'md:w-[60%] bg-[#e9effc] h-[97%] rounded-md'
+                        }  `}
                     >
                         <div className="h-[4rem] border-b-2 px-2  flex items-center justify-between">
+                            <span
+                                onClick={() => setMainSide('chats')}
+                                className="h-[2rem] w-[2rem] flex items-center md:hidden justify-center mr-2 bg-sky-800 text-sky-100 p-1 rounded-full"
+                            >
+                                <FontAwesomeIcon icon={faArrowLeft} />
+                            </span>
+
                             <div className="w-3/5 flex items-center justify-start ">
                                 <img
                                     className="h-[3rem] cursor-pointer object-cover  w-[3rem] rounded-full border"
-                                    src={chats.currentChat.avatar || logo}
+                                    src={chats.currentChat?.avatar || logo}
                                     alt=""
                                 />
                                 <div className="flex mx-3 flex-col items-start justify-between">
@@ -188,9 +221,9 @@ function home(): JSX.Element {
                                 </div>
                             </div>
 
-                            <div className=" flex items-center justify-end h-full w-2/5">
+                            <div className="flex items-center justify-end h-full w-2/5">
                                 <span
-                                    className={`px-3 cursor-pointer ${
+                                    className={`px-3 hidden md:block cursor-pointer ${
                                         content == 'messages'
                                             ? ' text-sky-800  bg-sky-200'
                                             : ' text-gray-400 bg-transparent'
@@ -200,7 +233,7 @@ function home(): JSX.Element {
                                     Messages
                                 </span>
                                 <span
-                                    className={`px-3 ${
+                                    className={`px-3 hidden md:block ${
                                         content == 'participants'
                                             ? ' text-sky-800  bg-sky-200'
                                             : ' text-gray-400 bg-transparent'
@@ -224,11 +257,11 @@ function home(): JSX.Element {
                                     setChevronDonw(false);
                                 }
                             }}
-                            className="h-[calc(100%-7.5rem)] relative no-scrollbar overflow-y-auto  p-4 flex flex-col "
+                            className="h-[calc(100%-7.5rem)] no-scrollbar overflow-y-auto  p-4 flex flex-col "
                         >
                             {content == 'participants' && (
                                 <UserChatList
-                                    users={chats.currentChat.users as USER[]}
+                                    users={chats.currentChat?.users as USER[]}
                                 />
                             )}
                             {chats.currentChat?.messages.map((message) => {
@@ -267,6 +300,8 @@ function home(): JSX.Element {
                             <input
                                 type="text"
                                 ref={messageINput}
+                                autoComplete="off"
+                                autoCorrect="off"
                                 value={message}
                                 onKeyDown={(e) => {
                                     if (e.keyCode === 13) {
@@ -280,7 +315,9 @@ function home(): JSX.Element {
                             />
                             <FontAwesomeIcon
                                 className="w-1/12 cursor-pointer text-sky-600"
-                                onClick={() => handleMessage()}
+                                onClick={() => {
+                                    message && handleMessage();
+                                }}
                                 icon={faPaperPlane}
                                 size={'2x'}
                             />
@@ -300,10 +337,22 @@ function home(): JSX.Element {
                         </div>
                     </div>
                 )}
-
-                <RightSide rightSide={rightSide} setRightSide={setRightSide} />
+                <div
+                    className={`${
+                        (mainSideDiv.current?.scrollWidth as number) < 500
+                            ? mainSide == 'profil' || mainSide == 'users'
+                                ? 'md:w-[25%] px-1 h-[100%] '
+                                : 'hidden'
+                            : 'md:w-[25%] px-1 h-[97%] '
+                    } `}
+                >
+                    <RightSide
+                        rightSide={rightSide}
+                        setRightSide={setRightSide}
+                        setMainSide={setMainSide}
+                    />
+                </div>
             </div>
-            <Mobile />
             <ToastContainer limit={1} />
         </>
     );

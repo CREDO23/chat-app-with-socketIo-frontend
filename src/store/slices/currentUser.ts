@@ -77,12 +77,17 @@ export const uploadImage = createAsyncThunk<AxiosResponse, FileList>(
                 method: 'POST',
                 url: 'https://api.cloudinary.com/v1_1/dyj1vowdv/image/upload',
                 data,
+                withCredentials: false,
             });
 
             return result;
 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
+            if (error.response.status == 401) {
+                localStorage.clear();
+                location.reload();
+            }
             return rejectWithValue(error?.response?.data?.message);
         }
     },
@@ -97,10 +102,68 @@ export const updateUser = createAsyncThunk<AxiosResponse, any>(
                 method: 'PUT',
                 url: `${import.meta.env.VITE_BACKEND_URL}/api/users/${id}`,
                 data: body,
+                headers: {
+                    Authorization: `Bearer ${JSON.parse(
+                        localStorage.getItem('accessToken') as string,
+                    )}`,
+                },
             });
             return result;
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
+            if (error.response.status == 401) {
+                localStorage.clear();
+                location.reload();
+            }
+            return rejectWithValue(error?.response?.data?.message);
+        }
+    },
+);
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const forgotPassword = createAsyncThunk<AxiosResponse, any>(
+    'user/forgotPassword',
+    async (body, { rejectWithValue }) => {
+        try {
+            const result: AxiosResponse = await axios({
+                method: 'POST',
+                url: `${import.meta.env.VITE_BACKEND_URL}/api/resetPassword`,
+                data: body,
+            });
+            return result;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            return rejectWithValue(error?.response?.data?.message);
+        }
+    },
+);
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const updatePassword = createAsyncThunk<AxiosResponse, any>(
+    'user/updatePassword',
+    async ({ id, body }, { rejectWithValue }) => {
+        try {
+            const result: AxiosResponse = await axios({
+                method: 'PUT',
+                url: `${
+                    import.meta.env.VITE_BACKEND_URL
+                }/api/users/password/${id}`,
+                data: body,
+                headers: {
+                    Authorization: `Bearer ${JSON.parse(
+                        localStorage.getItem('accessToken') as string,
+                    )}`,
+                },
+            });
+
+            return result;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            if (error.response.status == 401) {
+                localStorage.clear();
+                location.reload();
+            }
+
             return rejectWithValue(error?.response?.data?.message);
         }
     },
@@ -203,6 +266,39 @@ export const currentUserSlice = createSlice({
         );
 
         builder.addCase(uploadImage.rejected, (state, action) => {
+            state.avatarLoading = false;
+            toast.error(action.payload as string);
+        });
+
+        builder.addCase(forgotPassword.pending, (state) => {
+            state.loading = true;
+        });
+
+        builder.addCase(forgotPassword.fulfilled, (state) => {
+            state.loading = false;
+            toast.susscess(
+                'We have sent a recovery password . Please check your mail box',
+            );
+        });
+
+        builder.addCase(forgotPassword.rejected, (state, action) => {
+            state.avatarLoading = false;
+            toast.error(action.payload as string);
+        });
+
+        builder.addCase(updatePassword.pending, (state) => {
+            state.loading = true;
+        });
+
+        builder.addCase(
+            updatePassword.fulfilled,
+            (state, action: PayloadAction<AxiosResponse<UpdateResponse>>) => {
+                state.loading = false;
+                toast.susscess(action.payload.data.message);
+            },
+        );
+
+        builder.addCase(updatePassword.rejected, (state, action) => {
             state.avatarLoading = false;
             toast.error(action.payload as string);
         });

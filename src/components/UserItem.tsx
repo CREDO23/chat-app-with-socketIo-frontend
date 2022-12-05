@@ -13,12 +13,13 @@ export default function ({
     online,
     userName,
     mode,
+    email,
     id,
     avatar,
     setUserChat,
     setMainSide,
     setRightSide,
-}: UserItem): JSX.Element {
+}: UserItem): JSX.Element | null {
     const dispatch = useAppDispatch();
 
     const currentUser = useAppSelector((state) => state.currentUser.user);
@@ -39,6 +40,7 @@ export default function ({
                 )[0]._id;
                 if (id) {
                     dispatch(setCurrentChat(id));
+                    setMainSide && setMainSide('messages');
                 }
             } else {
                 socket?.emit(
@@ -85,6 +87,10 @@ export default function ({
 
     const socket = io?.getSocket();
 
+    if (currentUser.userName == userName) {
+        return null;
+    }
+
     return (
         <div
             onClick={() => {
@@ -92,9 +98,9 @@ export default function ({
             }}
             className="w-full relative cursor-pointer my-1 bg-white px-2 h-[3.5rem] rounded flex items-center"
         >
-            <span className="relative h-[3rem] mr-1  w-[3rem]">
+            <span className="relative   mr-1  w-[3rem]">
                 <img
-                    className=" border  rounded-full"
+                    className=" border h-[3rem]  w-[3rem] object-cover  rounded-full"
                     src={avatar || logo}
                     alt=""
                 />
@@ -109,9 +115,7 @@ export default function ({
                     className="text-sm flex flex-col cursor-pointer items-start justify-between  text-slate-900"
                 >
                     <p> {parseContent(userName, 15)}</p>
-                    <p className="text-gray-400 font-light text-xs">
-                        bakerathierry@gmail.com
-                    </p>
+                    <p className="text-gray-400 font-light text-xs">{email}</p>
                 </label>
 
                 {mode == 'channel' && (

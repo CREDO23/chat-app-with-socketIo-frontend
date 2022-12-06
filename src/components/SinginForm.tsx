@@ -78,27 +78,12 @@ export default function ({ setForm }: Props): JSX.Element {
                     className="w-full px-3 py-2  text-slate-900 placeholder-gray-300 border border-gray-300 rounded-md  focus:outline-none  focus:ring-indigo-100 focus:border-indigo-200"
                 />
             </div>
-            <div className=" my-3 font-light text-xs flex items-center justify-between">
-                <div>
-                    <Link to="/reset-password">
-                        <span className=" font-ligth cursor-pointer text-[rgba(253,216,45,1)]">
-                            Forgot password ?
-                        </span>
-                    </Link>
-                </div>
-                <div>
-                    <span className=" text-slate-900">
-                        Don't have an account ?
+            <div className=" my-3 font-light text-xs flex items-end justify-between">
+                <Link to="/reset-password">
+                    <span className=" font-ligth cursor-pointer text-[rgba(253,216,45,1)]">
+                        Forgot password ?
                     </span>
-                    <span
-                        onClick={() => {
-                            isloading ? null : setForm('singup');
-                        }}
-                        className=" font-medium ml-2 cursor-pointer text-[rgba(253,216,45,1)]"
-                    >
-                        Sing up
-                    </span>
-                </div>
+                </Link>
             </div>
 
             <div>
@@ -117,7 +102,14 @@ export default function ({ setForm }: Props): JSX.Element {
                     )}
                 </button>
             </div>
-            <div className=" cursor-pointer text-center w-full px-2 py-3 text-sky-900 border-sky-900 my-4 border bg-white rounded-md  focus:bg-sky-700 focus:outline-none">
+            <div
+                onClick={() => {
+                    isloading ? null : setForm('singup');
+                }}
+                className={`${
+                    isloading ? 'hidden' : ''
+                } cursor-pointer text-center w-full px-2 py-3 text-sky-900 border-sky-900 my-4 border bg-white rounded-md  focus:bg-sky-700 focus:outline-none`}
+            >
                 SING UP
             </div>
             <ToastContainer limit={1} />

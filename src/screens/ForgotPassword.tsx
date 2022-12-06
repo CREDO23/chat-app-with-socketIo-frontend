@@ -42,7 +42,7 @@ export default function (): JSX.Element {
     return (
         <form
             onSubmit={(e) => handleSubmit(e)}
-            className=" text-textbleu w-11/12 "
+            className=" text-textbleu w-11/12 md:w-6/12 "
             noValidate
         >
             <div className="mb-6">

@@ -120,20 +120,6 @@ export default function ({ setForm }: Props): JSX.Element {
                 />
             </div>
 
-            <div className=" my-3 font-light text-xs mx-2 flex items-center justify-end">
-                <span className=" text-slate-900">
-                    Already have an account ?
-                </span>
-                <span
-                    onClick={() => {
-                        currentUser.loading ? null : setForm('singin');
-                    }}
-                    className=" font-medium ml-2 cursor-pointer text-[rgba(253,216,45,1)]"
-                >
-                    Sing in
-                </span>
-            </div>
-
             <div>
                 <button
                     type="submit"
@@ -149,6 +135,16 @@ export default function ({ setForm }: Props): JSX.Element {
                         'SING UP'
                     )}
                 </button>
+            </div>
+            <div
+                onClick={() => {
+                    currentUser.loading ? null : setForm('singin');
+                }}
+                className={`${
+                    currentUser.loading ? 'hidden' : ''
+                } cursor-pointer text-center w-full px-2 py-3 text-sky-900 border-sky-900 my-4 border bg-white rounded-md  focus:bg-sky-700 focus:outline-none`}
+            >
+                SING IN
             </div>
             <ToastContainer limit={1} />
         </form>

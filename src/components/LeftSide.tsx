@@ -127,6 +127,7 @@ function leftSide({ setMainSide, setRightSide }: Props): JSX.Element {
                 {searchInput.current?.value
                     ? chatState.filteredChats[0]
                         ? chatState.filteredChats?.map((chat) => {
+                            
                               return (
                                   <Chat
                                       avatar={parseAvatar(chat, user)}
@@ -150,6 +151,7 @@ function leftSide({ setMainSide, setRightSide }: Props): JSX.Element {
                           })
                         : null
                     : chatState.chats?.map((chat) => {
+                        console.log(parseLastUpdate(chat, user))
                           return (
                               <Chat
                                   avatar={parseAvatar(chat, user)}

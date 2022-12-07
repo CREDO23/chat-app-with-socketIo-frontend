@@ -19,6 +19,8 @@ function chat({
 
     const userId = useAppSelector((state) => state.currentUser.user._id);
 
+    // console.log(newMessageCount , lastMessage)
+
     const handleMessageSide = useCallback(() => {
         dispatch(setCurrentChat(id));
         handleLastView(id, userId);

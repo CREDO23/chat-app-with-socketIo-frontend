@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { singup } from '../store/slices/currentUser';
 import toast from '../utils/toasty/index';
+import {checkPassword} from '../utils/index'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { isFill, isMatch } from '../utils/validation';
@@ -41,6 +42,8 @@ export default function ({ setForm }: Props): JSX.Element {
             await isFill(singupForm);
 
             await isMatch(singupForm.confirmPassword, singupForm.password);
+
+            await checkPassword(singupForm.password)
 
             dispatch(
                 singup({

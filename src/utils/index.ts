@@ -16,3 +16,14 @@ export const handleLastView = async (chatId: string, userId: string) => {
         toast.error(error as string);
     }
 };
+
+export const checkPassword = (password: string): Promise<boolean> => {
+    return new Promise((resolve, reject) => {
+        if (password.length < 5) {
+            toast.info('Your password must be at least 5 characters');
+            reject(false);
+        } else {
+            resolve(true);
+        }
+    });
+};

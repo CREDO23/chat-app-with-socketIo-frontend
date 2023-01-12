@@ -13,7 +13,7 @@ A realtime chat .
 
 ### About The Project
 The goal of this project is to allow members of a given community to discuss or share information in realtime.
-Members can have a private chat or channel chat depending with the purpose .
+Members can have a private chat or channel chat depending with the purpose.
 
 ### Built With
 - ReactJs

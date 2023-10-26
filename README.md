@@ -1,6 +1,6 @@
 # CHATAW
 
-A realtime chat .
+A real-time chat
 
 ## Table of Contents
 1. About the project
@@ -12,8 +12,8 @@ A realtime chat .
 
 
 ### About The Project
-The goal of this project is to allow members of a given community to discuss or share information in realtime.
-Members can have a private chat or channel chat depending with the purpose.
+The goal of this project is to allow members of a given community to discuss or share information in real time.
+Members can have a private chat or channel chat, depending on the purpose.
 
 ### Built With
 - ReactJs
@@ -28,7 +28,7 @@ Members can have a private chat or channel chat depending with the purpose.
   - ##### Installations
      Packages : ``npm start`` or ``yarn``
   
-  - ##### Add environnement variable
+  - ##### Add the environment variable
      Use https://chat-app-backend-480q.onrender.com as VITE_BACKEND_URL in your ``.env`` file to connect the backend to this project .
 
     ```javascript
